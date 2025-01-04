@@ -1,16 +1,22 @@
 package integration
 
 import (
+	"log"
 	"os"
 	"testing"
+
+	"github.com/joho/godotenv"
 )
 
 func SetupEnv() {
-	os.Setenv("PORT", "8080")
+	err := godotenv.Load("../../.env.test")
+	if err != nil {
+		log.Fatalf("Error loading .env file for tests: %v", err)
+	}
 }
 
 func CleanupEnv() {
-	os.Unsetenv("PORT")
+	os.Clearenv()
 }
 
 func TestMain(m *testing.M) {

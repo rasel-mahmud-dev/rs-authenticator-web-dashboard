@@ -20,8 +20,8 @@ func TestLoginIntegration(t *testing.T) {
 
 	t.Run("Valid credentials", func(t *testing.T) {
 		loginRequest := map[string]string{
-			"username": "admin",
-			"password": "password",
+			"email":    "rasel.mahmud.dev@gmail.com",
+			"password": "123456",
 		}
 		loginBody, _ := json.Marshal(loginRequest)
 		req, err := http.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(loginBody))
