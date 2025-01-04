@@ -31,8 +31,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	user, err := repo.GetUserByEmail(loginRequest.Email)
 
 	if user == nil {
-		utils.LoggerInstance.Info(fmt.Sprintf("User %s no exists on database.", loginRequest.Email))
-		response.Respond(w, http.StatusUnauthorized, "Invalid username or password", nil)
+		utils.LoggerInstance.Info(fmt.Sprintf("User %s nsssssso exists on database.", loginRequest.Email))
+		response.Respond(w, http.StatusUnauthorized, "Invalid email or password", nil)
 		return
 	}
 

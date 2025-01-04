@@ -39,7 +39,7 @@ func (r *userRepository) GetUserByEmail(email string) (*models.User, error) {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("no user found with email: %s", email)
 		}
-		return nil, fmt.Errorf("error querying user by email: %w", err)
+		return nil, fmt.Errorf("error l lll querying user by email: %w", err)
 	}
 	return &user, nil
 }

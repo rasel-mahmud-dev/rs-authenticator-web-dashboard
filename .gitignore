@@ -45,3 +45,5 @@ go.sum
 run.sh
 
 vendor/**
+tmp
+tmp1
