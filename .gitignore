@@ -43,3 +43,5 @@ Thumbs.db
 # Dependency directories (Go modules)
 go.sum
 run.sh
+
+vendor/**
