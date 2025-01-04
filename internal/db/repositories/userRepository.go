@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"rs/auth/internal/app/cache"
 	"rs/auth/internal/utils"
 	"sync"
 
@@ -31,11 +32,19 @@ func NewUserRepository() UserRepository {
 }
 
 func (r *userRepository) GetUserByEmail(email string) (*models.User, error) {
+	userC := cache.GetUserFromCache(email)
+	if userC != nil {
+		utils.LoggerInstance.Info("User from cache")
+		return userC, nil
+	}
+
 	query := "SELECT id, name, email FROM users WHERE email = $1"
 	var user models.User
 
 	err := r.db.QueryRow(query, email).Scan(&user.ID, &user.Name, &user.Email)
 	if err != nil {
+		// added email to cache to store in nil
+		cache.SetItem(email, &user)
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("no user found with email: %s", email)
 		}
