@@ -2,10 +2,13 @@ package authHandler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"rs/auth/internal/app/dto"
 	"rs/auth/internal/app/validators"
+	"rs/auth/internal/db/repositories"
 	"rs/auth/internal/response"
+	"rs/auth/internal/utils"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,6 +24,15 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	err = validators.ValidateLoginRequest(&loginRequest)
 	if err != nil {
 		response.Respond(w, http.StatusBadRequest, err.Error(), nil)
+		return
+	}
+
+	repo := repositories.NewUserRepository()
+	user, err := repo.GetUserByEmail(loginRequest.Email)
+
+	if user == nil {
+		utils.LoggerInstance.Info(fmt.Sprintf("User %s no exists on database.", loginRequest.Email))
+		response.Respond(w, http.StatusUnauthorized, "Invalid username or password", nil)
 		return
 	}
 

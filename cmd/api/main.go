@@ -6,11 +6,13 @@ import (
 	"net/http"
 	"rs/auth/configs"
 	"rs/auth/internal/app/routes"
+	"rs/auth/internal/db/repositories"
 )
 
 func main() {
 	port := configs.ConfigInstance().Port
 	router := mux.NewRouter()
+	repositories.NewUserRepository()
 
 	routes.Init(router)
 
