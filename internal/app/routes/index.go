@@ -6,6 +6,7 @@ import (
 )
 
 func Init(router *mux.Router) {
+	router.HandleFunc("/", handlers.HomeHandler).Methods("GET")
 	router.HandleFunc("/health", handlers.HealthHandler).Methods("GET")
 
 	AuthRoutes(router)

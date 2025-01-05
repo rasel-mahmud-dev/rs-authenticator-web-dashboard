@@ -1,0 +1,28 @@
+{{ define "home" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+<!-- Include Header Partial -->
+{{ template "header" . }}
+
+<main class="container mx-auto py-8">
+    <ul class="list-disc list-inside text-center">
+        {{ range .Items }}
+            <li class="text-xl text-gray-700 my-2">{{ . }}</li>
+        {{ end }}
+    </ul>
+</main>
+
+<footer class="bg-gray-900 text-white text-center py-4">
+    <p class="text-sm">© 2025 Railway Reservation System. All rights reserved.</p>
+</footer>
+</body>
+</html>
+{{ end }}
