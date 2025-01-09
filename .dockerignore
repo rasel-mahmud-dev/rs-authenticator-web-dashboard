@@ -1,0 +1,5 @@
+.gitignore
+.git
+tmp
+tmp1
+vendor
