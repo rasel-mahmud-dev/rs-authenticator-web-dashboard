@@ -19,6 +19,7 @@ func (h *JSONValidationHandler) Handle(w http.ResponseWriter, r *http.Request) b
 		response.Respond(w, http.StatusBadRequest, "Invalid JSON format", nil)
 		return false
 	}
+
 	ctx := context.WithValue(r.Context(), "loginRequest", loginRequest)
 	r = r.WithContext(ctx)
 	return h.HandleNext(w, r)

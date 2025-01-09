@@ -2,7 +2,6 @@ package login
 
 import (
 	"net/http"
-	"rs/auth/app/db/repositories"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -10,13 +9,15 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	jsonHandler := &JSONValidationHandler{}
 	validationHandler := &RequestValidationHandler{}
 
-	userRepo := repositories.NewUserRepository()
-	existenceHandler := NewUserExistenceHandler(userRepo)
+	existenceHandler := NewUserExistenceHandler()
+	passwordValidationHandler := &PasswordValidationHandler{}
 	authHandler := &AuthenticationHandler{}
 
-	jsonHandler.SetNext(validationHandler)
-	validationHandler.SetNext(existenceHandler)
-	existenceHandler.SetNext(authHandler)
+	chain := jsonHandler
+	chain.SetNext(validationHandler).
+		SetNext(existenceHandler).
+		SetNext(passwordValidationHandler).
+		SetNext(authHandler)
 
-	jsonHandler.Handle(w, r)
+	chain.Handle(w, r)
 }

@@ -11,16 +11,17 @@ import (
 
 type UserExistenceHandler struct {
 	BaseHandler
-	repo repositories.UserRepository
+	userRepo repositories.UserRepository
 }
 
-func NewUserExistenceHandler(repo repositories.UserRepository) *UserExistenceHandler {
-	return &UserExistenceHandler{repo: repo}
+func NewUserExistenceHandler() *UserExistenceHandler {
+	userRepo := repositories.NewUserRepository()
+	return &UserExistenceHandler{userRepo: userRepo}
 }
 
 func (h *UserExistenceHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
 	loginRequest := r.Context().Value("loginRequest").(dto.LoginRequest)
-	user, err := h.repo.GetUserByEmail(loginRequest.Email)
+	user, err := h.userRepo.GetUserByEmail(loginRequest.Email)
 
 	if err != nil || user == nil {
 		utils.LoggerInstance.Info("User does not exist in database.")
@@ -30,6 +31,6 @@ func (h *UserExistenceHandler) Handle(w http.ResponseWriter, r *http.Request) bo
 
 	ctx := context.WithValue(r.Context(), "user", user)
 	r = r.WithContext(ctx)
-	
+
 	return h.HandleNext(w, r)
 }
