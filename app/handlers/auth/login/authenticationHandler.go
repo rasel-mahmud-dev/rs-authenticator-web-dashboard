@@ -2,9 +2,9 @@ package login
 
 import (
 	"net/http"
-	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
+	"rs/auth/app/net/statusCode"
 	"rs/auth/app/response"
 )
 
@@ -13,14 +13,8 @@ type AuthenticationHandler struct {
 }
 
 func (h *AuthenticationHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
-	loginRequest := r.Context().Value("loginRequest").(dto.LoginRequest)
 	user := r.Context().Value("user").(*models.User)
-
-	if loginRequest.Password != user.Password {
-		response.Respond(w, http.StatusUnauthorized, "Invalid username or password", nil)
-		return false
-	}
-
-	response.Respond(w, http.StatusOK, "Login successful", nil)
+	user.Password = ""
+	response.Respond(w, statusCode.OK, "Login successful", user)
 	return false
 }

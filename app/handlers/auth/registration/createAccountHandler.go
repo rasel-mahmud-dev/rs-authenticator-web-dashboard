@@ -7,6 +7,7 @@ import (
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
+	"rs/auth/app/net/statusCode"
 	"rs/auth/app/response"
 	"rs/auth/app/services/hash"
 	"rs/auth/app/utils"
@@ -22,18 +23,18 @@ func (h *CreateAccountHandler) Handle(w http.ResponseWriter, r *http.Request) bo
 	userRepo := repositories.NewUserRepository()
 	user, err := userRepo.CreateAccount(models.User{
 		Username: payload.Username,
-		Password: hash.Instance.GenerateHash(payload.Password),
+		Password: hash.Hash.GenerateHash(payload.Password),
 		Email:    payload.Email,
 	})
 	if err != nil {
 		utils.LoggerInstance.Error(err.Error())
-		response.Respond(w, http.StatusUnauthorized, err.Error(), nil)
+		response.Respond(w, statusCode.ACCOUNT_CREATION_FAILED, err.Error(), nil)
 		return false
 	}
 
 	if user == nil {
 		utils.LoggerInstance.Info("Failed to create user account.")
-		response.Respond(w, http.StatusInternalServerError, "User registration fail.", nil)
+		response.Respond(w, statusCode.ACCOUNT_CREATION_FAILED, "Failed to create user account.", nil)
 		return false
 	}
 

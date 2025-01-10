@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
+	"rs/auth/app/net/statusCode"
 	"rs/auth/app/response"
 )
 
@@ -17,7 +18,7 @@ func (h *JSONValidationHandler) Handle(w http.ResponseWriter, r *http.Request) b
 	var payload dto.RegisterRequestBody
 	err := json.NewDecoder(r.Body).Decode(&payload)
 	if err != nil {
-		response.Respond(w, http.StatusBadRequest, "Invalid JSON format", nil)
+		response.Respond(w, statusCode.INVALID_JSON_FORMAT, "Invalid JSON format", nil)
 		return false
 	}
 

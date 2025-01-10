@@ -1,11 +1,11 @@
 package registration
 
 import (
-	"fmt"
 	"net/http"
 	"rs/auth/app/db/repositories"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
+	"rs/auth/app/net/statusCode"
 	"rs/auth/app/response"
 	"rs/auth/app/utils"
 )
@@ -20,15 +20,13 @@ func (h *CheckExistenceUserHandler) Handle(w http.ResponseWriter, r *http.Reques
 	user, err := userRepo.GetUserByEmail(payload.Email)
 	if err != nil {
 		utils.LoggerInstance.Error(err.Error())
-		response.Respond(w, http.StatusUnauthorized, "Internal error", nil)
+		response.Respond(w, statusCode.INTERNAL_ERROR, "Internal error", nil)
 		return false
 	}
 
-	fmt.Println(user)
-
 	if user != nil {
 		utils.LoggerInstance.Info("User already exist in database.")
-		response.Respond(w, http.StatusUnauthorized, "User already onboarded", nil)
+		response.Respond(w, statusCode.DUPLICATE_ENTITY, "User already onboarded", nil)
 		return false
 	}
 

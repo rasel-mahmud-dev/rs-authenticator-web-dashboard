@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+	"rs/auth/app/cache"
 	"time"
 
 	"rs/auth/app/db"
@@ -30,11 +31,11 @@ func NewUserRepository() *UserRepository {
 }
 
 func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
-	//userC := cache.GetUserFromCache(email)
-	//if userC != nil {
-	//	utils.LoggerInstance.Info("User from cache")
-	//	return userC, nil
-	//}
+	userC := cache.GetUserFromCache(email)
+	if userC != nil {
+		utils.LoggerInstance.Info("User from cache")
+		return userC, nil
+	}
 
 	query := "SELECT id, username, password, email FROM users WHERE email = $1"
 	var user models.User
@@ -46,6 +47,7 @@ func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 		}
 		return nil, utils.Error("error l lll querying user by email: %w", err)
 	}
+	cache.SetItem(email, &user)
 	return &user, nil
 }
 

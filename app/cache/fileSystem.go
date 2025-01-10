@@ -1,8 +1,9 @@
-package store
+package cache
 
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 )
@@ -34,25 +35,22 @@ func (fs *FileSystemCache) SetItem(key string, value interface{}) error {
 	return nil
 }
 
-func (fs *FileSystemCache) GetItem[T any](key string) (T, bool) {
-	var zero T
-
+func (fs *FileSystemCache) GetItem(key string) ([]byte, bool) {
 	filePath := filepath.Join(fs.tempDir, key+".json")
 	file, err := os.Open(filePath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return zero, false
+			return nil, false
 		}
-		fmt.Printf("failed to open cache file: %v\n", err)
-		return zero, false
+		fmt.Printf("Failed to open cache file: %v\n", err)
+		return nil, false
 	}
 	defer file.Close()
 
-	decoder := json.NewDecoder(file)
-	var value T
-	if err := decoder.Decode(&value); err != nil {
-		fmt.Printf("failed to decode cache file: %v\n", err)
-		return zero, false
+	data, err := io.ReadAll(file)
+	if err != nil {
+		fmt.Printf("Failed to read cache file: %v\n", err)
+		return nil, false
 	}
-	return value, true
+	return data, true
 }

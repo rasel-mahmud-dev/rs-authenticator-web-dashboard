@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
+	"rs/auth/app/net/statusCode"
 	"rs/auth/app/response"
 	"rs/auth/app/validators"
 )
@@ -20,7 +21,7 @@ func (h *RequestValidationHandler) Handle(w http.ResponseWriter, r *http.Request
 		Password: payload.Password,
 	})
 	if err != nil {
-		response.Respond(w, http.StatusBadRequest, err.Error(), nil)
+		response.Respond(w, statusCode.REQUEST_VALIDATION_FAILED, err.Error(), nil)
 		return false
 	}
 	return h.HandleNext(w, r)

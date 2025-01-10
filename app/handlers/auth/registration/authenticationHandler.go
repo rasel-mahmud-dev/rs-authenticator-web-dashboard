@@ -1,11 +1,11 @@
 package registration
 
 import (
-	"fmt"
 	"net/http"
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
-	"rs/auth/app/net"
+	"rs/auth/app/net/statusCode"
+	"rs/auth/app/response"
 )
 
 type AuthenticationHandler struct {
@@ -15,8 +15,6 @@ type AuthenticationHandler struct {
 func (h *AuthenticationHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
 	user := r.Context().Value("user").(*models.User)
 	user.Password = ""
-	credentials := net.Success.LOGOUT_SUCCESS
-	fmt.Println(credentials)
-	//response.Respond(w, status.Success.LOGOUT_SUCCESS, "Account successful created", user)
+	response.Respond(w, statusCode.OK, "Account successful created", user)
 	return false
 }

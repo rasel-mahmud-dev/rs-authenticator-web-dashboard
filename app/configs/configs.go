@@ -16,6 +16,7 @@ type Config struct {
 	DATABASE_USER     string
 	DATABASE_PASSWORD string
 	DATABASE_NAME     string
+	CACHE_STORAGE     string
 }
 
 var config *Config
@@ -28,7 +29,7 @@ func init() {
 		fmt.Println("Error loading .env file:", err)
 	}
 	//}
-	
+
 	port, err := strconv.Atoi(os.Getenv("DATABASE_PORT"))
 	if err != nil {
 		log.Fatalf("Invalid DATABASE_PORT value: %v", err)
@@ -42,6 +43,7 @@ func init() {
 			DATABASE_USER:     os.Getenv("DATABASE_USER"),
 			DATABASE_PASSWORD: os.Getenv("DATABASE_PASSWORD"),
 			DATABASE_NAME:     os.Getenv("DATABASE_NAME"),
+			CACHE_STORAGE:     os.Getenv("CACHE_STORAGE"),
 		}
 	})
 }

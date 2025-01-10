@@ -9,7 +9,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	jsonHandler := &JSONValidationHandler{}
 	validationHandler := &RequestValidationHandler{}
 
-	existenceHandler := NewUserExistenceHandler()
+	existenceHandler := &UserExistenceHandler{}
 	passwordValidationHandler := &PasswordValidationHandler{}
 	authHandler := &AuthenticationHandler{}
 
