@@ -3,6 +3,7 @@ package response
 import (
 	"encoding/json"
 	"net/http"
+	"rs/auth/app/net"
 )
 
 type APIResponse struct {
@@ -10,9 +11,10 @@ type APIResponse struct {
 	Data    interface{} `json:"data,omitempty"`
 }
 
-func Respond(w http.ResponseWriter, statusCode int, message string, data interface{}) {
+func Respond(w http.ResponseWriter, statusCode string, message string, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(statusCode)
+	httpStatusCode := net.HttpStatus[statusCode]
+	w.WriteHeader(httpStatusCode)
 
 	response := APIResponse{
 		Message: message,
