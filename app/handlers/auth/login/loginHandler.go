@@ -11,13 +11,15 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	existenceHandler := &UserExistenceHandler{}
 	passwordValidationHandler := &PasswordValidationHandler{}
-	authHandler := &AuthenticationHandler{}
+	generateJwtHandler := &GenerateJwtHandler{}
+	responseHandler := &ResponseHandler{}
 
 	chain := jsonHandler
 	chain.SetNext(validationHandler).
 		SetNext(existenceHandler).
 		SetNext(passwordValidationHandler).
-		SetNext(authHandler)
+		SetNext(generateJwtHandler).
+		SetNext(responseHandler)
 
 	chain.Handle(w, r)
 }

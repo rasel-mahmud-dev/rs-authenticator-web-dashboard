@@ -13,7 +13,7 @@ var fileSystemCache *FileSystemCache
 var cacheStorage string
 
 func init() {
-	cacheStorage = configs.ConfigInstance().CACHE_STORAGE
+	cacheStorage = configs.Config.CACHE_STORAGE
 	var err error
 
 	if cacheStorage == "filesystem" {

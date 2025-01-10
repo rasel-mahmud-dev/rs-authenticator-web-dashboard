@@ -25,14 +25,13 @@ var (
 
 func GetDB() *sql.DB {
 	once.Do(func() {
-		config := configs.ConfigInstance()
 		psqlInfo := fmt.Sprintf(
 			"host=%s port=%d user=%s password=%s dbname=%s sslmode=require",
-			config.DATABASE_HOST,
-			config.DATABASE_PORT,
-			config.DATABASE_USER,
-			config.DATABASE_PASSWORD,
-			config.DATABASE_NAME,
+			configs.Config.DATABASE_HOST,
+			configs.Config.DATABASE_PORT,
+			configs.Config.DATABASE_USER,
+			configs.Config.DATABASE_PASSWORD,
+			configs.Config.DATABASE_NAME,
 		)
 		var err error
 		dbInstance, err = sql.Open("postgres", psqlInfo)

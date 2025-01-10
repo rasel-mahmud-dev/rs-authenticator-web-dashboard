@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	port := configs.ConfigInstance().Port
+	port := configs.Config.Port
 	router := mux.NewRouter()
 	repositories.NewUserRepository()
 
