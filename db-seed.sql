@@ -39,3 +39,40 @@ CREATE TABLE public.user_login_attempts
     description  VARCHAR,          -- Store the user agent string
     created_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+CREATE TABLE public.auth_sessions
+(
+    id            UUID PRIMARY KEY         DEFAULT uuid_generate_v4(),
+    user_id       UUID    NOT NULL REFERENCES public.users (id) ON DELETE CASCADE,
+    ip_address    VARCHAR(45),
+    user_agent    VARCHAR(255),
+    access_token  VARCHAR NOT NULL,
+    refresh_token VARCHAR NOT NULL,
+    created_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    last_used_at  TIMESTAMP WITH TIME ZONE,
+    is_revoked    BOOLEAN                  DEFAULT FALSE
+);
+
+CREATE INDEX idx_auth_sessions_access_token ON public.auth_sessions (access_token);
+CREATE INDEX idx_auth_sessions_refresh_token ON public.auth_sessions (refresh_token);
+
+
+-- Archived sessions table (history)
+CREATE TABLE public.auth_session_history
+(
+    id            UUID PRIMARY KEY         DEFAULT uuid_generate_v4(),
+    user_id       UUID NOT NULL REFERENCES public.users (id) ON DELETE CASCADE,
+    ip_address    VARCHAR(45),
+    user_agent    VARCHAR(255),
+    access_token  VARCHAR,
+    refresh_token VARCHAR,
+    created_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP WITH TIME ZONE,
+    status        VARCHAR(20),
+    last_used_at  TIMESTAMP WITH TIME ZONE,
+    is_revoked    BOOLEAN,
+    archived_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
