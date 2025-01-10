@@ -1,9 +1,7 @@
 package repositories
 
-import (
-	"rs/auth/app/models"
-)
-
-type UserRepository interface {
-	GetUserByEmail(email string) (*models.User, error)
-}
+//
+//type UserRepository interface {
+//	GetUserByEmail(email string) (*models.User, error)
+//	CreateAccount(user models.User) (*models.User, error)
+//}

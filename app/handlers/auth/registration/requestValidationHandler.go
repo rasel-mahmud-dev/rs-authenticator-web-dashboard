@@ -1,4 +1,4 @@
-package login
+package registration
 
 import (
 	"net/http"
@@ -13,10 +13,11 @@ type RequestValidationHandler struct {
 }
 
 func (h *RequestValidationHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
-	loginRequest := r.Context().Value("loginRequest").(dto.LoginRequest)
-	err := validators.ValidateStruct(&dto.LoginRequest{
-		Email:    loginRequest.Email,
-		Password: loginRequest.Password,
+	payload := r.Context().Value("payload").(dto.RegisterRequestBody)
+	err := validators.ValidateStruct(&dto.RegisterRequestBody{
+		Email:    payload.Email,
+		Username: payload.Username,
+		Password: payload.Password,
 	})
 	if err != nil {
 		response.Respond(w, http.StatusBadRequest, err.Error(), nil)

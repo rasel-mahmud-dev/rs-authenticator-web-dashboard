@@ -22,13 +22,13 @@ var config *Config
 var once sync.Once
 
 func init() {
-	if os.Getenv("APP_ENV") == "development" {
-		err := godotenv.Load()
-		if err != nil {
-			fmt.Println("Error loading .env file:", err)
-		}
+	//if os.Getenv("APP_ENV") == "development" {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file:", err)
 	}
-
+	//}
+	
 	port, err := strconv.Atoi(os.Getenv("DATABASE_PORT"))
 	if err != nil {
 		log.Fatalf("Invalid DATABASE_PORT value: %v", err)

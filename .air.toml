@@ -22,7 +22,18 @@ GOVCS = "off"
   follow_symlink = false
   full_bin = ""
   include_dir = [
-    "app",
+    "app/cache",
+    "app/configs",
+    "app/db",
+    "app/dto",
+    "app/handlers",
+    "app/middlewares",
+    "app/models",
+    "app/response",
+    "app/routes",
+    "app/services",
+    "app/utils",
+    "app/validators",
     "cmd",
     "internal",
     "pkg",

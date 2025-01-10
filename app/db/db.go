@@ -24,8 +24,8 @@ var (
 )
 
 func GetDB() *sql.DB {
-	config := configs.ConfigInstance()
 	once.Do(func() {
+		config := configs.ConfigInstance()
 		psqlInfo := fmt.Sprintf(
 			"host=%s port=%d user=%s password=%s dbname=%s sslmode=require",
 			config.DATABASE_HOST,

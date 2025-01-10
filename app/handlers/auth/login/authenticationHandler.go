@@ -3,12 +3,13 @@ package login
 import (
 	"net/http"
 	"rs/auth/app/dto"
+	"rs/auth/app/handlers"
 	"rs/auth/app/models"
 	"rs/auth/app/response"
 )
 
 type AuthenticationHandler struct {
-	BaseHandler
+	handlers.BaseHandler
 }
 
 func (h *AuthenticationHandler) Handle(w http.ResponseWriter, r *http.Request) bool {

@@ -3,12 +3,13 @@ package login
 import (
 	"net/http"
 	"rs/auth/app/dto"
+	"rs/auth/app/handlers"
 	"rs/auth/app/models"
 	"rs/auth/app/response"
 )
 
 type PasswordValidationHandler struct {
-	BaseHandler
+	handlers.BaseHandler
 }
 
 func (h *PasswordValidationHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
