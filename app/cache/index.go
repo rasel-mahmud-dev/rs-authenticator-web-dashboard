@@ -32,34 +32,31 @@ func SetItem(key string, value interface{}) {
 		store[key] = value
 	}
 }
-func GetItem[T any](key string) (T, bool) {
+func GetItem[T any](key string) T {
 	var zero T
 	if cacheStorage == "filesystem" {
 		data, found := fileSystemCache.GetItem(key)
 		if !found {
-			return zero, false
+			return zero
 		}
 		var value T
 		if err := json.Unmarshal(data, &value); err != nil {
 			fmt.Printf("Failed to decode cache data: %v\n", err)
-			return zero, false
+			return zero
 		}
-		return value, true
+		return value
 	} else {
 		val, exists := store[key]
 		if exists {
 			if typedVal, ok := val.(T); ok {
-				return typedVal, true
+				return typedVal
 			}
 		}
 	}
-	return zero, false
+	return zero
 }
 
 func GetUserFromCache(email string) *models.User {
-	userC, found := GetItem[*models.User](email)
-	if found {
-		return userC
-	}
-	return nil
+	userC := GetItem[*models.User](email)
+	return userC
 }

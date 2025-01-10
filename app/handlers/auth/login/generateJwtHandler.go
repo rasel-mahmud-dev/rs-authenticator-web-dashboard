@@ -20,10 +20,10 @@ type GenerateJwtHandler struct {
 func (h *GenerateJwtHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
 	user := r.Context().Value("user").(*models.User)
 	user.Password = ""
-	token, err := jwt.Jwt.GenerateToken(user.ID, time.Hour*24*60)
+	token, err := jwt.Jwt.GenerateToken(jwt.JwtPayload{UserId: user.ID}, time.Hour*24*60)
 	if err != nil {
 		utils.LoggerInstance.Error(fmt.Sprintf("Jwt token generation error - %s", err.Error()))
-		response.Respond(w, statusCode.INTERNAL_ERROR, "Internal error", nil)
+		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, "Internal error", nil)
 		return false
 	}
 	ctx := context.WithValue(r.Context(), "token", token)

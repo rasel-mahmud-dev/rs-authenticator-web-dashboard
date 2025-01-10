@@ -19,7 +19,7 @@ func (h *NewSessionHandler) Handle(w http.ResponseWriter, r *http.Request) bool 
 	accessToken := r.Context().Value("token").(string)
 
 	authSession, err := repositories.AuthSessionRepository.InsertAuthSession(models.AuthSession{
-		UserID:       user.ID,
+		UserId:       user.ID,
 		IPAddress:    utils.GetUserIP(r),
 		UserAgent:    utils.GetUserAgent(r),
 		AccessToken:  accessToken,

@@ -2,7 +2,9 @@ package repositories
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
+	"rs/auth/app/cache"
 	"rs/auth/app/db"
 	"rs/auth/app/models"
 	"rs/auth/app/utils"
@@ -20,25 +22,46 @@ func init() {
 	AuthSessionRepository = &authSessionRepository{db: db.GetDB()}
 }
 
-func (r *authSessionRepository) GetAuthSessionByAccessToken(token string) (*models.AuthSession, error) {
-	//userC := cache.GetUserFromCache(email)
-	//if userC != nil {
-	//	utils.LoggerInstance.Info("User from cache")
-	//	return userC, nil
-	//}
-	//
-	//query := "SELECT id, username, password, email FROM users WHERE email = $1"
+func (r *authSessionRepository) GetAuthSessionByAccessToken(token string) *models.AuthSession {
+	authSessionCached := cache.GetItem[*models.AuthSession](token)
+	if authSessionCached != nil {
+		utils.LoggerInstance.Info("auth session from cache")
+		return authSessionCached
+	}
+
+	query := `SELECT 
+    				s.id, 
+       				s.is_revoked, 
+				   s.access_token, 
+				   s.refresh_token,
+				   s.user_id, 
+				   u.username, 
+				   u.email 
+			FROM auth_sessions s 
+				join public.users u 
+					on u.id = s.user_id 
+			WHERE access_token = $1`
+
 	var authSession models.AuthSession
-	//
-	//err := r.db.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Password, &user.Email)
-	//if err != nil {
-	//	if errors.Is(err, sql.ErrNoRows) {
-	//		return nil, nil
-	//	}
-	//	return nil, utils.Error("error l lll querying user by email: %w", err)
-	//}
-	//cache.SetItem(email, &user)
-	return &authSession, nil
+
+	err := r.db.QueryRow(query, token).Scan(
+		&authSession.ID,
+		&authSession.IsRevoked,
+		&authSession.AccessToken,
+		&authSession.RefreshToken,
+		&authSession.UserId,
+		&authSession.Username,
+		&authSession.Email,
+	)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil
+		}
+		return nil
+	}
+	cache.SetItem(token, &authSession)
+	return &authSession
 }
 
 func (r *authSessionRepository) InsertAuthSession(payload models.AuthSession) (*models.AuthSession, error) {
@@ -54,7 +77,7 @@ func (r *authSessionRepository) InsertAuthSession(payload models.AuthSession) (*
 	currentTime := time.Now()
 	err := r.db.QueryRow(
 		query,
-		payload.UserID,
+		payload.UserId,
 		payload.IPAddress,
 		payload.UserAgent,
 		payload.AccessToken,

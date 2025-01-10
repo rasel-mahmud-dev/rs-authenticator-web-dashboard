@@ -6,7 +6,7 @@ import (
 
 type AuthSessionHistory struct {
 	ID           string    `json:"id"`
-	UserID       string    `json:"user_id"`
+	UserId       string    `json:"user_id"`
 	IPAddress    string    `json:"ip_address"`
 	UserAgent    string    `json:"user_agent"`
 	AccessToken  string    `json:"access_token"`

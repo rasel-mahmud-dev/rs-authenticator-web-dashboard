@@ -20,7 +20,7 @@ func (h *CheckExistenceUserHandler) Handle(w http.ResponseWriter, r *http.Reques
 	user, err := userRepo.GetUserByEmail(payload.Email)
 	if err != nil {
 		utils.LoggerInstance.Error(err.Error())
-		response.Respond(w, statusCode.INTERNAL_ERROR, "Internal error", nil)
+		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, "Internal error", nil)
 		return false
 	}
 

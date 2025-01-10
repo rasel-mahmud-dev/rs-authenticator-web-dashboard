@@ -6,7 +6,7 @@ import (
 
 type AuthSession struct {
 	ID           string    `json:"id"`
-	UserID       string    `json:"user_id"`
+	UserId       string    `json:"user_id"`
 	IPAddress    string    `json:"ip_address"`
 	UserAgent    string    `json:"user_agent"`
 	AccessToken  string    `json:"access_token"`
@@ -15,4 +15,8 @@ type AuthSession struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 	LastUsedAt   time.Time `json:"last_used_at"`
 	IsRevoked    bool      `json:"is_revoked"`
+
+	// populated field
+	Username string `json:"username,omitempty"`
+	Email    string `json:"email,omitempty"`
 }
