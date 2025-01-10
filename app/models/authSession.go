@@ -17,6 +17,7 @@ type AuthSession struct {
 	IsRevoked    bool      `json:"is_revoked"`
 
 	// populated field
+	Avatar   string `json:"avatar,omitempty"`
 	Username string `json:"username,omitempty"`
 	Email    string `json:"email,omitempty"`
 }

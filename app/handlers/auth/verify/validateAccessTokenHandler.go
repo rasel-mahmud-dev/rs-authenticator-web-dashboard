@@ -24,6 +24,11 @@ func (h *ValidateAccessTokenHandler) Handle(w http.ResponseWriter, r *http.Reque
 	}
 
 	authSession := repositories.AuthSessionRepository.GetAuthSessionByAccessToken(token)
+	if authSession == nil {
+		response.Respond(w, statusCode.UNAUTHORIZED, "Unauthorized", nil)
+		return false
+	}
+
 	if authSession.UserId != parseToken.UserId {
 		response.Respond(w, statusCode.UNAUTHORIZED_SESSION_MISMATCH, "Session mismatch", nil)
 		return false
@@ -36,6 +41,7 @@ func (h *ValidateAccessTokenHandler) Handle(w http.ResponseWriter, r *http.Reque
 			IsRevoked: authSession.IsRevoked,
 			Username:  authSession.Username,
 			Email:     authSession.Email,
+			Avatar:    authSession.Avatar,
 		})
 		return false
 	}

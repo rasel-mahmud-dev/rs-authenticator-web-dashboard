@@ -36,8 +36,9 @@ func (r *authSessionRepository) GetAuthSessionByAccessToken(token string) *model
 				   s.refresh_token,
 				   s.user_id, 
 				   u.username, 
-				   u.email 
-			FROM auth_sessions s 
+				   u.email,
+				   COALESCE(u.avatar, '') AS avatar
+FROM auth_sessions s 
 				join public.users u 
 					on u.id = s.user_id 
 			WHERE access_token = $1`
@@ -52,15 +53,16 @@ func (r *authSessionRepository) GetAuthSessionByAccessToken(token string) *model
 		&authSession.UserId,
 		&authSession.Username,
 		&authSession.Email,
+		&authSession.Avatar,
 	)
 
 	if err != nil {
+		utils.LoggerInstance.Error(err.Error())
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil
 		}
 		return nil
 	}
-	cache.SetItem(token, &authSession)
 	return &authSession
 }
 

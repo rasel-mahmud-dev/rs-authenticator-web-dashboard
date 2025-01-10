@@ -21,6 +21,7 @@ func (h *ResponseHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
 		IsRevoked: authSession.IsRevoked,
 		Username:  authSession.Username,
 		Email:     authSession.Email,
+		Avatar:    authSession.Avatar,
 	})
 	return false
 }

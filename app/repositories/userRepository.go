@@ -37,10 +37,10 @@ func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 		return userC, nil
 	}
 
-	query := "SELECT id, username, password, email FROM users WHERE email = $1"
+	query := "SELECT id, username, password, email, COALESCE(avatar, '') AS avatar FROM users WHERE email = $1"
 	var user models.User
 
-	err := r.db.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Password, &user.Email)
+	err := r.db.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.Avatar)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
