@@ -14,3 +14,14 @@ services:
     command: air
     environment:
       - AIR=true
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./.env
+    ports:
+      - "3200:5173"
+    volumes:
+      - ./frontend:/app

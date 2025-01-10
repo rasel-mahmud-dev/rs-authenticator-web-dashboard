@@ -8,6 +8,7 @@ log_level = "debug"
 
 [env]
 GOVCS = "off"
+APP_ENV = "development"
 
 [build]
   vcs = false
@@ -55,7 +56,7 @@ GOVCS = "off"
   stop_on_error = false
 
 [color]
-  app = ""
+  app = "yellow"
   build = "yellow"
   main = "magenta"
   runner = "green"
@@ -64,7 +65,7 @@ GOVCS = "off"
 [log]
   main_only = false
   silent = false
-  time = false
+  time = true
 
 [misc]
   clean_on_exit = false

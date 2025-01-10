@@ -49,6 +49,7 @@ tmp
 tmp1
 
 node/node_modules
+frontend/node_modules
 .vercel
 .env
 .env.test
