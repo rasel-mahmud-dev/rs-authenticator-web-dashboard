@@ -1,19 +1,43 @@
 import React from "react";
+import {useMutation} from "@tanstack/react-query";
+import {login} from "../services/authSerivce.js";
+import useAuthStore from "../store/authState.js";
 
 const LoginForm = () => {
+
+    const {setAuth} = useAuthStore()
+
+    const mutation = useMutation({
+        mutationFn: login,
+        onSuccess: (data) => {
+            setAuth(data?.data)
+        },
+        onError: (error) => {
+            console.error("Login failed:", error);
+        }
+    });
+
+    function handleLogin(e) {
+        e.preventDefault();
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        mutation.mutate({email, password});
+    }
+
     return (
-        <div className="flex items-center justify-center min-h-screen  ">
+        <div className="flex items-center justify-center h-screen  overflow-hidden">
             <div className="card w-96 bg-gray-800  shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Welcome Back</h2>
                     <p className="text-center text-gray-400 mb-4">Sign in to your account</p>
-                    <form>
+                    <form onSubmit={handleLogin}>
                         <div className="form-control mb-4">
                             <label className="label">
                                 <span className="label-text text-gray-300">Email</span>
                             </label>
                             <input
                                 type="email"
+                                name="email"
                                 placeholder="Enter your email"
                                 className="input input-bordered w-full"
                             />
@@ -23,6 +47,7 @@ const LoginForm = () => {
                                 <span className="label-text text-gray-300">Password</span>
                             </label>
                             <input
+                                name="password"
                                 type="password"
                                 placeholder="Enter your password"
                                 className="input input-bordered w-full"
