@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"rs/auth/app/configs"
-	"rs/auth/app/db/repositories"
+	"rs/auth/app/repositories"
 	"rs/auth/app/routes"
 )
 

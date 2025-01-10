@@ -2,10 +2,10 @@ package registration
 
 import (
 	"net/http"
-	"rs/auth/app/db/repositories"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
 	"rs/auth/app/net/statusCode"
+	"rs/auth/app/repositories"
 	"rs/auth/app/response"
 	"rs/auth/app/utils"
 )

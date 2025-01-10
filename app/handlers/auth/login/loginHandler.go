@@ -2,6 +2,7 @@ package login
 
 import (
 	"net/http"
+	"rs/auth/app/handlers/authSession"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -12,6 +13,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	existenceHandler := &UserExistenceHandler{}
 	passwordValidationHandler := &PasswordValidationHandler{}
 	generateJwtHandler := &GenerateJwtHandler{}
+	newSessionHandler := &authSession.NewSessionHandler{}
 	responseHandler := &ResponseHandler{}
 
 	chain := jsonHandler
@@ -19,6 +21,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		SetNext(existenceHandler).
 		SetNext(passwordValidationHandler).
 		SetNext(generateJwtHandler).
+		SetNext(newSessionHandler).
 		SetNext(responseHandler)
 
 	chain.Handle(w, r)

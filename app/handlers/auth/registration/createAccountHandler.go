@@ -3,11 +3,11 @@ package registration
 import (
 	"context"
 	"net/http"
-	"rs/auth/app/db/repositories"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
+	"rs/auth/app/repositories"
 	"rs/auth/app/response"
 	"rs/auth/app/services/hash"
 	"rs/auth/app/utils"
