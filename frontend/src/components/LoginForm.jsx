@@ -15,7 +15,7 @@ const LoginForm = () => {
             if (variables.rememberMe) {
                 localStorage.setItem("token", data?.data?.token);
             } else {
-                sessionStorage.setItem("token", data?.data);
+                sessionStorage.setItem("token", data?.data?.token);
             }
         },
         onError: (error) => {

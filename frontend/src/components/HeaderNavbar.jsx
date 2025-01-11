@@ -1,5 +1,6 @@
 import React from "react";
 import useAuthStore from "../store/authState.js";
+import {NavLink} from "react-router-dom";
 
 
 const HeaderNavbar = () => {
@@ -14,12 +15,12 @@ const HeaderNavbar = () => {
                 <nav>
                     <ul className="flex space-x-6">
                         <li>
-                            <a href="#" className="text-lg font-medium hover:text-indigo-300">
+                            <NavLink to="/" className="text-lg font-medium hover:text-indigo-300">
                                 Home
-                            </a>
+                            </NavLink>
                         </li>
                         <li>
-                            <a href="#" className="text-lg font-medium hover:text-indigo-300">
+                            <a href="/login" className="text-lg font-medium hover:text-indigo-300">
                                 About
                             </a>
                         </li>
