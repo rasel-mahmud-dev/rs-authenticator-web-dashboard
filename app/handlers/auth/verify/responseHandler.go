@@ -13,8 +13,8 @@ type ResponseHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *ResponseHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
-	authSession := r.Context().Value("authSession").(*models.AuthSession)
+func (h *ResponseHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
+	authSession := (*r).Context().Value("authSession").(*models.AuthSession)
 	response.Respond(w, statusCode.OK, "Ok", dto.AuthVerify{
 		ID:        authSession.UserId,
 		SessionId: authSession.ID,

@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
 
-const SetupGoogleAuthenticator = ({ onCancel, generateSecret }) => {
+const SetupGoogleAuthenticator = ({data, onCancel, generateSecret}) => {
 
-    useEffect(()=>{
-        generateSecret.mutateAsync().then(d=>{
+    useEffect(() => {
+        generateSecret.mutateAsync().then(d => {
             console.log(d)
-        }).catch(e=>{
+        }).catch(e => {
             console.log(e)
         })
     }, [])
@@ -17,11 +17,11 @@ const SetupGoogleAuthenticator = ({ onCancel, generateSecret }) => {
                 Scan the QR code below with your Google Authenticator app or enter the secret key manually.
             </p>
             <img
-                src="https://via.placeholder.com/150" // Replace with actual QR code from API
+                src={data?.qrCode} // Replace with actual QR code from API
                 alt="QR Code"
-                className="mx-auto mb-4"
+                className="  mb-4"
             />
-            <p className="font-mono text-gray-200">Secret Key: ABCDEFGHIJKLMN</p>
+            <p className="font-mono text-gray-200">Secret Key: {data?.secret}</p>
             <div className="mt-6 flex space-x-4">
                 <button
                     onClick={onCancel}

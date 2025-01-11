@@ -4,7 +4,7 @@ import "net/http"
 
 type Handler interface {
 	SetNext(handler Handler) Handler
-	Handle(w http.ResponseWriter, r *http.Request) bool
+	Handle(w http.ResponseWriter, r **http.Request) bool
 }
 
 type BaseHandler struct {
@@ -20,7 +20,7 @@ func (h *BaseHandler) SetNext(handler Handler) Handler {
 	return handler
 }
 
-func (h *BaseHandler) HandleNext(w http.ResponseWriter, r *http.Request) bool {
+func (h *BaseHandler) HandleNext(w http.ResponseWriter, r **http.Request) bool {
 	if h.next != nil {
 		return h.next.Handle(w, r)
 	}

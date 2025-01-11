@@ -15,5 +15,5 @@ func AuthVerifyHandler(w http.ResponseWriter, r *http.Request) {
 		SetNext(validateAccessTokenHandler).
 		SetNext(responseHandler)
 
-	chain.Handle(w, r)
+	chain.Handle(w, &r)
 }

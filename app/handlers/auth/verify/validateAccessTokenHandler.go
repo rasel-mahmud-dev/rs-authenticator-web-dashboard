@@ -2,9 +2,11 @@ package verify
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
+	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
 	"rs/auth/app/repositories"
 	"rs/auth/app/response"
@@ -15,8 +17,8 @@ type ValidateAccessTokenHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *ValidateAccessTokenHandler) Handle(w http.ResponseWriter, r *http.Request) bool {
-	token := r.Context().Value("accessToken").(string)
+func (h *ValidateAccessTokenHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
+	token := (*r).Context().Value("accessToken").(string)
 	parseToken, err := jwt.Jwt.ParseToken(token)
 	if err != nil {
 		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, err.Error(), nil)
@@ -46,7 +48,11 @@ func (h *ValidateAccessTokenHandler) Handle(w http.ResponseWriter, r *http.Reque
 		return false
 	}
 
-	ctx := context.WithValue(r.Context(), "authSession", authSession)
-	r = r.WithContext(ctx)
+	ctx := context.WithValue((*r).Context(), "authSession", authSession)
+	*r = (*r).WithContext(ctx)
+
+	authSession2 := (*r).Context().Value("authSession").(*models.AuthSession)
+	fmt.Println("authSession2", authSession2)
+
 	return h.HandleNext(w, r)
 }

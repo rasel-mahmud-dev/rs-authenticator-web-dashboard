@@ -25,6 +25,8 @@ const AuthenticatorSetup = () => {
         setSelectedAuthenticator(null);
     };
 
+    const data = generateSecret?.data?.data?.data
+
     return (
         <div className="p-6 bg-gray-900 text-white full-viewport">
             <h2 className="text-3xl font-bold mb-6 ">
@@ -59,7 +61,7 @@ const AuthenticatorSetup = () => {
             ) : (
                 <div>
                     {selectedAuthenticator === "google" && (
-                        <SetupGoogleAuthenticator generateSecret={generateSecret} onCancel={handleResetSelection}/>
+                        <SetupGoogleAuthenticator data={data} generateSecret={generateSecret} onCancel={handleResetSelection}/>
                     )}
                     {/* Uncomment when Microsoft Authenticator is ready */}
                     {/* {selectedAuthenticator === "microsoft" && (
