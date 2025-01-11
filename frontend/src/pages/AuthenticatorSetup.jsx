@@ -18,7 +18,11 @@ const AuthenticatorSetup = () => {
     })
 
     const completeAuthSetup = useMutation({
-        mutationFn: (id) => api.post("/api/v1/generate-2fa-secret", {id}),
+        mutationFn: ({id, isCompleted, provider}) => api.post("/api/v1/generate-2fa-secret", {
+            provider,
+            id,
+            isCompleted
+        }),
     })
 
     const handleSetup = (authenticatorId) => {
@@ -32,13 +36,13 @@ const AuthenticatorSetup = () => {
     const data = generateSecret?.data?.data?.data
 
     async function handleCompleteSetup(data) {
-       try{
-           const response = await completeAuthSetup.mutateAsync(data.id)
-           console.log(response)
+        try {
+            const response = await completeAuthSetup.mutateAsync({provider: "Google", id: data.id, isCompleted: true})
+            console.log(response)
 
-       } catch (ex){
-           console.log(ex, "hisdfjskd")
-       }
+        } catch (ex) {
+            console.log(ex, "hisdfjskd")
+        }
     }
 
     return (

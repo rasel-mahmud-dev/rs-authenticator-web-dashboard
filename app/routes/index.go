@@ -14,6 +14,7 @@ func Init(router *mux.Router) {
 	//router.HandleFunc("/api/configuration", handlers.ConfigurationHandler).Methods("GET")
 	router.HandleFunc("/api/health", handlers.HealthHandler).Methods("GET")
 	router.HandleFunc("/api/v1/generate-2fa-secret", middlewares.Auth(twoFactor.Generate2FASecret)).Methods("GET")
+	router.HandleFunc("/api/v1/generate-2fa-secret", middlewares.Auth(twoFactor.Finalize2FASecret)).Methods("POST")
 
 	AuthRoutes(router)
 }
