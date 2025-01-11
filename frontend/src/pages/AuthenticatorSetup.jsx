@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import SetupGoogleAuthenticator from "./SetupGoogle.jsx";
 // import SetupMicrosoftAuthenticator from "./SetupMicrosoft.jsx";
 import {FiKey, FiShield} from "react-icons/fi";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import {api} from "../services/api.js"; // Icons for UI
 
 const AuthenticatorSetup = () => {
@@ -17,6 +17,10 @@ const AuthenticatorSetup = () => {
         mutationFn: () => api.get("/api/v1/generate-2fa-secret"),
     })
 
+    const completeAuthSetup = useMutation({
+        mutationFn: (id) => api.post("/api/v1/generate-2fa-secret", {id}),
+    })
+
     const handleSetup = (authenticatorId) => {
         setSelectedAuthenticator(authenticatorId);
     };
@@ -26,6 +30,16 @@ const AuthenticatorSetup = () => {
     };
 
     const data = generateSecret?.data?.data?.data
+
+    async function handleCompleteSetup(data) {
+       try{
+           const response = await completeAuthSetup.mutateAsync(data.id)
+           console.log(response)
+
+       } catch (ex){
+           console.log(ex, "hisdfjskd")
+       }
+    }
 
     return (
         <div className="p-6 bg-gray-900 text-white full-viewport">
@@ -61,7 +75,12 @@ const AuthenticatorSetup = () => {
             ) : (
                 <div>
                     {selectedAuthenticator === "google" && (
-                        <SetupGoogleAuthenticator data={data} generateSecret={generateSecret} onCancel={handleResetSelection}/>
+                        <SetupGoogleAuthenticator
+                            onCompleteSetup={handleCompleteSetup}
+                            data={data}
+                            generateSecret={generateSecret}
+                            onCancel={handleResetSelection}
+                        />
                     )}
                     {/* Uncomment when Microsoft Authenticator is ready */}
                     {/* {selectedAuthenticator === "microsoft" && (

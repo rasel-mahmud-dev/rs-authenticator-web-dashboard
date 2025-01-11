@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
+	"rs/auth/app/repositories"
 	"rs/auth/app/response"
+	"rs/auth/app/utils"
 )
 
 func Generate2FASecret(w http.ResponseWriter, r *http.Request) {
@@ -16,41 +18,49 @@ func Generate2FASecret(w http.ResponseWriter, r *http.Request) {
 	authSession := (*r).Context().Value("authSession").(*models.AuthSession)
 
 	if authSession == nil {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		response.Respond(w, statusCode.UNAUTHORIZED, "UNAUTHORIZED", nil)
 		return
 	}
 
-	// Generate the TOTP secret
 	secret, err := totp.Generate(totp.GenerateOpts{
 		Issuer:      fmt.Sprintf("RsAuth (%s)", authSession.Email),
 		AccountName: authSession.Email,
 	})
+
 	if err != nil {
-		http.Error(w, "Failed to generate secret", http.StatusInternalServerError)
+		utils.LoggerInstance.Error("Failed to generate secret")
+		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, "QFailed to generate secret", nil)
 		return
 	}
 
-	// Create QR code
+	secretKey := secret.Secret()
+
 	qrCodeData, err := qrcode.Encode(secret.URL(), qrcode.Medium, 256)
 	if err != nil {
-		http.Error(w, "Failed to generate QR code", http.StatusInternalServerError)
+		utils.LoggerInstance.Error("Failed to generate QR code")
+		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, "QR code generate failed", nil)
 		return
 	}
 
-	// Optionally save the secret to a database (simulated here)
-	//twoFASecret := TwoFASecret{
-	//	UserID: user.ID,
-	//	Secret: secret.Secret(),
-	//}
-	// Simulate saving the secret (replace with actual database logic)
-	//fmt.Printf("Saving 2FA secret for user %s: %v\n", user.ID, twoFASecret)
-	
-	w.Header().Set("Content-Type", "application/json")
-	response.Respond(w, statusCode.OK, "Success", map[string]interface{}{
-		"message": "2FA secret generated successfully",
-		"qrCode":  fmt.Sprintf("data:image/png;base64,%s", toBase64(qrCodeData)),
-		"secret":  secret.Secret(),
+	qrBase64 := fmt.Sprintf("data:image/png;base64,%s", toBase64(qrCodeData))
+	backupCodes := utils.GenerateBackupCodes(12)
+
+	mfaToken, err := repositories.MfaSecurityTokenRepo.InsertMfaSecurityToken(models.MfaSecurityToken{
+		UserID:        authSession.UserId,
+		Secret:        secretKey,
+		RecoveryCodes: backupCodes,
+		QrCodeURL:     &qrBase64,
+		DeviceInfo:    nil,
 	})
+
+	if err != nil {
+		utils.LoggerInstance.Error("Failed to save 2FA secret")
+		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, "Failed to save 2FA secret", nil)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	response.Respond(w, statusCode.OK, "Success", mfaToken)
 }
 
 func toBase64(data []byte) string {
