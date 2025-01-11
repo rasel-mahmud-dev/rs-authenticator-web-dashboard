@@ -1,4 +1,4 @@
-import { api } from "./api.js";
+import {api} from "./api.js";
 
 export async function login(credentials) {
     try {
@@ -20,5 +20,14 @@ export async function login(credentials) {
             console.error("Error in setting up request:", error.message);
         }
         return null;
+    }
+}
+
+export async function verifyAuthentication() {
+    const response = await api.get("/api/v1/verify");
+    if (response.status === 200) {
+        return response.data;
+    } else {
+        throw Error("")
     }
 }

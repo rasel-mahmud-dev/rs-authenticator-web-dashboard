@@ -15,9 +15,9 @@ func main() {
 	routes.Init(router)
 
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3200"},                             // Allow all origins, or specify your frontend domain here
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},           // Allow specific methods
-		AllowedHeaders:   []string{"Content-Type", "Authorization", "X-Requested-With"}, // Allowed headers
+		AllowedOrigins:   []string{"http://localhost:3200", "http://192.168.0.148:3200"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization", "X-Requested-With"},
 		AllowCredentials: true,
 		// Debug: true,
 	})

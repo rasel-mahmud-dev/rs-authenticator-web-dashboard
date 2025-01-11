@@ -9,8 +9,14 @@ const LoginForm = () => {
 
     const mutation = useMutation({
         mutationFn: login,
-        onSuccess: (data) => {
+        onSuccess: (data, variables) => {
             setAuth(data?.data)
+            localStorage.setItem("auth-remember-me", variables.rememberMe);
+            if (variables.rememberMe) {
+                localStorage.setItem("token", data?.data?.token);
+            } else {
+                sessionStorage.setItem("token", data?.data);
+            }
         },
         onError: (error) => {
             console.error("Login failed:", error);
@@ -21,7 +27,8 @@ const LoginForm = () => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
-        mutation.mutate({email, password});
+        const rememberMe = e.target.rememberMe.checked;
+        mutation.mutate({email, password, rememberMe});
     }
 
     return (
@@ -55,7 +62,7 @@ const LoginForm = () => {
                         </div>
                         <div className="form-control mb-4">
                             <label className="label cursor-pointer justify-start gap-2">
-                                <input type="checkbox" className="checkbox checkbox-primary"/>
+                                <input name="rememberMe" type="checkbox" className="checkbox checkbox-primary"/>
                                 <span className="label-text text-gray-300">Remember me</span>
                             </label>
                         </div>

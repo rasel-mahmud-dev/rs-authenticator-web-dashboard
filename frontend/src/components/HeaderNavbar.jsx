@@ -8,7 +8,7 @@ const HeaderNavbar = () => {
     console.log("user", user)
 
     return (
-        <header className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg">
+        <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg">
             <div className="container mx-auto p-5 flex justify-between items-center">
                 <h1 className="text-3xl font-bold">YourLogo</h1>
                 <nav>
@@ -48,7 +48,6 @@ const HeaderNavbar = () => {
 
                         </div>
                     )}
-
                 </div>
             </div>
         </header>
