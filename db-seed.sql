@@ -77,3 +77,34 @@ CREATE TABLE public.auth_session_history
     is_revoked    BOOLEAN,
     archived_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+
+CREATE TABLE mfa_security_tokens
+(
+    id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id        UUID         NOT NULL,
+    secret         VARCHAR(255) NOT NULL,
+    recovery_codes TEXT[]           DEFAULT NULL,
+    qr_code_url    TEXT             DEFAULT NULL,
+    is_active      BOOLEAN          DEFAULT TRUE,
+    created_at     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    app_name       VARCHAR(100)     DEFAULT 'Google',
+    device_info    TEXT             DEFAULT NULL,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE user_auth_attempts
+(
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id         UUID        NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    attempt_type    VARCHAR(50) NOT NULL, -- Type of attempt (failed, backup_code, etc.)
+    mfa_security_id UUID             DEFAULT NULL REFERENCES mfa_security_tokens (id),
+    security_token  VARCHAR(16)      default NULL,
+    ip_address      VARCHAR(45)      default NULL,
+    user_agent      VARCHAR(255)     default NULL,
+    last_attempt_at TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    is_successful   BOOLEAN          DEFAULT FALSE,
+    created_at      TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP        DEFAULT CURRENT_TIMESTAMP
+);
