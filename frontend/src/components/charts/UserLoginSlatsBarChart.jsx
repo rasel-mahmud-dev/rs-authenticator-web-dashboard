@@ -10,6 +10,7 @@ const UserLoginSlatsBarChart = () => {
     return (
         <ResponsiveContainer  className="chart-bg p-4 py-1">
             <BarChart
+
                 data={data}
                 margin={{
                     top: 20,
@@ -23,7 +24,7 @@ const UserLoginSlatsBarChart = () => {
 
                 <Tooltip/>
 
-                <Bar dataKey="logins" radius={[10, 10, 0, 0]} barSize={10}>
+                <Bar dataKey="logins" radius={[10, 10, 0, 0]} barSize={10} >
                     {data.map((entry, index) => (
                         <Cell
                             key={index}

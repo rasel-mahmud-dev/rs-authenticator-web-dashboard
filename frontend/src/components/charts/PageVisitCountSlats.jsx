@@ -11,8 +11,10 @@ const data = [
 
 const PageVisitCountSlats = () => {
     return (
-        <div className="chart-bg  flex  items-end p-4">
-            <ResponsiveContainer width="100%" height={200} className=" ">
+        <div className="chart-bg  flex  flex-col justify-between p-4">
+            <h3 className="chart-title">UI Visits</h3>
+            <ResponsiveContainer width="100%" height={280} className=" ">
+
                 <BarChart data={data} layout="vertical">
                     <XAxis type="number"/>
                     <YAxis dataKey="name" type="category"/>

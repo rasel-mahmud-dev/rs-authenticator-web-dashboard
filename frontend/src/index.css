@@ -6,3 +6,10 @@
 .chart-bg{
     @apply bg-gray-900 rounded-xl
 }
+
+.chart-title{
+    font-size: 20px;
+    font-weight: 500;
+    width: max-content;
+    padding-bottom: 10px;
+}
