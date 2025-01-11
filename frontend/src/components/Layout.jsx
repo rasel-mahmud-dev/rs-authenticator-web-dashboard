@@ -3,6 +3,7 @@ import {Outlet} from 'react-router-dom';
 import HeaderNavbar from "./HeaderNavbar.jsx";
 import useAuthStore from "../store/authState.js";
 import {verifyAuthentication} from "../services/authSerivce.js";
+import Sidebar from "./Sidebar.jsx";
 
 const Layout = () => {
     const {user, authLoaded, setAuth} = useAuthStore()
@@ -29,9 +30,9 @@ const Layout = () => {
     return (
         <div className="">
             <HeaderNavbar/>
-            <div className=" ">
-                {/*<Sidebar/>*/}
-                <main>
+            <div className="layout-content">
+                <Sidebar />
+                <main className="pt-[75px]">
                     <Outlet/>
                 </main>
             </div>

@@ -3,13 +3,31 @@
 @tailwind utilities;
 
 
-.chart-bg{
+.chart-bg {
     @apply bg-gray-900 rounded-xl
 }
 
-.chart-title{
+.chart-title {
     font-size: 20px;
     font-weight: 500;
     width: max-content;
     padding-bottom: 10px;
+}
+
+.layout-content {
+    .sidebar {
+        width: 300px;
+        position: fixed;
+        left: 0;
+        top: 75px;
+        z-index: 10;
+    }
+
+    main {
+        margin-left: 300px;
+    }
+}
+
+.full-viewport {
+    height: calc(100vh - 75px);
 }
