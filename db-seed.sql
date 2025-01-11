@@ -79,24 +79,31 @@ CREATE TABLE public.auth_session_history
 );
 
 
+DROP TABLE if exists user_auth_attempts;
+DROP TABLE  if exists  mfa_security_tokens;
 CREATE TABLE mfa_security_tokens
 (
     id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id        UUID         NOT NULL,
+    code_name      VARCHAR(1024),
     secret         VARCHAR(255) NOT NULL,
     recovery_codes TEXT[]           DEFAULT NULL,
     qr_code_url    TEXT             DEFAULT NULL,
-    is_active      BOOLEAN          DEFAULT TRUE,
+    is_active      BOOLEAN          DEFAULT FALSE,
+    is_init        BOOLEAN          DEFAULT TRUE,
     created_at     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     updated_at     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    linked_at      TIMESTAMP        DEFAULT NULL,
     app_name       VARCHAR(100)     DEFAULT 'Google',
     device_info    TEXT             DEFAULT NULL,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
+
 CREATE TABLE user_auth_attempts
 (
     id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    code_name       VARCHAR(1024),
     user_id         UUID        NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     attempt_type    VARCHAR(50) NOT NULL, -- Type of attempt (failed, backup_code, etc.)
     mfa_security_id UUID             DEFAULT NULL REFERENCES mfa_security_tokens (id),

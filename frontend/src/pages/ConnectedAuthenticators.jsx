@@ -6,10 +6,12 @@ import {Link} from "react-router-dom"
 const ConnectedAuthenticators = () => {
     const fetchAuthenticatorsQuery = useQuery({
         queryKey: ["connected-authenticators"],
-        queryFn: () => api.get("/api/v1/connected-authenticators"),
+        queryFn: () => api.get("/api/v1/authenticated-apps"),
     });
 
     const authenticators = fetchAuthenticatorsQuery?.data?.data?.data;
+    console.log(authenticators)
+
 
     const pageTitle = (
         <div className="flex items-center justify-between">
@@ -52,10 +54,13 @@ const ConnectedAuthenticators = () => {
                         >
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-100">
-                                    {authenticator.name}
+                                    {authenticator.code_name}
+                                </h3>
+                                <h3 className="text-lg font-semibold text-gray-100">
+                                    {authenticator.app_name}
                                 </h3>
                                 <p className="text-sm text-gray-400">
-                                    Linked on: {new Date(authenticator.linkedAt).toLocaleString()}
+                                    Linked on: {new Date(authenticator.created_at).toLocaleString()}
                                 </p>
                             </div>
                             <button

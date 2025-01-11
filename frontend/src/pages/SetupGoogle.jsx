@@ -30,6 +30,7 @@ const SetupGoogleAuthenticator = ({data, onCompleteSetup, onCancel, generateSecr
                 alt="QR Code"
                 className="  mb-4"
             />
+            <p className="font-mono text-gray-200">Code Name: {data?.code_name}</p>
             <p className="font-mono text-gray-200">Secret Key: {data?.secret}</p>
             <button
                 onClick={generateQR}
