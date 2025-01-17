@@ -22,13 +22,13 @@ type configI struct {
 var Config *configI
 
 func init() {
-	os.Setenv("APP_ENV", "development")
-	if os.Getenv("APP_ENV") == "development" {
-		err := godotenv.Load()
-		if err != nil {
-			fmt.Println("Error loading .env file:", err)
-		}
+	//os.Setenv("APP_ENV", "development")
+	//if os.Getenv("APP_ENV") == "development" {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file:", err)
 	}
+	//}
 
 	port, err := strconv.Atoi(os.Getenv("DATABASE_PORT"))
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/lib/pq"
+	"github.com/pquerna/otp/totp"
 	"rs/auth/app/db"
 	"rs/auth/app/models"
 	"rs/auth/app/utils"
@@ -217,4 +218,32 @@ func (r *mfaSecurityRepo) UpdateMfaSecurityToken(token models.MfaSecurityToken) 
 		return fmt.Errorf("failed to update MFA security token: %v", err)
 	}
 	return nil
+}
+
+func (r *mfaSecurityRepo) VerifyMfaPasscode(otpCode string) (string, error) {
+	query := `
+		SELECT user_id, secret FROM mfa_security_tokens
+		WHERE is_active = TRUE
+	`
+
+	rows, err := r.db.Query(query)
+	if err != nil {
+
+		return "", err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var userID string
+		var secret string
+
+		err := rows.Scan(&userID, &secret)
+		if err != nil {
+			return "", fmt.Errorf("failed to read MFA token row: %v", err)
+		}
+
+		fmt.Println(totp.Validate(otpCode, secret))
+		return userID, nil
+	}
+
 }
