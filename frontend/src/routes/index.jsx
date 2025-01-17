@@ -7,6 +7,8 @@ import Layout from "../components/Layout.jsx";
 import ConnectedAuthenticators from "../pages/ConnectedAuthenticators.jsx";
 import AuthenticatorSetup from "../pages/AuthenticatorSetup.jsx";
 import SetupGoogleAuthenticator from "../pages/SetupGoogle.jsx";
+import AccountLayout from "../components/AccountLayout.jsx";
+import TwoFactorAuthentication from "../pages/TwoFactorAuthentication.jsx";
 
 const routes = createBrowserRouter([
     {
@@ -15,28 +17,41 @@ const routes = createBrowserRouter([
         errorElement: <NotFound/>,
         children: [
             {
-                path: '',
-                element: (
-                    <ProtectedRoute>
-                        <HomePage/>
-                    </ProtectedRoute>
-                ),
-            },
-            {
                 path: 'login',
                 element: <LoginForm/>,
             },
             {
-                path: "/authenticator-apps",
-                element: <ProtectedRoute><ConnectedAuthenticators/></ProtectedRoute>
-            }, {
-                path: "/authenticator-setup",
-                element: <ProtectedRoute><AuthenticatorSetup/></ProtectedRoute>
+                path: 'login/two-factor-authenticator',
+                element: <TwoFactorAuthentication/>,
             },
             {
-                path: "/setup-google-auth",
-                element: <ProtectedRoute><SetupGoogleAuthenticator/></ProtectedRoute>
+
+                path: "/account",
+                element: <AccountLayout/>,
+                children: [
+                    {
+                        path: '',
+                        element: (
+                            <ProtectedRoute>
+                                <HomePage/>
+                            </ProtectedRoute>
+                        ),
+                    },
+
+                    {
+                        path: "authenticator-apps",
+                        element: <ProtectedRoute><ConnectedAuthenticators/></ProtectedRoute>
+                    }, {
+                        path: "authenticator-setup",
+                        element: <ProtectedRoute><AuthenticatorSetup/></ProtectedRoute>
+                    },
+                    {
+                        path: "setup-google-auth",
+                        element: <ProtectedRoute><SetupGoogleAuthenticator/></ProtectedRoute>
+                    }
+                ]
             }
+
             // <Route path="/setup-microsoft-auth" element={ <ProtectedRoute><MicrosoftAuthenticatorSetupPage />} />
         ],
     },

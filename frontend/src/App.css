@@ -1,0 +1,25 @@
+:root {
+    --background-light: rgba(170, 173, 194, 1);
+    --background-dark: rgb(56, 62, 111);
+    --text-light: rgba(0, 0, 0, 0.87);
+    --text-dark: rgba(255, 255, 255, 0.87);
+    --primary-light: #6200ea;
+    --primary-dark: #bb86fc;
+    --secondary-light: #03dac6;
+    --secondary-dark: #03dac6;
+}
+
+html {
+    background: var(--background-light);
+    color: var(--text-light);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-light: var(--background-dark);
+        --text-light: var(--text-dark);
+        --primary-light: var(--primary-dark);
+        --secondary-light: var(--secondary-dark);
+        /* Override additional variables as needed */
+    }
+}

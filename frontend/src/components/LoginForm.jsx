@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import {login} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
@@ -68,6 +69,11 @@ const LoginForm = () => {
                         </div>
                         <button className="btn btn-primary w-full">Sign In</button>
                     </form>
+                    <p className="text-center text-gray-500 mt-4">
+                        <Link to="/login/two-factor-authenticator" className="text-primary font-medium">
+                            Login with authenticator app
+                        </Link>
+                    </p>
                     <p className="text-center text-gray-500 mt-4">
                         Don’t have an account?{" "}
                         <a href="#" className="text-primary font-medium">
