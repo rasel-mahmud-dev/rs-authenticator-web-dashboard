@@ -13,7 +13,7 @@ type RequestValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *RequestValidationHandler) Handle(c context.BaseContext) bool {
+func (h *RequestValidationHandler) Handle(c *context.BaseContext) bool {
 	payload := c.AuthenticatorLoginContext.RequestBody
 	err := validators.ValidateStruct(&dto.AuthenticatorLoginRequestBody{
 		OtpCode: payload.OtpCode,

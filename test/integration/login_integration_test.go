@@ -29,7 +29,7 @@ func TestLoginIntegration(t *testing.T) {
 			"password": "123456",
 		}
 
-		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t)
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t, nil)
 
 		if status := rr.Code; status != http.StatusOK {
 			t.Errorf("Expected status 200, got %v", status)
@@ -49,7 +49,7 @@ func TestLoginIntegration(t *testing.T) {
 			"password": "123456",
 		}
 
-		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t)
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t, nil)
 
 		if status := rr.Code; status != http.StatusBadRequest {
 			t.Errorf("Expected status 400, got %v", status)
@@ -69,7 +69,7 @@ func TestLoginIntegration(t *testing.T) {
 			"password": "wrongpassword",
 		}
 
-		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t)
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t, nil)
 
 		if status := rr.Code; status != http.StatusBadRequest {
 			t.Errorf("Expected status 400, got %v", status)
@@ -87,7 +87,7 @@ func TestLoginIntegration(t *testing.T) {
 			"email": email,
 		}
 
-		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t)
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t, nil)
 
 		if status := rr.Code; status != http.StatusBadRequest {
 			t.Errorf("Expected status 400, got %v", status)

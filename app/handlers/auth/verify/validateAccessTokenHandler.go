@@ -14,7 +14,7 @@ type ValidateAccessTokenHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *ValidateAccessTokenHandler) Handle(c context2.BaseContext) bool {
+func (h *ValidateAccessTokenHandler) Handle(c *context2.BaseContext) bool {
 	token := c.AccessToken
 	parseToken, err := jwt.Jwt.ParseToken(token)
 	if err != nil {
@@ -46,6 +46,5 @@ func (h *ValidateAccessTokenHandler) Handle(c context2.BaseContext) bool {
 	}
 
 	c.AuthSession = authSession
-
 	return h.HandleNext(c)
 }

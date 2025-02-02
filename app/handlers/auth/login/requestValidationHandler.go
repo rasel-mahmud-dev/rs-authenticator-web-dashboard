@@ -13,7 +13,7 @@ type RequestValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *RequestValidationHandler) Handle(c context.BaseContext) bool {
+func (h *RequestValidationHandler) Handle(c *context.BaseContext) bool {
 	loginRequest := c.LoginContext.LoginRequest
 	err := validators.ValidateStruct(&dto.LoginRequest{
 		Email:    loginRequest.Email,

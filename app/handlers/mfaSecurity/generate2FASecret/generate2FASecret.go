@@ -7,7 +7,7 @@ import (
 
 func Generate2FASecretHandler(w http.ResponseWriter, r *http.Request) {
 
-	c := context2.BaseContext{
+	c := &context2.BaseContext{
 		RegistrationContext:  context2.RegistrationContext{},
 		ResponseWriter:       w,
 		Request:              r,
@@ -17,10 +17,9 @@ func Generate2FASecretHandler(w http.ResponseWriter, r *http.Request) {
 		TwoFaSecurityContext: context2.TwoFaSecurityContext{},
 	}
 
-	authSessionHandler := &AuthSessionHandler{}
-
-	chain := authSessionHandler
-	chain.SetNext(&CheckInitTokenHandler{}).
+	chain := &PreparedContextState{}
+	chain.SetNext(&AuthSessionHandler{}).
+		SetNext(&CheckInitTokenHandler{}).
 		SetNext(&GenerateTotpSecretHandler{}).
 		SetNext(&GenerateQRCodeHandler{}).
 		SetNext(&ResponseHandler{})

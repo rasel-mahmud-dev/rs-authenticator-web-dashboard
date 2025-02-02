@@ -10,7 +10,7 @@ type PasswordValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *PasswordValidationHandler) Handle(c context.BaseContext) bool {
+func (h *PasswordValidationHandler) Handle(c *context.BaseContext) bool {
 	//registerRequestBody := (*r).Context().Value("payload").(dto.RegisterRequestBody)
 	utils.LoggerInstance.Info("Check password strange.")
 	//fmt.Println(registerRequestBody)

@@ -8,7 +8,7 @@ import (
 
 func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 
-	baseContext := context.BaseContext{
+	baseContext := &context.BaseContext{
 		ResponseWriter:      w,
 		Request:             r,
 		RegistrationContext: context.RegistrationContext{},

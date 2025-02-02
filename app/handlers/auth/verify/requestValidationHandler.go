@@ -12,7 +12,7 @@ type RequestValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *RequestValidationHandler) Handle(c context2.BaseContext) bool {
+func (h *RequestValidationHandler) Handle(c *context2.BaseContext) bool {
 	token := utils.GetToken(c.Request)
 	if token == "" {
 		response.Respond(c.ResponseWriter, statusCode.ACCESS_TOKEN_MISSED, "Access required.", nil)

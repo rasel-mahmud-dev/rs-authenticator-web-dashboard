@@ -13,7 +13,7 @@ type CheckExistenceUserHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *CheckExistenceUserHandler) Handle(c context.BaseContext) bool {
+func (h *CheckExistenceUserHandler) Handle(c *context.BaseContext) bool {
 
 	userRepo := repositories.NewUserRepository()
 	user, err := userRepo.GetUserByEmail(c.Email)

@@ -13,7 +13,7 @@ type NewSessionHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *NewSessionHandler) Handle(c context2.BaseContext) bool {
+func (h *NewSessionHandler) Handle(c *context2.BaseContext) bool {
 	user := c.User
 	accessToken := c.AccessToken
 

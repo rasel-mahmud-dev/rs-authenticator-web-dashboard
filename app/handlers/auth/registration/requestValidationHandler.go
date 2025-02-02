@@ -14,7 +14,7 @@ type RequestValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *RequestValidationHandler) Handle(c context.BaseContext) bool {
+func (h *RequestValidationHandler) Handle(c *context.BaseContext) bool {
 	payload := c.RegistrationContext.Payload
 	fmt.Println("Check request validation.")
 	err := validators.ValidateStruct(&dto.RegisterRequestBody{

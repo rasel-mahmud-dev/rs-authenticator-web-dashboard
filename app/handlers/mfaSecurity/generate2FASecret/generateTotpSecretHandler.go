@@ -15,7 +15,7 @@ type GenerateTotpSecretHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *GenerateTotpSecretHandler) Handle(c context.BaseContext) bool {
+func (h *GenerateTotpSecretHandler) Handle(c *context.BaseContext) bool {
 	authSession := c.AuthSession
 
 	codeName := fmt.Sprintf("RsAuth (%s)", authSession.Email)
@@ -35,6 +35,6 @@ func (h *GenerateTotpSecretHandler) Handle(c context.BaseContext) bool {
 	c.TwoFaSecurityContext.CodeName = codeName
 	c.TwoFaSecurityContext.SecretKey = secret.Secret()
 	c.TwoFaSecurityContext.SecretUrl = secret.URL()
-	
+
 	return h.HandleNext(c)
 }

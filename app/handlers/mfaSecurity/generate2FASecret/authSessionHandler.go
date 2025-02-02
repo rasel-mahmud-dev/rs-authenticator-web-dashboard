@@ -11,7 +11,7 @@ type AuthSessionHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *AuthSessionHandler) Handle(c context.BaseContext) bool {
+func (h *AuthSessionHandler) Handle(c *context.BaseContext) bool {
 	authSession := c.AuthSession
 
 	if authSession == nil {

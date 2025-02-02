@@ -1,26 +1,28 @@
 package middlewares
 
 import (
+	"context"
 	"net/http"
-	"rs/auth/app/context"
+	context2 "rs/auth/app/context"
 	"rs/auth/app/handlers/auth/verify"
 )
 
 func Auth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		c := context.BaseContext{
+		c := &context2.BaseContext{
 			ResponseWriter: w,
 			Request:        r,
 		}
 
-		validationHandler := &verify.RequestValidationHandler{}
-		validateAccessTokenHandler := &verify.ValidateAccessTokenHandler{}
-
-		chain := validationHandler
-		chain.SetNext(validateAccessTokenHandler)
+		chain := &verify.RequestValidationHandler{}
+		chain.SetNext(&verify.ValidateAccessTokenHandler{})
 
 		chain.Handle(c)
+
+		ctx := context.WithValue(r.Context(), "authSession", c.AuthSession)
+		r = r.WithContext(ctx)
+
 		next(w, r)
 	}
 }

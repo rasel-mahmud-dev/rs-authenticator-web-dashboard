@@ -12,7 +12,7 @@ type PasswordValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *PasswordValidationHandler) Handle(c context.BaseContext) bool {
+func (h *PasswordValidationHandler) Handle(c *context.BaseContext) bool {
 	loginRequest := c.LoginContext.LoginRequest
 	user := c.User
 

@@ -15,7 +15,7 @@ type CreateAccountHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *CreateAccountHandler) Handle(c context.BaseContext) bool {
+func (h *CreateAccountHandler) Handle(c *context.BaseContext) bool {
 	payload := c.RegistrationContext.Payload
 	utils.LoggerInstance.Debug("Create account chain.")
 	userRepo := repositories.NewUserRepository()

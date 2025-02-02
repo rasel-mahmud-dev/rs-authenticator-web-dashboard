@@ -11,7 +11,7 @@ type AuthenticationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *AuthenticationHandler) Handle(c context.BaseContext) bool {
+func (h *AuthenticationHandler) Handle(c *context.BaseContext) bool {
 	user := c.User
 	user.Password = ""
 	response.Respond(c.ResponseWriter, statusCode.ACCOUNT_CREATED, "Account successful created", user)

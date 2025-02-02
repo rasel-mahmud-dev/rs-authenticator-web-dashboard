@@ -13,7 +13,7 @@ type OtpVerificationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *OtpVerificationHandler) Handle(c context2.BaseContext) bool {
+func (h *OtpVerificationHandler) Handle(c *context2.BaseContext) bool {
 	payload := c.AuthenticatorLoginContext.RequestBody
 
 	userId, err := repositories.MfaSecurityTokenRepo.VerifyMfaPasscode(payload.OtpCode)

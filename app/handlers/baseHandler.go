@@ -6,7 +6,7 @@ import (
 
 type Handler interface {
 	SetNext(handler Handler) Handler
-	Handle(c context.BaseContext) bool
+	Handle(c *context.BaseContext) bool
 }
 
 type BaseHandler struct {
@@ -18,7 +18,7 @@ func (h *BaseHandler) SetNext(handler Handler) Handler {
 	return handler
 }
 
-func (h *BaseHandler) HandleNext(c context.BaseContext) bool {
+func (h *BaseHandler) HandleNext(c *context.BaseContext) bool {
 	if h.next != nil {
 		return h.next.Handle(c)
 	}

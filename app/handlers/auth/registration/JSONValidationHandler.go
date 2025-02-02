@@ -13,7 +13,7 @@ type JSONValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *JSONValidationHandler) Handle(c context.BaseContext) bool {
+func (h *JSONValidationHandler) Handle(c *context.BaseContext) bool {
 	var payload dto.RegisterRequestBody
 	err := json.NewDecoder((*c.Request).Body).Decode(&payload)
 	if err != nil {

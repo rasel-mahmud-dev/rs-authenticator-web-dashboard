@@ -15,7 +15,7 @@ type GenerateQRCodeHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *GenerateQRCodeHandler) Handle(c context2.BaseContext) bool {
+func (h *GenerateQRCodeHandler) Handle(c *context2.BaseContext) bool {
 	secretUrl := c.TwoFaSecurityContext.SecretUrl
 
 	qrCodeData, err := qrcode.Encode(secretUrl, qrcode.Medium, 256)

@@ -7,7 +7,7 @@ import (
 
 func AuthVerifyHandler(w http.ResponseWriter, r *http.Request) {
 
-	c := context2.BaseContext{
+	c := &context2.BaseContext{
 		RegistrationContext:  context2.RegistrationContext{},
 		AccessToken:          "",
 		ResponseWriter:       w,

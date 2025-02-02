@@ -12,7 +12,7 @@ type ResponseHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *ResponseHandler) Handle(c context2.BaseContext) bool {
+func (h *ResponseHandler) Handle(c *context2.BaseContext) bool {
 	authSession := c.AuthSession
 	response.Respond(c.ResponseWriter, statusCode.OK, "Ok", dto.AuthVerify{
 		ID:        authSession.UserId,

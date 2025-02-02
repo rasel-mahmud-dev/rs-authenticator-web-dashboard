@@ -27,7 +27,7 @@ func TestRegistrationIntegration(t *testing.T) {
 			"email":    email,
 			"password": "123456",
 		}
-		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/registration", payload, t)
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/registration", payload, t, nil)
 		if status := rr.Code; status != http.StatusCreated {
 			t.Errorf("Expected status 201, got %v", status)
 		}

@@ -14,7 +14,7 @@ type ResponseHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *ResponseHandler) Handle(c context2.BaseContext) bool {
+func (h *ResponseHandler) Handle(c *context2.BaseContext) bool {
 	authSession := c.AuthSession
 	qrBase64 := c.TwoFaSecurityContext.QrBase64
 	codeName := c.TwoFaSecurityContext.CodeName

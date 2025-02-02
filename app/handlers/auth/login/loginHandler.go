@@ -9,7 +9,7 @@ import (
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
-	ctx := context.BaseContext{
+	ctx := &context.BaseContext{
 		ResponseWriter: w,
 		Request:        r,
 	}

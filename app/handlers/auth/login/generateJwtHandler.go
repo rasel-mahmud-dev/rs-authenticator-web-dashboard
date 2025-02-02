@@ -15,7 +15,7 @@ type GenerateJwtHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *GenerateJwtHandler) Handle(c context2.BaseContext) bool {
+func (h *GenerateJwtHandler) Handle(c *context2.BaseContext) bool {
 	user := c.User
 	user.Password = ""
 	token, err := jwt.Jwt.GenerateToken(jwt.JwtPayload{UserId: user.ID}, time.Hour*24*60)

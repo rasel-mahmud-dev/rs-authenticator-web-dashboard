@@ -13,7 +13,7 @@ type CheckInitTokenHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *CheckInitTokenHandler) Handle(c context2.BaseContext) bool {
+func (h *CheckInitTokenHandler) Handle(c *context2.BaseContext) bool {
 	authSession := c.AuthSession
 
 	initToken, err := repositories.MfaSecurityTokenRepo.GetLastInit(authSession.UserId)
