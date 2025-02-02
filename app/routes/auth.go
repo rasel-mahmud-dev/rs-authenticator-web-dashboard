@@ -5,9 +5,6 @@ import (
 	"rs/auth/app/handlers/auth/login"
 	"rs/auth/app/handlers/auth/loginWithAuthenticator"
 	"rs/auth/app/handlers/auth/registration"
-
-	//"rs/auth/app/handlers/auth/login"
-	//"rs/auth/app/handlers/auth/registration"
 	"rs/auth/app/handlers/auth/verify"
 	"rs/auth/app/utils"
 )

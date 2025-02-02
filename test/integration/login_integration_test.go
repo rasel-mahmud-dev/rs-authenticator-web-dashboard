@@ -1,12 +1,13 @@
 package integration
 
 import (
-	"bytes"
-	"encoding/json"
 	"net/http"
-	"net/http/httptest"
-	"rs/auth/app/handlers/auth"
+	"rs/auth/app/routes"
+	"rs/auth/app/utils"
+	testUtils "rs/auth/test/utils"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -16,63 +17,86 @@ func TestLoginIntegration(t *testing.T) {
 	defer CleanupEnv()
 
 	router := mux.NewRouter()
-	router.HandleFunc("/login", authHandler.authHandler.LoginHandler).Methods("POST")
+	routes.Init(router)
 
-	t.Run("Valid credentials", func(t *testing.T) {
-		loginRequest := map[string]string{
-			"email":    "rasel.mahmud.dev@gmail.com",
+	// Register user before running login tests
+	email := strconv.Itoa(int(time.Now().UnixMilli())) + "test-@gmail.com"
+	testUtilsInstance.Registration(router, email, t)
+
+	t.Run("Should login successfully with valid credentials", func(t *testing.T) {
+		loginRequest := map[string]interface{}{
+			"email":    email,
 			"password": "123456",
 		}
-		loginBody, _ := json.Marshal(loginRequest)
-		req, err := http.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(loginBody))
-		if err != nil {
-			t.Fatalf("Failed to create request: %v", err)
-		}
 
-		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(authHandler.LoginHandler)
-		handler.ServeHTTP(rr, req)
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t)
 
 		if status := rr.Code; status != http.StatusOK {
 			t.Errorf("Expected status 200, got %v", status)
 		}
 
-		var response map[string]string
-		if err := json.NewDecoder(rr.Body).Decode(&response); err != nil {
-			t.Fatalf("Failed to decode response: %v", err)
-		}
-		expected := "Login successful"
-		if response["message"] != expected {
-			t.Errorf("Expected message '%s', got '%s'", expected, response["message"])
+		var response = testUtils.DecodeJSONResponse[map[string]interface{}](rr, t)
+		sessionId := utils.MapKey(response, "data", "sessionId").(string)
+		if sessionId == "" {
+			t.Errorf("Expected sessionId, got empty string")
 		}
 	})
 
-	//t.Run("Invalid credentials", func(t *testing.T) {
-	//	loginRequest := map[string]string{
-	//		"username": "admin",
-	//		"password": "wrongpassword", // Invalid credentials
-	//	}
-	//	loginBody, _ := json.Marshal(loginRequest)
-	//	req, err := http.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(loginBody))
-	//	if err != nil {
-	//		t.Fatalf("Failed to create request: %v", err)
-	//	}
-	//
-	//	rr := httptest.NewRecorder()
-	//	handler := http.HandlerFunc(authHandler.LoginHandler)
-	//	handler.ServeHTTP(rr, req)
-	//
-	//	if status := rr.Code; status != http.StatusUnauthorized {
-	//		t.Errorf("Expected status 401, got %v", status)
-	//	}
-	//
-	//	var response map[string]string
-	//	if err := json.NewDecoder(rr.Body).Decode(&response); err != nil {
-	//		t.Fatalf("Failed to decode response: %v", err)
-	//	}
-	//	expected := "Invalid username or password"
-	//	if response["message"] != expected {
-	//		t.Errorf("Expected message '%s', got '%s'", expected, response["message"])
-	//	}
-	//})
+	t.Run("Should return user not found.", func(t *testing.T) {
+		email := strconv.Itoa(int(time.Now().UnixMilli())) + "test-@gmail.com"
+		loginRequest := map[string]interface{}{
+			"email":    email,
+			"password": "123456",
+		}
+
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t)
+
+		if status := rr.Code; status != http.StatusBadRequest {
+			t.Errorf("Expected status 400, got %v", status)
+		}
+
+		var response = testUtils.DecodeJSONResponse[map[string]interface{}](rr, t)
+		statusCode := utils.MapKey(response, "statusCode").(string)
+		if statusCode != "ERR-001" {
+			t.Errorf("Expected ERR-001, for user not found, got %v", statusCode)
+		}
+	})
+
+	t.Run("Should return incorrect password error", func(t *testing.T) {
+		// Using the email registered in the first test
+		loginRequest := map[string]interface{}{
+			"email":    email,
+			"password": "wrongpassword",
+		}
+
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t)
+
+		if status := rr.Code; status != http.StatusBadRequest {
+			t.Errorf("Expected status 400, got %v", status)
+		}
+
+		var response = testUtils.DecodeJSONResponse[map[string]interface{}](rr, t)
+		statusCode := utils.MapKey(response, "statusCode").(string)
+		if statusCode != "ERR-001" {
+			t.Errorf("Expected ERR-001 for incorrect password, got %v", statusCode)
+		}
+	})
+
+	t.Run("Should return missing password error", func(t *testing.T) {
+		loginRequest := map[string]interface{}{
+			"email": email,
+		}
+
+		rr := testUtilsInstance.SendPostRequest(router, "/api/v1/login", loginRequest, t)
+
+		if status := rr.Code; status != http.StatusBadRequest {
+			t.Errorf("Expected status 400, got %v", status)
+		}
+
+		var response = testUtils.DecodeJSONResponse[map[string]interface{}](rr, t)
+		statusCode := utils.MapKey(response, "statusCode").(string)
+		if statusCode != "ERR-023" {
+			t.Errorf("Expected ERR-023 for missing password, got %v", statusCode)
+		}
+	})
 }

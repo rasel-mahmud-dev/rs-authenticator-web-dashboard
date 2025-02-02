@@ -15,6 +15,6 @@ type AuthenticationHandler struct {
 func (h *AuthenticationHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
 	user := (*r).Context().Value("user").(*models.User)
 	user.Password = ""
-	response.Respond(w, statusCode.OK, "Account successful created", user)
+	response.Respond(w, statusCode.ACCOUNT_CREATED, "Account successful created", user)
 	return false
 }

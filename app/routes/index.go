@@ -10,8 +10,6 @@ import (
 )
 
 func Init(router *mux.Router) {
-	router.HandleFunc("/api/", handlers.HomeHandler).Methods("GET")
-	router.HandleFunc("/api/home", handlers.HomeHandler).Methods("GET")
 	//router.HandleFunc("/api/configuration", handlers.ConfigurationHandler).Methods("GET")
 	router.HandleFunc("/api/health", handlers.HealthHandler).Methods("GET")
 	router.HandleFunc("/api/v1/generate-2fa-secret", middlewares.Auth(generate2FASecret.Generate2FASecretHandler)).Methods("GET")

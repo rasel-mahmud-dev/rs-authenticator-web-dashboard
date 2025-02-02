@@ -51,6 +51,27 @@ func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 	return &user, nil
 }
 
+func (r *UserRepository) GetUserById(userId string) (*models.User, error) {
+	userC := cache.GetUserFromCache(userId)
+	if userC != nil {
+		utils.LoggerInstance.Info("User from cache")
+		return userC, nil
+	}
+
+	query := "SELECT id, username, password, email, COALESCE(avatar, '') AS avatar FROM users WHERE id = $1"
+	var user models.User
+
+	err := r.db.QueryRow(query, userId).Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.Avatar)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, utils.Error("error l lll querying user by email: %w", err)
+	}
+	cache.SetItem(userId, &user)
+	return &user, nil
+}
+
 func (r *UserRepository) CreateAccount(user models.User) (*models.User, error) {
 	query := `
 		INSERT INTO public.users (username, email, password, created_at, updated_at)

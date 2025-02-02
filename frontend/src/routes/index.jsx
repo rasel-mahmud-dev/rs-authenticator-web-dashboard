@@ -9,6 +9,7 @@ import AuthenticatorSetup from "../pages/AuthenticatorSetup.jsx";
 import SetupGoogleAuthenticator from "../pages/SetupGoogle.jsx";
 import AccountLayout from "../components/AccountLayout.jsx";
 import TwoFactorAuthentication from "../pages/TwoFactorAuthentication.jsx";
+import BlogHomePage from "../pages/BlogHomePage.jsx";
 
 const routes = createBrowserRouter([
     {
@@ -17,6 +18,9 @@ const routes = createBrowserRouter([
         errorElement: <NotFound/>,
         children: [
             {
+                path: '',
+                element: <BlogHomePage/>,
+            }, {
                 path: 'login',
                 element: <LoginForm/>,
             },

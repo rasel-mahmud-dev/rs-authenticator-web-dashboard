@@ -1,10 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import useAuthStore from "../store/authState.js";
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 
 const HeaderNavbar = () => {
-    const {user} = useAuthStore()
+    const {user, setAuth} = useAuthStore()
+
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const logout = () => {
+        setAuth(null)
+        localStorage.removeItem("token")
+        sessionStorage.removeItem("token")
+    };
+
 
     return (
         <header className="fixed top-0 z-50 left-0 w-full bg-blue-950  text-white shadow-lg">
@@ -18,8 +31,8 @@ const HeaderNavbar = () => {
                             </NavLink>
                         </li>
                         <li>
-                            <a href="/login" className="text-lg font-medium hover:text-indigo-300">
-                                About
+                            <a href="/account" className="text-lg font-medium hover:text-indigo-300">
+                                Dashboard
                             </a>
                         </li>
                         <li>
@@ -36,14 +49,42 @@ const HeaderNavbar = () => {
                 </nav>
                 <div>
                     {user ? (
-                        <div>
-                            {user?.username}
+                        <div className="relative">
+                            <button
+                                onClick={toggleDropdown}
+                                className="btn btn-outline btn-light text-white hover:bg-indigo-400"
+                            >
+                                {user?.username}
+                            </button>
+
+                            {isDropdownOpen && (
+                                <ul className="bg-primary dropdown-content menu shadow bg-base-100 text-black absolute right-0 mt-2 p-2 w-48 rounded-lg">
+                                    <li>
+                                        <NavLink to="/profile" className="hover:bg-indigo-200">
+                                            Profile
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink to="/settings" className="hover:bg-indigo-200">
+                                            Settings
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <button onClick={logout} className="hover:bg-indigo-200 w-full text-left">
+                                            Logout
+                                        </button>
+                                    </li>
+                                </ul>
+                            )}
+
                         </div>
                     ) : (
                         <div>
-                            <button className="btn btn-outline btn-light text-white hover:bg-indigo-400">
-                                Sign In
-                            </button>
+                            <Link to="/login">
+                                <button className="btn btn-outline btn-light text-white hover:bg-indigo-400">
+                                    Sign In
+                                </button>
+                            </Link>
 
                         </div>
                     )}

@@ -11,10 +11,6 @@ type BaseHandler struct {
 	next Handler
 }
 
-//func (h *BaseHandler) SetNext(handler Handler) {
-//	h.next = handler
-//}
-
 func (h *BaseHandler) SetNext(handler Handler) Handler {
 	h.next = handler
 	return handler

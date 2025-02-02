@@ -28,7 +28,7 @@ const Layout = () => {
     return (
         <div className="">
             <HeaderNavbar/>
-            <main className="">
+            <main className="pt-[75px]">
                 <Outlet/>
             </main>
         </div>

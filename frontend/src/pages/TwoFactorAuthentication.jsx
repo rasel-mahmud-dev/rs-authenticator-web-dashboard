@@ -2,26 +2,25 @@ import React, {useRef, useState} from "react";
 import {useMutation} from "@tanstack/react-query";
 import {loginWithAuthenticator} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
+import {useNavigate} from "react-router-dom";
 
 const TwoFactorAuthentication = () => {
     const {setAuth} = useAuthStore();
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const inputRefs = useRef([]);
 
+    const navigate = useNavigate()
+
     const mutation = useMutation({
         mutationFn: loginWithAuthenticator,
         onSuccess: (data, variables) => {
             setAuth(data?.data);
-            localStorage.setItem("auth-remember-me", variables.rememberMe);
-            if (variables.rememberMe) {
-                localStorage.setItem("token", data?.data?.token);
-            } else {
-                sessionStorage.setItem("token", data?.data?.token);
-            }
+            localStorage.setItem("token", data?.data?.token);
+            navigate("/")
         },
         onError: (error) => {
             console.error("Login failed:", error);
-        },
+        }
     });
 
     function handleOtpChange(value, index) {
@@ -52,12 +51,16 @@ const TwoFactorAuthentication = () => {
         mutation.mutate({otpCode});
     }
 
+    const errorMessage = mutation?.error?.response?.data?.message
+
     return (
         <div className="flex items-center justify-center h-screen overflow-hidden">
             <div className="card  bg-gray-800 shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Authenticator</h2>
                     <p className="text-center text-gray-400 mb-4">Enter the OTP sent to your email</p>
+                    {errorMessage && <p className="text-center text-red-500 mb-4">{errorMessage}</p>}
+
                     <form onSubmit={handleLogin}>
                         <div className="flex justify-center mb-4 space-x-2">
                             {otp.map((_, index) => (
@@ -76,7 +79,7 @@ const TwoFactorAuthentication = () => {
                         <button className="btn btn-primary w-full" type="submit">Verify</button>
                     </form>
                     <p className="text-center text-gray-500 mt-4">
-                        <a href="#" className="text-primary font-medium">
+                        <a href="/login" className="text-primary font-medium">
                             Login with password
                         </a>
                     </p>

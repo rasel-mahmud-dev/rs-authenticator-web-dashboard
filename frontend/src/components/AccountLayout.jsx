@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Outlet} from 'react-router-dom';
+import {Outlet, useNavigate} from 'react-router-dom';
 import HeaderNavbar from "./HeaderNavbar.jsx";
 import useAuthStore from "../store/authState.js";
 import {verifyAuthentication} from "../services/authSerivce.js";
 import Sidebar from "./Sidebar.jsx";
 
-const Layout = () => {
+const AccountLayout = () => {
     const {user, authLoaded, setAuth} = useAuthStore()
     const [errorState, setErrorState] = useState({
         message: "",
         statusText: ""
     })
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         verifyAuthentication().then(data => {
@@ -22,22 +24,25 @@ const Layout = () => {
         })
     }, []);
 
-    // if (!authLoaded) {
-    //     return <div>Auth loading...</div>;
-    // }
-
+    useEffect(() => {
+        if (authLoaded && !user?.id) {
+            navigate("/login")
+        }
+    }, [authLoaded, user?.id]);
 
     return (
         <div className="">
             <HeaderNavbar/>
-            <div className="layout-content">
-                <Sidebar />
-                <main className="pt-[75px]">
-                    <Outlet/>
-                </main>
-            </div>
+            {authLoaded && user?.id && (
+                <div className="layout-content">
+                    <Sidebar/>
+                    <main className="pt-[75px]">
+                        <Outlet/>
+                    </main>
+                </div>
+            )}
         </div>
     );
 };
 
-export default Layout;
+export default AccountLayout;

@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"net/http/httptest"
-	"rs/auth/app/handlers"
+	"rs/auth/app/routes"
 	"testing"
 )
 
@@ -14,9 +14,9 @@ func TestHealthEndpoint(t *testing.T) {
 	defer CleanupEnv()
 
 	router := mux.NewRouter()
-	router.HandleFunc("/health", handlers.HealthHandler).Methods("GET")
+	routes.Init(router)
 
-	req, err := http.NewRequest(http.MethodGet, "/health", nil)
+	req, err := http.NewRequest(http.MethodGet, "/api/health", nil)
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
 	}

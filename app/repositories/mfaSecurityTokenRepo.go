@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/lib/pq"
+	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"rs/auth/app/db"
 	"rs/auth/app/models"
@@ -220,6 +221,16 @@ func (r *mfaSecurityRepo) UpdateMfaSecurityToken(token models.MfaSecurityToken) 
 	return nil
 }
 
+func validateOtpCode(otpCode string, secret string) (bool, error) {
+	opts := totp.ValidateOpts{
+		Period:    30,
+		Skew:      0,
+		Digits:    otp.DigitsSix,
+		Algorithm: otp.AlgorithmSHA1,
+	}
+	return totp.ValidateCustom(otpCode, secret, time.Now().UTC(), opts)
+}
+
 func (r *mfaSecurityRepo) VerifyMfaPasscode(otpCode string) (string, error) {
 	query := `
 		SELECT user_id, secret FROM mfa_security_tokens
@@ -242,8 +253,12 @@ func (r *mfaSecurityRepo) VerifyMfaPasscode(otpCode string) (string, error) {
 			return "", fmt.Errorf("failed to read MFA token row: %v", err)
 		}
 
-		fmt.Println(totp.Validate(otpCode, secret))
-		return userID, nil
+		isMatch, err := validateOtpCode(otpCode, secret)
+		if isMatch {
+			return userID, nil
+		}
+		fmt.Println(err)
+		return "", errors.New("invalid otp code")
 	}
-
+	return "", errors.New("invalid otp code")
 }

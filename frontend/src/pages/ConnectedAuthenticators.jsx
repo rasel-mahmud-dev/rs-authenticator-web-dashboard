@@ -16,7 +16,7 @@ const ConnectedAuthenticators = () => {
     const pageTitle = (
         <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold mb-4 text-gray-100">Connected Authenticator Apps</h2>
-            <Link to="/authenticator-setup" className="btn btn-primary">Add Provider</Link>
+            <Link to="/account/authenticator-setup" className="btn btn-primary">Add Provider</Link>
         </div>
     )
 

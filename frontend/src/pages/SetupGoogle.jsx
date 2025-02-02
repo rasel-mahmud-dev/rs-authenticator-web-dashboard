@@ -17,6 +17,7 @@ const SetupGoogleAuthenticator = ({data, onCompleteSetup, onCancel, generateSecr
 
     function handleCompleteSetup() {
         onCompleteSetup(data)
+        
     }
 
     return (

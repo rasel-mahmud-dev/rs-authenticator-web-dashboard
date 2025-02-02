@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import {login} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
@@ -7,6 +7,8 @@ import useAuthStore from "../store/authState.js";
 const LoginForm = () => {
 
     const {setAuth} = useAuthStore()
+
+    const navigate = useNavigate()
 
     const mutation = useMutation({
         mutationFn: login,
@@ -18,6 +20,7 @@ const LoginForm = () => {
             } else {
                 sessionStorage.setItem("token", data?.data?.token);
             }
+            navigate('/')
         },
         onError: (error) => {
             console.error("Login failed:", error);
@@ -32,12 +35,16 @@ const LoginForm = () => {
         mutation.mutate({email, password, rememberMe});
     }
 
+    const errorMessage = mutation?.error?.response?.data?.message
+
+
     return (
         <div className="flex items-center justify-center h-screen  overflow-hidden">
             <div className="card w-96 bg-gray-800  shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Welcome Back</h2>
                     <p className="text-center text-gray-400 mb-4">Sign in to your account</p>
+                    {errorMessage && <p className="text-center text-red-500 mb-4">{errorMessage}</p>}
                     <form onSubmit={handleLogin}>
                         <div className="form-control mb-4">
                             <label className="label">
