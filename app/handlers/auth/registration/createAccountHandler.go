@@ -1,9 +1,7 @@
 package registration
 
 import (
-	"context"
-	"net/http"
-	"rs/auth/app/dto"
+	"rs/auth/app/context"
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
@@ -17,8 +15,8 @@ type CreateAccountHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *CreateAccountHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
-	payload := (*r).Context().Value("payload").(dto.RegisterRequestBody)
+func (h *CreateAccountHandler) Handle(c context.BaseContext) bool {
+	payload := c.RegistrationContext.Payload
 	utils.LoggerInstance.Debug("Create account chain.")
 	userRepo := repositories.NewUserRepository()
 	user, err := userRepo.CreateAccount(models.User{
@@ -28,17 +26,16 @@ func (h *CreateAccountHandler) Handle(w http.ResponseWriter, r **http.Request) b
 	})
 	if err != nil {
 		utils.LoggerInstance.Error(err.Error())
-		response.Respond(w, statusCode.ACCOUNT_CREATION_FAILED, err.Error(), nil)
+		response.Respond(c.ResponseWriter, statusCode.ACCOUNT_CREATION_FAILED, err.Error(), nil)
 		return false
 	}
 
 	if user == nil {
 		utils.LoggerInstance.Info("Failed to create user account.")
-		response.Respond(w, statusCode.ACCOUNT_CREATION_FAILED, "Failed to create user account.", nil)
+		response.Respond(c.ResponseWriter, statusCode.ACCOUNT_CREATION_FAILED, "Failed to create user account.", nil)
 		return false
 	}
 
-	ctx := context.WithValue((*r).Context(), "user", user)
-	*r = (*r).WithContext(ctx)
-	return h.HandleNext(w, r)
+	c.User = user
+	return h.HandleNext(c)
 }

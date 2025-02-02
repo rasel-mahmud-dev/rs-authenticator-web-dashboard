@@ -1,7 +1,8 @@
 package registration
 
 import (
-	"net/http"
+	"fmt"
+	"rs/auth/app/context"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
 	"rs/auth/app/net/statusCode"
@@ -13,16 +14,18 @@ type RequestValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *RequestValidationHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
-	payload := (*r).Context().Value("payload").(dto.RegisterRequestBody)
+func (h *RequestValidationHandler) Handle(c context.BaseContext) bool {
+	payload := c.RegistrationContext.Payload
+	fmt.Println("Check request validation.")
 	err := validators.ValidateStruct(&dto.RegisterRequestBody{
 		Email:    payload.Email,
 		Username: payload.Username,
 		Password: payload.Password,
 	})
 	if err != nil {
-		response.Respond(w, statusCode.REQUEST_VALIDATION_FAILED, err.Error(), nil)
+		response.Respond(c.ResponseWriter, statusCode.REQUEST_VALIDATION_FAILED, err.Error(), nil)
 		return false
 	}
-	return h.HandleNext(w, r)
+	c.Email = payload.Email
+	return h.HandleNext(c)
 }

@@ -1,8 +1,7 @@
 package verify
 
 import (
-	"context"
-	"net/http"
+	context2 "rs/auth/app/context"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
 	"rs/auth/app/net/statusCode"
@@ -15,27 +14,27 @@ type ValidateAccessTokenHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *ValidateAccessTokenHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
-	token := (*r).Context().Value("accessToken").(string)
+func (h *ValidateAccessTokenHandler) Handle(c context2.BaseContext) bool {
+	token := c.AccessToken
 	parseToken, err := jwt.Jwt.ParseToken(token)
 	if err != nil {
-		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, err.Error(), nil)
+		response.Respond(c.ResponseWriter, statusCode.INTERNAL_SERVER_ERROR, err.Error(), nil)
 		return false
 	}
 
 	authSession := repositories.AuthSessionRepository.GetAuthSessionByAccessToken(token)
 	if authSession == nil {
-		response.Respond(w, statusCode.UNAUTHORIZED, "Unauthorized", nil)
+		response.Respond(c.ResponseWriter, statusCode.UNAUTHORIZED, "Unauthorized", nil)
 		return false
 	}
 
 	if authSession.UserId != parseToken.UserId {
-		response.Respond(w, statusCode.UNAUTHORIZED_SESSION_MISMATCH, "Session mismatch", nil)
+		response.Respond(c.ResponseWriter, statusCode.UNAUTHORIZED_SESSION_MISMATCH, "Session mismatch", nil)
 		return false
 	}
 
 	if authSession.IsRevoked {
-		response.Respond(w, statusCode.UNAUTHORIZED_SESSION_REVOKED, "Session revoked", dto.AuthVerify{
+		response.Respond(c.ResponseWriter, statusCode.UNAUTHORIZED_SESSION_REVOKED, "Session revoked", dto.AuthVerify{
 			ID:        authSession.UserId,
 			SessionId: authSession.ID,
 			IsRevoked: authSession.IsRevoked,
@@ -46,8 +45,7 @@ func (h *ValidateAccessTokenHandler) Handle(w http.ResponseWriter, r **http.Requ
 		return false
 	}
 
-	ctx := context.WithValue((*r).Context(), "authSession", authSession)
-	*r = (*r).WithContext(ctx)
-	
-	return h.HandleNext(w, r)
+	c.AuthSession = authSession
+
+	return h.HandleNext(c)
 }

@@ -1,7 +1,7 @@
 package generate2FASecret
 
 import (
-	"net/http"
+	context2 "rs/auth/app/context"
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
@@ -14,11 +14,11 @@ type ResponseHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *ResponseHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
-	authSession := (*r).Context().Value("authSession").(*models.AuthSession)
-	qrBase64 := (*r).Context().Value("qrBase64").(string)
-	codeName := (*r).Context().Value("codeName").(string)
-	secretKey := (*r).Context().Value("secretKey").(string)
+func (h *ResponseHandler) Handle(c context2.BaseContext) bool {
+	authSession := c.AuthSession
+	qrBase64 := c.TwoFaSecurityContext.QrBase64
+	codeName := c.TwoFaSecurityContext.CodeName
+	secretKey := c.TwoFaSecurityContext.SecretKey
 
 	backupCodes := utils.GenerateBackupCodes(12)
 
@@ -33,10 +33,10 @@ func (h *ResponseHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
 
 	if err != nil {
 		utils.LoggerInstance.Error("Failed to save 2FA secret")
-		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, "Failed to save 2FA secret", nil)
+		response.Respond(c.ResponseWriter, statusCode.INTERNAL_SERVER_ERROR, "Failed to save 2FA secret", nil)
 		return false
 	}
 
-	response.Respond(w, statusCode.OK, "Success", mfaToken)
+	response.Respond(c.ResponseWriter, statusCode.OK, "Success", mfaToken)
 	return false
 }

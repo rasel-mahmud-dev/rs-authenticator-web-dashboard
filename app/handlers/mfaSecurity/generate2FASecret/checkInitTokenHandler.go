@@ -1,9 +1,8 @@
 package generate2FASecret
 
 import (
-	"net/http"
+	context2 "rs/auth/app/context"
 	"rs/auth/app/handlers"
-	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
 	"rs/auth/app/repositories"
 	"rs/auth/app/response"
@@ -14,8 +13,8 @@ type CheckInitTokenHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *CheckInitTokenHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
-	authSession := (*r).Context().Value("authSession").(*models.AuthSession)
+func (h *CheckInitTokenHandler) Handle(c context2.BaseContext) bool {
+	authSession := c.AuthSession
 
 	initToken, err := repositories.MfaSecurityTokenRepo.GetLastInit(authSession.UserId)
 	if err != nil {
@@ -24,9 +23,9 @@ func (h *CheckInitTokenHandler) Handle(w http.ResponseWriter, r **http.Request) 
 
 	if initToken != nil {
 		utils.LoggerInstance.Error("Already  exists previous token.")
-		response.Respond(w, statusCode.OK, "Success", initToken)
+		response.Respond(c.ResponseWriter, statusCode.OK, "Success", initToken)
 		return false
 	}
 
-	return h.HandleNext(w, r)
+	return h.HandleNext(c)
 }

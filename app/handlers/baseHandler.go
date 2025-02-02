@@ -1,10 +1,12 @@
 package handlers
 
-import "net/http"
+import (
+	"rs/auth/app/context"
+)
 
 type Handler interface {
 	SetNext(handler Handler) Handler
-	Handle(w http.ResponseWriter, r **http.Request) bool
+	Handle(c context.BaseContext) bool
 }
 
 type BaseHandler struct {
@@ -16,9 +18,9 @@ func (h *BaseHandler) SetNext(handler Handler) Handler {
 	return handler
 }
 
-func (h *BaseHandler) HandleNext(w http.ResponseWriter, r **http.Request) bool {
+func (h *BaseHandler) HandleNext(c context.BaseContext) bool {
 	if h.next != nil {
-		return h.next.Handle(w, r)
+		return h.next.Handle(c)
 	}
 	return true
 }

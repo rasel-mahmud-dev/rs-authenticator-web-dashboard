@@ -1,9 +1,8 @@
 package registration
 
 import (
-	"context"
 	"encoding/json"
-	"net/http"
+	"rs/auth/app/context"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
 	"rs/auth/app/net/statusCode"
@@ -14,15 +13,14 @@ type JSONValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *JSONValidationHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
+func (h *JSONValidationHandler) Handle(c context.BaseContext) bool {
 	var payload dto.RegisterRequestBody
-	err := json.NewDecoder((*r).Body).Decode(&payload)
+	err := json.NewDecoder((*c.Request).Body).Decode(&payload)
 	if err != nil {
-		response.Respond(w, statusCode.INVALID_JSON_FORMAT, "Invalid JSON format", nil)
+		response.Respond(c.ResponseWriter, statusCode.INVALID_JSON_FORMAT, "Invalid JSON format", nil)
 		return false
 	}
 
-	ctx := context.WithValue((*r).Context(), "payload", payload)
-	*r = (*r).WithContext(ctx)
-	return h.HandleNext(w, r)
+	c.RegistrationContext.Payload = payload
+	return h.HandleNext(c)
 }

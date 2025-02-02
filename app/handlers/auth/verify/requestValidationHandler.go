@@ -1,8 +1,7 @@
 package verify
 
 import (
-	"context"
-	"net/http"
+	context2 "rs/auth/app/context"
 	"rs/auth/app/handlers"
 	"rs/auth/app/net/statusCode"
 	"rs/auth/app/response"
@@ -13,15 +12,13 @@ type RequestValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *RequestValidationHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
-	token := utils.GetToken(*r)
+func (h *RequestValidationHandler) Handle(c context2.BaseContext) bool {
+	token := utils.GetToken(c.Request)
 	if token == "" {
-		response.Respond(w, statusCode.ACCESS_TOKEN_MISSED, "Access required.", nil)
+		response.Respond(c.ResponseWriter, statusCode.ACCESS_TOKEN_MISSED, "Access required.", nil)
 		return false
 	}
 
-	ctx := context.WithValue((*r).Context(), "accessToken", token)
-	*r = (*r).WithContext(ctx)
-
-	return h.HandleNext(w, r)
+	c.AccessToken = token
+	return h.HandleNext(c)
 }
