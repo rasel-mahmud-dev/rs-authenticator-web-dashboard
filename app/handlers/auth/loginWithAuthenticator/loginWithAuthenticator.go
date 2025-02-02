@@ -2,25 +2,25 @@ package loginWithAuthenticator
 
 import (
 	"net/http"
+	"rs/auth/app/context"
 	"rs/auth/app/handlers/auth/login"
 	"rs/auth/app/handlers/authSession"
 )
 
 func LoginWithAuthenticator(w http.ResponseWriter, r *http.Request) {
-	jsonHandler := &JSONValidationHandler{}
-	validationHandler := &RequestValidationHandler{}
-	otpVerificationHandler := &OtpVerificationHandler{}
-	generateJwtHandler := &login.GenerateJwtHandler{}
-	newSessionHandler := &authSession.NewSessionHandler{}
-	responseHandler := &login.ResponseHandler{}
+	c := context.BaseContext{
+		RegistrationContext: context.RegistrationContext{},
+		ResponseWriter:      w,
+		Request:             r,
+	}
 
-	chain := jsonHandler
+	chain := &JSONValidationHandler{}
 	chain.
-		SetNext(validationHandler).
-		SetNext(otpVerificationHandler).
-		SetNext(generateJwtHandler).
-		SetNext(newSessionHandler).
-		SetNext(responseHandler)
+		SetNext(&RequestValidationHandler{}).
+		SetNext(&OtpVerificationHandler{}).
+		SetNext(&login.GenerateJwtHandler{}).
+		SetNext(&authSession.NewSessionHandler{}).
+		SetNext(&login.ResponseHandler{})
 
-	chain.Handle(w, &r)
+	chain.Handle(c)
 }

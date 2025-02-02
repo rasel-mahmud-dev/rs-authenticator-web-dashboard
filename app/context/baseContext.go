@@ -15,4 +15,5 @@ type BaseContext struct {
 	AuthSession    *models.AuthSession
 	TwoFaSecurityContext
 	LoginContext
+	AuthenticatorLoginContext
 }
