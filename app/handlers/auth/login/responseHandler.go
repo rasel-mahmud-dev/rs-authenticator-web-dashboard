@@ -1,7 +1,7 @@
 package login
 
 import (
-	"net/http"
+	context2 "rs/auth/app/context"
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
@@ -12,12 +12,12 @@ type ResponseHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *ResponseHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
-	user := (*r).Context().Value("user").(*models.User)
-	authSession := (*r).Context().Value("authSession").(*models.AuthSession)
-	token := (*r).Context().Value("token").(string)
+func (h *ResponseHandler) Handle(c context2.BaseContext) bool {
+	user := c.User
+	authSession := c.AuthSession
+	token := c.AccessToken
 	user.Password = ""
-	response.Respond(w, statusCode.OK, "Login successful", struct {
+	response.Respond(c.ResponseWriter, statusCode.OK, "Login successful", struct {
 		*models.User
 		Token            string `json:"token"`
 		SessionId        string `json:"sessionId"`

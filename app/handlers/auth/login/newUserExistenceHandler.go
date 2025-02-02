@@ -1,9 +1,7 @@
 package login
 
 import (
-	"context"
-	"net/http"
-	"rs/auth/app/dto"
+	context2 "rs/auth/app/context"
 	"rs/auth/app/handlers"
 	"rs/auth/app/net/statusCode"
 	"rs/auth/app/repositories"
@@ -15,18 +13,16 @@ type UserExistenceHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *UserExistenceHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
-	loginRequest := (*r).Context().Value("loginRequest").(dto.LoginRequest)
+func (h *UserExistenceHandler) Handle(c context2.BaseContext) bool {
+	loginRequest := c.LoginContext.LoginRequest
 	userRepo := repositories.NewUserRepository()
 	user, err := userRepo.GetUserByEmail(loginRequest.Email)
 	if err != nil || user == nil {
 		utils.LoggerInstance.Info("User does not exist in database.")
-		response.Respond(w, statusCode.INVALID_CREDENTIALS, "Invalid email or password", nil)
+		response.Respond(c.ResponseWriter, statusCode.INVALID_CREDENTIALS, "Invalid email or password", nil)
 		return false
 	}
 
-	ctx := context.WithValue((*r).Context(), "user", user)
-	*r = (*r).WithContext(ctx)
-
-	return h.HandleNext(w, r)
+	c.User = user
+	return h.HandleNext(c)
 }

@@ -1,9 +1,8 @@
 package login
 
 import (
-	"context"
 	"encoding/json"
-	"net/http"
+	context2 "rs/auth/app/context"
 	"rs/auth/app/dto"
 	"rs/auth/app/handlers"
 	"rs/auth/app/net/statusCode"
@@ -14,15 +13,15 @@ type JSONValidationHandler struct {
 	handlers.BaseHandler
 }
 
-func (h *JSONValidationHandler) Handle(w http.ResponseWriter, r **http.Request) bool {
+func (h *JSONValidationHandler) Handle(c context2.BaseContext) bool {
 	var loginRequest dto.LoginRequest
-	err := json.NewDecoder((*r).Body).Decode(&loginRequest)
+	err := json.NewDecoder((*c.Request).Body).Decode(&loginRequest)
 	if err != nil {
-		response.Respond(w, statusCode.INVALID_JSON_FORMAT, "Invalid JSON format", nil)
+		response.Respond(c.ResponseWriter, statusCode.INVALID_JSON_FORMAT, "Invalid JSON format", nil)
 		return false
 	}
 
-	ctx := context.WithValue((*r).Context(), "loginRequest", loginRequest)
-	*r = (*r).WithContext(ctx)
-	return h.HandleNext(w, r)
+	c.LoginContext.LoginRequest = loginRequest
+
+	return h.HandleNext(c)
 }
