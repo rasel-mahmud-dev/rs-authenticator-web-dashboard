@@ -3,7 +3,6 @@ import {Link, useLocation} from 'react-router-dom';
 import {FaCog, FaHome, FaUser} from 'react-icons/fa';
 import {TbDashboard} from "react-icons/tb";
 import {RiGoogleFill} from "react-icons/ri";
-import {TfiMicrosoft} from "react-icons/tfi";
 
 const sidebarItems = [
     {name: 'Home', route: '/', icon: <FaHome/>},
@@ -14,13 +13,13 @@ const sidebarItems = [
 ];
 
 const Sidebar = () => {
-    const location = useLocation();  // Get the current location (route)
+    const location = useLocation();
 
     return (
-        <div className="sidebar h-screen bg-gray-800 text-white flex flex-col">
+        <div className="sidebar vh bg-gray-900 text-white flex flex-col">
             <div className="flex justify-center items-center h-24 bg-gray-900">
                 <img
-                    src="https://via.placeholder.com/100"  // Replace with your dashboard image
+                    src="https://via.placeholder.com/100"
                     alt="Dashboard"
                     className="rounded-full w-20 h-20"
                 />

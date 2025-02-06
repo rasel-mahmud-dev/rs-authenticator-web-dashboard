@@ -15,7 +15,7 @@ const routes = createBrowserRouter([
     {
         path: '/',
         element: <Layout/>,
-        errorElement: <NotFound/>,
+        notFoundElement: <NotFound/>,
         children: [
             {
                 path: '',
@@ -43,16 +43,17 @@ const routes = createBrowserRouter([
                     },
 
                     {
-                        path: "authenticator-apps",
+                        path: "/account/authenticator-apps",
                         element: <ProtectedRoute><ConnectedAuthenticators/></ProtectedRoute>
-                    }, {
-                        path: "authenticator-setup",
+                    },
+                    {
+                        path: "/account/authenticator-setup",
                         element: <ProtectedRoute><AuthenticatorSetup/></ProtectedRoute>
                     },
                     {
-                        path: "setup-google-auth",
+                        path: "/account/authenticator-setup/:provider",
                         element: <ProtectedRoute><SetupGoogleAuthenticator/></ProtectedRoute>
-                    }
+                    },
                 ]
             }
 

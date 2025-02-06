@@ -39,7 +39,7 @@ const LoginForm = () => {
 
 
     return (
-        <div className="flex items-center justify-center h-screen  overflow-hidden">
+        <div className="flex items-center justify-center vh  overflow-hidden">
             <div className="card w-96 bg-gray-800  shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Welcome Back</h2>
@@ -53,6 +53,7 @@ const LoginForm = () => {
                             <input
                                 type="email"
                                 name="email"
+                                defaultValue="rasel@gmail.com"
                                 placeholder="Enter your email"
                                 className="input input-bordered w-full"
                             />
@@ -62,6 +63,7 @@ const LoginForm = () => {
                                 <span className="label-text text-gray-300">Password</span>
                             </label>
                             <input
+                                defaultValue="123456"
                                 name="password"
                                 type="password"
                                 placeholder="Enter your password"

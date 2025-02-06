@@ -3,8 +3,20 @@
 @tailwind utilities;
 
 
+*{
+    font-family: Poppins, serif;
+}
+
 .chart-bg {
     @apply bg-gray-900 rounded-xl
+}
+
+.bg-primary-100 {
+    background: #272f63;
+}
+
+.bg-primary-400 {
+    background: #293583;
 }
 
 .chart-title {
@@ -30,4 +42,24 @@
 
 .full-viewport {
     height: calc(100vh - 75px);
+}
+
+.header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    @apply w-full bg-primary-400;
+}
+
+.vh {
+    height: calc(100vh - 75px);
+}
+
+.home-section{
+    /*background: red;*/
+}
+
+.active{
+    background: rgba(255, 255, 255, 0.11) !important;
 }

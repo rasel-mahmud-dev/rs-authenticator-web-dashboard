@@ -154,10 +154,23 @@ func (r *mfaSecurityRepo) GetLastInit(userId string) (*models.MfaSecurityToken, 
 	return &token, nil
 }
 
+func (r *mfaSecurityRepo) ResetInitToken(userId string) error {
+	query := `UPDATE mfa_security_tokens 
+		set is_active = false, is_init = false
+    WHERE is_init = true AND user_id = $1`
+
+	_, err := r.db.Exec(query, userId)
+	if err != nil {
+		utils.LoggerInstance.Debug(err.Error())
+		return fmt.Errorf("failed to get MFA security token: %v", err)
+	}
+	return nil
+}
+
 func (r *mfaSecurityRepo) GetAllItems(userId string) ([]models.MfaSecurityToken, error) {
 	query := `
 		SELECT id, user_id, secret, recovery_codes, qr_code_url, is_active, created_at, updated_at, app_name, device_info, code_name, is_init, linked_at
-		FROM mfa_security_tokens where user_id = $1 AND is_init = false	 
+		FROM mfa_security_tokens where user_id = $1 AND is_active = true AND is_init = false	 
 	`
 
 	var tokens []models.MfaSecurityToken

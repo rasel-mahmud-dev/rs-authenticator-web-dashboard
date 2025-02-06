@@ -11,9 +11,9 @@ const covers = [
 
 const BlogHomePage = () => {
     return (
-        <div className="min-h-screen bg-base-200">
+        <div className="vh bg-base-200">
 
-            <section className="py-10 bg-base-100">
+            <section className="py-10 home-section bg-base-100">
                 <div className="container mx-auto">
                     <h2 className="text-3xl font-bold text-center text-primary mb-8">
                         Featured Projects

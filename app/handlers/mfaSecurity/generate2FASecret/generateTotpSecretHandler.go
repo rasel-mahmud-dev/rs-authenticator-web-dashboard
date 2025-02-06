@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
+	"rs/auth/app/configs"
 	"rs/auth/app/context"
 	"rs/auth/app/handlers"
 	"rs/auth/app/net/statusCode"
@@ -20,11 +21,11 @@ func (h *GenerateTotpSecretHandler) Handle(c *context.BaseContext) bool {
 
 	codeName := fmt.Sprintf("RsAuth (%s)", authSession.Email)
 	secret, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      "RsAuth",
+		Issuer:      fmt.Sprintf("RsAuth|%s", configs.Config.APP_LOGO_URL),
 		AccountName: authSession.Email,
 		Period:      30,
 		Digits:      otp.DigitsSix,
-		Algorithm:   otp.AlgorithmSHA1,
+		Algorithm:   otp.AlgorithmSHA256,
 	})
 	if err != nil {
 		utils.LoggerInstance.Error("Failed to generate secret")

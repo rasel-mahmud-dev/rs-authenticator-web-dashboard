@@ -11,8 +11,8 @@ import (
 
 func AuthRoutes(router *mux.Router) {
 	utils.LoggerInstance.Info("Initializing routes")
-	router.HandleFunc("/api/v1/login", login.LoginHandler).Methods("POST")
-	router.HandleFunc("/api/v1/registration", registration.RegistrationHandler).Methods("POST")
-	router.HandleFunc("/api/v1/verify", verify.AuthVerifyHandler).Methods("GET")
-	router.HandleFunc("/api/v1/login-with-authenticator", loginWithAuthenticator.LoginWithAuthenticator).Methods("POST")
+	router.HandleFunc("/api/v1/auth/login", login.LoginHandler).Methods("POST")
+	router.HandleFunc("/api/v1/auth/registration", registration.RegistrationHandler).Methods("POST")
+	router.HandleFunc("/api/v1/auth/verify", verify.AuthVerifyHandler).Methods("GET")
+	router.HandleFunc("/api/v1/auth/login-with-authenticator", loginWithAuthenticator.LoginWithAuthenticator).Methods("POST")
 }

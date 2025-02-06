@@ -19,46 +19,77 @@ const HeaderNavbar = () => {
     };
 
 
-    return (
-        <header className="fixed top-0 z-50 left-0 w-full bg-blue-950  text-white shadow-lg">
-            <div className="container mx-auto p-5 flex justify-between items-center">
-                <h1 className="text-3xl font-bold">YourLogo</h1>
-                <nav>
-                    <ul className="flex space-x-6">
-                        <li>
-                            <NavLink to="/" className="text-lg font-medium hover:text-indigo-300">
-                                Home
-                            </NavLink>
-                        </li>
-                        <li>
-                            <a href="/account" className="text-lg font-medium hover:text-indigo-300">
-                                Dashboard
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="text-lg font-medium hover:text-indigo-300">
-                                Services
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="text-lg font-medium hover:text-indigo-300">
-                                Contact
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div>
-                    {user ? (
-                        <div className="relative">
-                            <button
-                                onClick={toggleDropdown}
-                                className="btn btn-outline btn-light text-white hover:bg-indigo-400"
-                            >
-                                {user?.username}
-                            </button>
+    const links = (
+        <>
 
-                            {isDropdownOpen && (
-                                <ul className="bg-primary dropdown-content menu shadow bg-base-100 text-black absolute right-0 mt-2 p-2 w-48 rounded-lg">
+            <li>
+             <NavLink to="/" className="text-lg font-medium hover:text-indigo-300">
+             Home
+             </NavLink>
+
+            </li>
+             <li>
+             <a href="/account" className="text-lg font-medium hover:text-indigo-300">
+             Dashboard
+             </a>
+             </li>
+             <li>
+             <a href="#" className="text-lg font-medium hover:text-indigo-300">
+             Services
+             </a>
+             </li>
+             <li>
+             <a href="#" className="text-lg font-medium hover:text-indigo-300">
+             Contact
+             </a>
+             </li>
+        </>
+    )
+
+    return (
+        <div className="navbar header bg-blue-950  text-white shadow-lg">
+            <div className="navbar-start">
+                <div className="dropdown">
+                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M4 6h16M4 12h8m-8 6h16"/>
+                        </svg>
+                    </div>
+                    <ul
+                        tabIndex={0}
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                        {links}
+                    </ul>
+                </div>
+                <a className="btn btn-ghost text-xl">daisyUI</a>
+            </div>
+            <div className="navbar-center hidden lg:flex">
+                <ul className="menu menu-horizontal px-1">
+                    {links}
+                </ul>
+            </div>
+            <div className="navbar-end relative">
+                {/*<a className="btn">Button</a>*/}
+
+                { user ? (
+                    <div className="flex flex-1 justify-end px-2">
+                        <div className="flex items-stretch">
+
+                            <div className="dropdown  dropdown-end">
+                                <div tabIndex={0} role="button" className="btn btn-ghost rounded-btn">{user?.username}</div>
+                                <ul
+                                    tabIndex={0}
+                                    className="menu dropdown-content bg-primary-100 rounded-box relative z-[100] mt-4 w-52 p-2 shadow">
+
                                     <li>
                                         <NavLink to="/profile" className="hover:bg-indigo-200">
                                             Profile
@@ -74,23 +105,25 @@ const HeaderNavbar = () => {
                                             Logout
                                         </button>
                                     </li>
+
+
                                 </ul>
-                            )}
-
+                            </div>
                         </div>
-                    ) : (
-                        <div>
-                            <Link to="/login">
-                                <button className="btn btn-outline btn-light text-white hover:bg-indigo-400">
-                                    Sign In
-                                </button>
-                            </Link>
+                    </div>
+                ) : (
+                    <div>
+                        <Link to="/login">
+                            <button className="btn btn-outline btn-light text-white hover:bg-indigo-400">
+                                Sign In
+                            </button>
+                        </Link>
+                    </div>
+                )}
 
-                        </div>
-                    )}
-                </div>
             </div>
-        </header>
+        </div>
+
     );
 };
 

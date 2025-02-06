@@ -54,7 +54,7 @@ const TwoFactorAuthentication = () => {
     const errorMessage = mutation?.error?.response?.data?.message
 
     return (
-        <div className="flex items-center justify-center h-screen overflow-hidden">
+        <div className="flex items-center justify-center vh overflow-hidden">
             <div className="card  bg-gray-800 shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Authenticator</h2>

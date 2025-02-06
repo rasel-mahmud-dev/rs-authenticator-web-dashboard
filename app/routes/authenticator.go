@@ -8,7 +8,7 @@ import (
 )
 
 func AuthenticatorRoutes(router *mux.Router) {
-	router.HandleFunc("/api/v1/generate-2fa-secret", middlewares.Auth(generate2FASecret.Generate2FASecretHandler)).Methods("GET")
-	router.HandleFunc("/api/v1/generate-2fa-secret", middlewares.Auth(mfaSecurity.Finalize2FASecret)).Methods("POST")
+	router.HandleFunc("/api/v1/generate-2fa-secret", middlewares.Auth(generate2FASecret.Generate2FASecretHandler)).Methods("POST")
+	router.HandleFunc("/api/v1/generate-2fa-secret-complete", middlewares.Auth(mfaSecurity.Finalize2FASecret)).Methods("POST")
 	router.HandleFunc("/api/v1/authenticated-apps", middlewares.Auth(mfaSecurity.GetAllConnectedAuthenticatorApps)).Methods("GET")
 }

@@ -16,6 +16,17 @@ type CheckInitTokenHandler struct {
 func (h *CheckInitTokenHandler) Handle(c *context2.BaseContext) bool {
 	authSession := c.AuthSession
 
+	isNewGeneration := c.TwoFaSecurityContext.GenerateMfaBody.IsNew
+	if isNewGeneration {
+		// reset init token for new generation
+		err := repositories.MfaSecurityTokenRepo.ResetInitToken(authSession.UserId)
+		if err != nil {
+			utils.LoggerInstance.Error(err.Error())
+			return false
+		}
+		return h.HandleNext(c)
+	}
+
 	initToken, err := repositories.MfaSecurityTokenRepo.GetLastInit(authSession.UserId)
 	if err != nil {
 		utils.LoggerInstance.Error(err.Error())

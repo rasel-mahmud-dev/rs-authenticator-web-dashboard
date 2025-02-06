@@ -17,6 +17,7 @@ type configI struct {
 	DATABASE_NAME     string
 	CACHE_STORAGE     string
 	JWT_SECRET_KEY    string
+	APP_LOGO_URL      string
 }
 
 var Config *configI
@@ -24,7 +25,7 @@ var Config *configI
 func init() {
 	//os.Setenv("APP_ENV", "development")
 	//if os.Getenv("APP_ENV") == "development" {
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		fmt.Println("Error loading .env file:", err)
 	}
@@ -44,5 +45,6 @@ func init() {
 		DATABASE_NAME:     os.Getenv("DATABASE_NAME"),
 		CACHE_STORAGE:     os.Getenv("CACHE_STORAGE"),
 		JWT_SECRET_KEY:    os.Getenv("JWT_SECRET_KEY"),
+		APP_LOGO_URL:      "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
 	}
 }
