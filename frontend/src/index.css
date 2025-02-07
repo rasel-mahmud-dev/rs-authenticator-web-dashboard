@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 
-*{
+:root {
+    --sidebar-width: 300px
+}
+
+* {
     font-family: Poppins, serif;
 }
 
@@ -26,17 +30,62 @@
     padding-bottom: 10px;
 }
 
+@media (min-width: 1200px) {
+
+}
+
 .layout-content {
+    display: flex;
+    --sidebar-width: 300px;
+
     .sidebar {
-        width: 300px;
+        width: var(--sidebar-width);
         position: fixed;
         left: 0;
         top: 75px;
         z-index: 10;
     }
 
+    .sidebar-w-mask {
+        width: var(--sidebar-width);
+        height: 100vh;
+    }
+
+    .compact-sidebar {
+        --sidebar-width: 80px;
+
+        .sidebar-w-mask {
+            width: var(--sidebar-width);
+        }
+
+        .sidebar {
+
+            width: var(--sidebar-width);
+
+            .sidebar-item {
+                background: rgba(255, 255, 255, 0.09);
+                padding: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 10px;
+
+                span {
+                    display: none;
+                }
+
+                .sidebar-icon {
+                    font-size: 25px;
+                }
+
+
+
+            }
+        }
+    }
+
     main {
-        margin-left: 300px;
+        width: 100%;
     }
 }
 
@@ -56,10 +105,23 @@
     height: calc(100vh - 75px);
 }
 
-.home-section{
+.home-section {
     /*background: red;*/
 }
 
-.active{
+.active {
     background: rgba(255, 255, 255, 0.11) !important;
+}
+
+
+.site-logo{
+
+
+    img{
+        width: 100px;
+        height: 100px;
+
+        object-fit: contain;
+        border-radius: 100%;
+    }
 }

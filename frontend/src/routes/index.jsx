@@ -8,7 +8,7 @@ import ConnectedAuthenticators from "../pages/ConnectedAuthenticators.jsx";
 import AuthenticatorSetup from "../pages/AuthenticatorSetup.jsx";
 import SetupGoogleAuthenticator from "../pages/SetupGoogle.jsx";
 import AccountLayout from "../components/AccountLayout.jsx";
-import TwoFactorAuthentication from "../pages/TwoFactorAuthentication.jsx";
+import AuthenticationLogin from "../pages/AuthenticationLogin.jsx";
 import BlogHomePage from "../pages/BlogHomePage.jsx";
 
 const routes = createBrowserRouter([
@@ -20,13 +20,18 @@ const routes = createBrowserRouter([
             {
                 path: '',
                 element: <BlogHomePage/>,
-            }, {
+            },
+            {
                 path: 'login',
                 element: <LoginForm/>,
             },
             {
-                path: 'login/two-factor-authenticator',
-                element: <TwoFactorAuthentication/>,
+                path: 'registration',
+                element: <LoginForm/>,
+            },
+            {
+                path: 'login/authenticator',
+                element: <AuthenticationLogin/>,
             },
             {
 

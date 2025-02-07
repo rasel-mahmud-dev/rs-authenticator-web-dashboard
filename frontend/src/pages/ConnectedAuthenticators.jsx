@@ -45,36 +45,39 @@ const ConnectedAuthenticators = () => {
 
             {pageTitle}
 
-            {authenticators?.length > 0 ? (
-                <ul className="space-y-4">
-                    {authenticators.map((authenticator, index) => (
-                        <li
-                            key={index}
-                            className="flex justify-between items-center p-4 bg-gray-800 rounded-lg"
-                        >
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-100">
-                                    {authenticator.code_name}
-                                </h3>
-                                <h3 className="text-lg font-semibold text-gray-100">
-                                    {authenticator.app_name}
-                                </h3>
-                                <p className="text-sm text-gray-400">
-                                    Linked on: {new Date(authenticator.created_at).toLocaleString()}
-                                </p>
-                            </div>
-                            <button
-                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                onClick={() => handleUnlinkAuthenticator(authenticator.id)}
+            <div className="mt-4">
+                {authenticators?.length > 0 ? (
+                    <ul className="space-y-4">
+                        {authenticators.map((authenticator, index) => (
+                            <li
+                                key={index}
+                                className="flex justify-between items-center p-4 bg-gray-800 rounded-lg"
                             >
-                                Unlink
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p className="text-gray-300">No authenticator apps connected to your account.</p>
-            )}
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-100">
+                                        {authenticator.code_name}
+                                    </h3>
+                                    <h3 className="text-lg font-semibold text-gray-100">
+                                        {authenticator.app_name}
+                                    </h3>
+                                    <p className="text-sm text-gray-400">
+                                        Linked on: {new Date(authenticator.created_at).toLocaleString()}
+                                    </p>
+                                </div>
+                                <button
+                                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+                                    onClick={() => handleUnlinkAuthenticator(authenticator.id)}
+                                >
+                                    Unlink
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="text-gray-300">No authenticator apps connected to your account.</p>
+                )}
+            </div>
+
         </div>
     );
 };

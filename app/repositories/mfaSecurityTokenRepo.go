@@ -239,7 +239,7 @@ func validateOtpCode(otpCode string, secret string) (bool, error) {
 		Period:    30,
 		Skew:      0,
 		Digits:    otp.DigitsSix,
-		Algorithm: otp.AlgorithmSHA1,
+		Algorithm: otp.AlgorithmSHA256,
 	}
 	return totp.ValidateCustom(otpCode, secret, time.Now().UTC(), opts)
 }
@@ -252,15 +252,20 @@ func (r *mfaSecurityRepo) VerifyMfaPasscode(otpCode string) (string, error) {
 
 	rows, err := r.db.Query(query)
 	if err != nil {
-
 		return "", err
 	}
-	defer rows.Close()
+	
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+
+		}
+	}(rows)
+
+	var userID string
+	var secret string
 
 	for rows.Next() {
-		var userID string
-		var secret string
-
 		err := rows.Scan(&userID, &secret)
 		if err != nil {
 			return "", fmt.Errorf("failed to read MFA token row: %v", err)
@@ -270,8 +275,6 @@ func (r *mfaSecurityRepo) VerifyMfaPasscode(otpCode string) (string, error) {
 		if isMatch {
 			return userID, nil
 		}
-		fmt.Println(err)
-		return "", errors.New("invalid otp code")
 	}
 	return "", errors.New("invalid otp code")
 }

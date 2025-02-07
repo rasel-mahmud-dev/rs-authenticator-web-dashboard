@@ -15,7 +15,7 @@ type OtpVerificationHandler struct {
 
 func (h *OtpVerificationHandler) Handle(c *context2.BaseContext) bool {
 	payload := c.AuthenticatorLoginContext.RequestBody
-
+	utils.LoggerInstance.Info("OtpVerificationHandler: ", payload)
 	userId, err := repositories.MfaSecurityTokenRepo.VerifyMfaPasscode(payload.OtpCode)
 	if err != nil {
 		response.Respond(c.ResponseWriter, statusCode.INVALID_OTP, "Invalid otp code.", nil)

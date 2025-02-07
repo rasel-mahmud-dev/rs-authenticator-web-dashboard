@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, {useEffect} from "react";
 
 const covers = [
     "https://images.unsplash.com/photo-1737074434131-73167e5fbcad?q=80&w=1740",
@@ -10,6 +9,7 @@ const covers = [
 
 
 const BlogHomePage = () => {
+
     return (
         <div className="vh bg-base-200">
 

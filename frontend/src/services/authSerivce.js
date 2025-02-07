@@ -12,7 +12,7 @@ export async function login(credentials) {
 }
 
 export async function loginWithAuthenticator({otpCode}) {
-    const response = await api.post("/api/v1/login-with-authenticator", {otpCode});
+    const response = await api.post("/api/v1/auth/login-with-authenticator", {otpCode});
     if (response.status === 200) {
         console.log("Login successful:", response.data);
         return response.data;

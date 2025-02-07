@@ -4,7 +4,7 @@ import {loginWithAuthenticator} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
 import {useNavigate} from "react-router-dom";
 
-const TwoFactorAuthentication = () => {
+const AuthenticationLogin = () => {
     const {setAuth} = useAuthStore();
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const inputRefs = useRef([]);
@@ -15,6 +15,7 @@ const TwoFactorAuthentication = () => {
         mutationFn: loginWithAuthenticator,
         onSuccess: (data, variables) => {
             setAuth(data?.data);
+            localStorage.setItem("auth-remember-me", true);
             localStorage.setItem("token", data?.data?.token);
             navigate("/")
         },
@@ -89,4 +90,4 @@ const TwoFactorAuthentication = () => {
     );
 };
 
-export default TwoFactorAuthentication;
+export default AuthenticationLogin;
