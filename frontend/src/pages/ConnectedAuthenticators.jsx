@@ -10,7 +10,6 @@ const ConnectedAuthenticators = () => {
     });
 
     const authenticators = fetchAuthenticatorsQuery?.data?.data?.data;
-    console.log(authenticators)
 
 
     const pageTitle = (

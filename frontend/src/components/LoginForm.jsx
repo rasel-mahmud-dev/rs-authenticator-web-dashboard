@@ -76,7 +76,7 @@ const LoginForm = () => {
                                 <span className="label-text text-gray-300">Remember me</span>
                             </label>
                         </div>
-                        <button className="btn btn-primary w-full">Sign In</button>
+                        <button type="submit" className="btn btn-primary w-full">Sign In</button>
                     </form>
                     <p className="text-center text-gray-500 mt-4">
                         <Link to="/login/authenticator" className="text-primary font-medium">

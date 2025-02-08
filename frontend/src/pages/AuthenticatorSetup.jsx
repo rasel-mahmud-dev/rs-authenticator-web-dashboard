@@ -1,26 +1,20 @@
 import React, {useState} from "react";
-import SetupGoogleAuthenticator from "./SetupGoogle.jsx";
-// import SetupMicrosoftAuthenticator from "./SetupMicrosoft.jsx";
 import {FiKey, FiShield} from "react-icons/fi";
-import {useMutation} from "@tanstack/react-query";
-import {api} from "../services/api.js"; // Icons for UI
 import {Link} from "react-router-dom";
 
+
 const AuthenticatorSetup = () => {
-    const [selectedAuthenticator, setSelectedAuthenticator] = useState(null);
 
     const authenticators = [
         {id: "google", name: "Google Authenticator", icon: <FiShield className="text-blue-500 text-4xl"/>},
         {id: "microsoft", name: "Microsoft Authenticator", icon: <FiKey className="text-green-500 text-4xl"/>},
     ];
 
-
     return (
         <div className="p-6 bg-gray-900 text-white full-viewport">
             <h2 className="text-3xl font-bold mb-6 ">
                 Setup Multi-Factor Authentication
             </h2>
-
 
                 <div>
                     <p className="mb-4 text-gray-300  ">
@@ -50,4 +44,6 @@ const AuthenticatorSetup = () => {
     );
 };
 
+
+const name = "asdf"
 export default AuthenticatorSetup;

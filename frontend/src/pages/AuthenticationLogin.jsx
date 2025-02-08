@@ -77,7 +77,7 @@ const AuthenticationLogin = () => {
                                 />
                             ))}
                         </div>
-                        <button className="btn btn-primary w-full" type="submit">Verify</button>
+                        <button  className="btn btn-primary w-full" type="submit">Verify</button>
                     </form>
                     <p className="text-center text-gray-500 mt-4">
                         <a href="/login" className="text-primary font-medium">

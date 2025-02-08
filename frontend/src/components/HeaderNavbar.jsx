@@ -89,7 +89,7 @@ const HeaderNavbar = () => {
                             <div className="flex items-stretch">
 
                                 <div className="dropdown  dropdown-end">
-                                    <div tabIndex={0} role="button"
+                                    <div data-test_id="auth-menu" tabIndex={0} role="button"
                                          className="btn btn-ghost rounded-btn">{user?.username}</div>
                                     <ul
                                         tabIndex={0}
@@ -106,7 +106,7 @@ const HeaderNavbar = () => {
                                             </NavLink>
                                         </li>
                                         <li>
-                                            <button onClick={logout} className="hover:bg-indigo-200 w-full text-left">
+                                            <button data-test_id="logout_button" onClick={logout} className="hover:bg-indigo-200 w-full text-left">
                                                 Logout
                                             </button>
                                         </li>

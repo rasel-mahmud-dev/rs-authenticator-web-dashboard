@@ -1,11 +1,11 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { register } from "../services/authSerivce.js";
+import {Link, useNavigate} from "react-router-dom";
+import {useMutation} from "@tanstack/react-query";
+import {register} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
 
 const RegistrationForm = () => {
-    const { setAuth } = useAuthStore();
+    const {setAuth} = useAuthStore();
     const navigate = useNavigate();
 
     const mutation = useMutation({
@@ -14,7 +14,7 @@ const RegistrationForm = () => {
             console.log(data)
             // setAuth(data?.data);
             // localStorage.setItem("token", data?.data?.token);
-            // navigate("/");
+            navigate("/login");
         },
         onError: (error) => {
             console.error("Registration failed:", error);
@@ -26,7 +26,7 @@ const RegistrationForm = () => {
         const username = e.target.username.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
-        mutation.mutate({ username, email, password });
+        mutation.mutate({username, email, password});
     }
 
     const errorMessage = mutation?.error?.response?.data?.message;
@@ -72,7 +72,7 @@ const RegistrationForm = () => {
                                 className="input input-bordered w-full"
                             />
                         </div>
-                        <button className="btn btn-primary w-full">Sign Up</button>
+                        <button type="submit" className="btn btn-primary w-full">Sign Up</button>
                     </form>
                     <p className="text-center text-gray-500 mt-4">
                         Already have an account?{" "}

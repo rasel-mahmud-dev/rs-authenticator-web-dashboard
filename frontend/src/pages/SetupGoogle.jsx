@@ -71,7 +71,7 @@ const SetupGoogleAuthenticator = () => {
                 className="  mb-4"
             />
             <p className="font-mono text-gray-200">Code Name: {data?.code_name}</p>
-            <p className="font-mono text-gray-200">Secret Key: {data?.secret}</p>
+            <p className="font-mono text-gray-200">Secret Key: <span data-test_id="secret_key">{data?.secret}</span></p>
             <button
                 onClick={() => generateQR(true)}
                 className="bg-gray-600 hover:bg-gray-700 text-white px-4 mt-2 py-2 rounded-lg"
@@ -104,7 +104,7 @@ const SetupGoogleAuthenticator = () => {
 
             <div className="mt-6 flex space-x-4">
 
-                <button onClick={handleCompleteSetup}
+                <button data-test_id="confirm_setup_button" onClick={handleCancel} onClick={handleCompleteSetup}
                         className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
                     Confirm Setup
                 </button>
