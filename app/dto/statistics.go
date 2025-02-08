@@ -10,3 +10,9 @@ type AuthenticatorStats struct {
 	Authenticator int    `json:"authenticator"`
 	Password      int    `json:"password"`
 }
+
+type GetAttemptRateStatsResult struct {
+	Failed  int `json:"failed"`
+	Success int `json:"success"`
+	Total   int `json:"total"`
+}

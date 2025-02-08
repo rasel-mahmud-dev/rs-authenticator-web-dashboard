@@ -98,3 +98,33 @@ func (r *authSessionRepository) InsertAuthSession(payload models.AuthSession) (*
 	newSession.IsRevoked = false
 	return &newSession, nil
 }
+
+func (r *authSessionRepository) InsertAuthFailedAttempt(attempt models.UserAuthAttempt) {
+	query := `
+		INSERT INTO public.user_auth_attempts (
+			user_id, attempt_type, mfa_security_id, security_token, 
+			ip_address, user_agent, last_attempt_at, is_successful, created_at, updated_at
+		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+
+	currentTime := time.Now()
+	_, err := r.db.Exec(
+		query,
+		attempt.UserID,
+		attempt.AttemptType,
+		attempt.MFASecurityID,
+		attempt.SecurityToken,
+		attempt.IPAddress,
+		attempt.UserAgent,
+		attempt.LastAttemptAt,
+		attempt.IsSuccessful,
+		currentTime,
+		currentTime,
+	)
+
+	if err != nil {
+		utils.LoggerInstance.Error("Error inserting auth attempt: " + err.Error())
+		return
+	}
+
+	utils.LoggerInstance.Info("User authentication attempt recorded successfully")
+}

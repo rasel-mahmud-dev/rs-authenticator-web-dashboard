@@ -100,13 +100,14 @@ CREATE TABLE mfa_security_tokens
 );
 
 
-CREATE TABLE user_auth_attempts
+DROP table if exists user_auth_attempts;
+CREATE TABLE if not exists user_auth_attempts
 (
     id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     code_name       VARCHAR(1024),
     user_id         UUID        NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     attempt_type    VARCHAR(50) NOT NULL, -- Type of attempt (failed, backup_code, etc.)
-    mfa_security_id UUID             DEFAULT NULL REFERENCES mfa_security_tokens (id),
+    mfa_security_id VARCHAR(255),
     security_token  VARCHAR(16)      default NULL,
     ip_address      VARCHAR(45)      default NULL,
     user_agent      VARCHAR(255)     default NULL,

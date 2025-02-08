@@ -75,3 +75,20 @@ func (r *UserRepository) GetAuthenticationStats() ([]dto.AuthenticatorStats, err
 
 	return stats, nil
 }
+
+func (r *UserRepository) GetAttemptRateStats() dto.GetAttemptRateStatsResult {
+	query := `
+		SELECT 
+			(SELECT count(id) FROM user_auth_attempts) AS failed,
+			(SELECT count(id) FROM auth_sessions) AS success;
+	`
+
+	var result dto.GetAttemptRateStatsResult
+	err := r.db.QueryRow(query).Scan(&result.Failed, &result.Success)
+	if err != nil {
+		utils.LoggerInstance.Error(err.Error())
+	}
+
+	result.Total = result.Failed + result.Success
+	return result
+}

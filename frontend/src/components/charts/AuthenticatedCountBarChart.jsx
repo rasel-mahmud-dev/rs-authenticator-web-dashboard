@@ -39,7 +39,7 @@ const AuthenticatedCountBarChart = () => {
 
                     {XAxisUtil()}
 
-                    <YAxis/>
+                    <YAxis className="text-xs  text-white font-medium" />
                     <Tooltip/>
                     <Legend/>
 
