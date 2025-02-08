@@ -20,7 +20,7 @@ const LoginForm = () => {
             } else {
                 sessionStorage.setItem("token", data?.data?.token);
             }
-            navigate('/')
+            navigate('/account')
         },
         onError: (error) => {
             console.error("Login failed:", error);

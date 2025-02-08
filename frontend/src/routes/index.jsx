@@ -10,6 +10,7 @@ import SetupGoogleAuthenticator from "../pages/SetupGoogle.jsx";
 import AccountLayout from "../components/AccountLayout.jsx";
 import AuthenticationLogin from "../pages/AuthenticationLogin.jsx";
 import BlogHomePage from "../pages/BlogHomePage.jsx";
+import RegistrationForm from "../components/RegistrationForm.jsx";
 
 const routes = createBrowserRouter([
     {
@@ -27,7 +28,7 @@ const routes = createBrowserRouter([
             },
             {
                 path: 'registration',
-                element: <LoginForm/>,
+                element: <RegistrationForm/>,
             },
             {
                 path: 'login/authenticator',

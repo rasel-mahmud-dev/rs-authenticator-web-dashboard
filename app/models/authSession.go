@@ -15,6 +15,7 @@ type AuthSession struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 	LastUsedAt   time.Time `json:"last_used_at"`
 	IsRevoked    bool      `json:"is_revoked"`
+	AuthMethod   string    `json:"auth_method,omitempty"`
 
 	// populated field
 	Avatar   string `json:"avatar,omitempty"`

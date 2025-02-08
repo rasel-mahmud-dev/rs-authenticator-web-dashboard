@@ -70,9 +70,9 @@ func (r *authSessionRepository) InsertAuthSession(payload models.AuthSession) (*
 	query := `
 		INSERT INTO public.auth_sessions (
 			user_id, ip_address, user_agent, access_token, refresh_token, 
-			created_at, updated_at, last_used_at, is_revoked
+			created_at, updated_at, last_used_at, is_revoked, auth_method
 		) VALUES (
-			$1, $2, $3, $4, $5, $6, $7, $8, $9
+			$1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 		) RETURNING id;
 	`
 	var newSession models.AuthSession
@@ -88,6 +88,7 @@ func (r *authSessionRepository) InsertAuthSession(payload models.AuthSession) (*
 		currentTime,
 		nil,
 		false,
+		payload.AuthMethod,
 	).
 		Scan(&newSession.ID)
 

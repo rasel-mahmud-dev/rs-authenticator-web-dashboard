@@ -23,6 +23,7 @@ func (h *NewSessionHandler) Handle(c *context2.BaseContext) bool {
 		UserAgent:    utils.GetUserAgent(c.Request),
 		AccessToken:  accessToken,
 		RefreshToken: accessToken,
+		AuthMethod:   c.AuthMethod,
 	})
 	if err != nil {
 		utils.LoggerInstance.Error(fmt.Sprintf("Auth session creation failed %s", err))

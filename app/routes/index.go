@@ -11,4 +11,5 @@ func Init(router *mux.Router) {
 	router.HandleFunc("/api/health", handlers.HealthHandler).Methods("GET")
 	AuthRoutes(router)
 	AuthenticatorRoutes(router)
+	StatisticsRoutes(router)
 }

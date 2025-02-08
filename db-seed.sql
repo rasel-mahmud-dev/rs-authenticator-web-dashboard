@@ -115,3 +115,8 @@ CREATE TABLE user_auth_attempts
     created_at      TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP        DEFAULT CURRENT_TIMESTAMP
 );
+
+
+CREATE TYPE auth_method_enum AS ENUM ('authenticator', 'password');
+ALTER TABLE auth_sessions
+    ADD COLUMN IF NOT EXISTS auth_method auth_method_enum default 'password';

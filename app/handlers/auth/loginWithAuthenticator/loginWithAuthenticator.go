@@ -12,6 +12,7 @@ func LoginWithAuthenticator(w http.ResponseWriter, r *http.Request) {
 		RegistrationContext: context.RegistrationContext{},
 		ResponseWriter:      w,
 		Request:             r,
+		AuthMethod:          "authenticator",
 	}
 
 	chain := &JSONValidationHandler{}

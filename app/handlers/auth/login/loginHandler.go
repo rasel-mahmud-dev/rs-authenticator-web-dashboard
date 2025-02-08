@@ -12,6 +12,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := &context.BaseContext{
 		ResponseWriter: w,
 		Request:        r,
+		AuthMethod:     "password",
 	}
 	chain := &JSONValidationHandler{}
 	chain.SetNext(&RequestValidationHandler{}).

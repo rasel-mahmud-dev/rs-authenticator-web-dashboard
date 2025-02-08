@@ -17,7 +17,7 @@ const AuthenticationLogin = () => {
             setAuth(data?.data);
             localStorage.setItem("auth-remember-me", true);
             localStorage.setItem("token", data?.data?.token);
-            navigate("/")
+            navigate('/account')
         },
         onError: (error) => {
             console.error("Login failed:", error);
