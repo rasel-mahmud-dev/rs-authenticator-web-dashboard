@@ -1,5 +1,7 @@
 package dto
 
+import "time"
+
 type UserRegistrationStats struct {
 	Date  string `json:"date"`
 	Count int    `json:"count"`
@@ -15,4 +17,10 @@ type GetAttemptRateStatsResult struct {
 	Failed  int `json:"failed"`
 	Success int `json:"success"`
 	Total   int `json:"total"`
+}
+
+type AttemptRateStatsDetail struct {
+	Date    time.Time `json:"date"`
+	Failed  int       `json:"failed"`
+	Success int       `json:"success"`
 }

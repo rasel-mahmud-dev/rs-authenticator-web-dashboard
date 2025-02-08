@@ -30,9 +30,18 @@ func AuthenticationSlatsHandler(w http.ResponseWriter, _r *http.Request) {
 	_ = json.NewEncoder(w).Encode(map[string]interface{}{"data": stats})
 }
 
-func LoginAttemptSlatsHandler(w http.ResponseWriter, _r *http.Request) {
+func LoginAttemptSlatsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+
+	value := r.URL.Query().Get("t")
 	userRepo := repositories.NewUserRepository()
-	stats := userRepo.GetAttemptRateStats()
-	_ = json.NewEncoder(w).Encode(map[string]interface{}{"data": stats})
+	var stats interface{}
+	if value == "detail" {
+		stats, _ = userRepo.GetAttemptRateDetailStats()
+
+	} else {
+		stats = userRepo.GetAttemptRateStats()
+	}
+
+	_ = json.NewEncoder(w).Encode(stats)
 }

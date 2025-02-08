@@ -1,5 +1,7 @@
 import React from 'react';
 import {Bar, BarChart, Cell, ResponsiveContainer, Tooltip,} from 'recharts';
+import {useQuery} from "@tanstack/react-query";
+import {api} from "../../services/api.js";
 
 const data = Array.from({length: 30}, (_, i) => ({
     date: i + 1,
@@ -7,6 +9,21 @@ const data = Array.from({length: 30}, (_, i) => ({
 }));
 
 const UserLoginSlatsBarChart = () => {
+
+    const query = useQuery({
+        queryKey: ["attempts_detail"],
+        queryFn: () => api.get("/api/v1/slats/auth-attempts?t=detail"),
+    });
+
+    const data = query?.data?.data ?? [];
+
+    const chartData = data.map(entry => ({
+        date: entry.date,
+        failed: entry.failed,
+        success: entry.success
+    }));
+
+
     return (
         <ResponsiveContainer  className="chart-bg p-4 py-1">
             <BarChart
@@ -19,19 +36,28 @@ const UserLoginSlatsBarChart = () => {
                     bottom: 5,
                 }}
             >
-                {/*<XAxis dataKey="date"/>*/}
-                {/*<YAxis/>*/}
 
                 <Tooltip/>
 
-                <Bar dataKey="logins" radius={[10, 10, 0, 0]} barSize={10} >
-                    {data.map((entry, index) => (
+                <Bar dataKey="success" radius={[10, 10, 0, 0]} barSize={10}>
+                    {chartData.map((entry, index) => (
                         <Cell
-                            key={index}
-                            fill={index % 2 === 0 ? "#ff4d4d" : "#4d88ff"}
+                            key={`success-${index}`}
+                            fill="#4d88ff"
                         />
                     ))}
                 </Bar>
+
+                <Bar dataKey="failed" radius={[10, 10, 0, 0]} barSize={10}>
+                    {chartData.map((entry, index) => (
+                        <Cell
+                            key={`failed-${index}`}
+                            fill="#ff4d4d"
+                        />
+                    ))}
+                </Bar>
+
+
             </BarChart>
         </ResponsiveContainer>
     );

@@ -3,14 +3,25 @@ import RegistrationAreaChart from "../components/charts/UserRegistrationChart.js
 import AuthenticatedCountBarChart from "../components/charts/AuthenticatedCountBarChart.jsx";
 import UserLoginSlatsBarChart from "../components/charts/UserLoginSlatsBarChart.jsx";
 import PieChartComponent from "../components/charts/PieChartComponent.jsx";
+import {useQuery} from "@tanstack/react-query";
+import {api} from "../services/api.js";
 
 const HomePage = () => {
+
+    const query = useQuery({
+        queryKey: ["attempts"],
+        queryFn: () => api.get("/api/v1/slats/auth-attempts"),
+
+    })
+
+    const data = query?.data?.data ?? {}
+
     return (
         <div className="px-4">
             <div className="grid grid-cols-3  gap-4 py-4">
                 <UserLoginSlatsBarChart/>
-                <PieChartComponent label="React " val={29}/>
-                <PieChartComponent label="React " val={29}/>
+                <PieChartComponent label="Success" total={data?.total ?? 0} val={data?.success ?? 0}/>
+                <PieChartComponent isError={true} label="Failed" total={data?.total ?? 0} val={data?.failed}/>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">

@@ -92,3 +92,74 @@ func (r *UserRepository) GetAttemptRateStats() dto.GetAttemptRateStatsResult {
 	result.Total = result.Failed + result.Success
 	return result
 }
+
+func (r *UserRepository) GetAttemptRateDetailStats() ([]dto.AttemptRateStatsDetail, error) {
+	failedQuery := `
+        SELECT 
+            DATE(created_at) AS date, 
+            COUNT(id) AS failed
+        FROM user_auth_attempts
+        GROUP BY DATE(created_at)
+        ORDER BY date;
+    `
+	rows, err := r.db.Query(failedQuery)
+	if err != nil {
+		utils.LoggerInstance.Error(err.Error())
+		return nil, err
+	}
+	defer rows.Close()
+
+	failedCounts := make(map[string]int)
+
+	for rows.Next() {
+		var date time.Time
+		var failed int
+		if err := rows.Scan(&date, &failed); err != nil {
+			utils.LoggerInstance.Error(err.Error())
+			return nil, err
+		}
+		failedCounts[date.Format("2006-01-02")] = failed
+	}
+
+	// Query for successful attempts
+	successQuery := `
+        SELECT 
+            DATE(created_at) AS date, 
+            COUNT(id) AS success
+        FROM auth_sessions
+        GROUP BY DATE(created_at)
+        ORDER BY date;
+    `
+	rows, err = r.db.Query(successQuery)
+	if err != nil {
+		utils.LoggerInstance.Error(err.Error())
+		return nil, err
+	}
+	defer rows.Close()
+
+	var result []dto.AttemptRateStatsDetail
+
+	for rows.Next() {
+		var date time.Time
+		var success int
+		if err := rows.Scan(&date, &success); err != nil {
+			utils.LoggerInstance.Error(err.Error())
+			return nil, err
+		}
+
+		detail := dto.AttemptRateStatsDetail{
+			Date:    date,
+			Success: success,
+		}
+
+		if failed, exists := failedCounts[date.Format("2006-01-02")]; exists {
+			detail.Failed = failed
+		} else {
+			detail.Failed = 0
+		}
+
+		result = append(result, detail)
+	}
+
+	return result, nil
+}
