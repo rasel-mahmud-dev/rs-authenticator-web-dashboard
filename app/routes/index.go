@@ -12,4 +12,5 @@ func Init(router *mux.Router) {
 	AuthRoutes(router)
 	AuthenticatorRoutes(router)
 	StatisticsRoutes(router)
+	UserProfileRoutes(router)
 }

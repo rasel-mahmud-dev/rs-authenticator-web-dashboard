@@ -80,7 +80,7 @@ CREATE TABLE public.auth_session_history
 
 
 DROP TABLE if exists user_auth_attempts;
-DROP TABLE  if exists  mfa_security_tokens;
+DROP TABLE if exists mfa_security_tokens;
 CREATE TABLE mfa_security_tokens
 (
     id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -121,3 +121,31 @@ CREATE TABLE if not exists user_auth_attempts
 CREATE TYPE auth_method_enum AS ENUM ('authenticator', 'password');
 ALTER TABLE auth_sessions
     ADD COLUMN IF NOT EXISTS auth_method auth_method_enum default 'password';
+
+
+DROP TABLE IF EXISTS user_profiles;
+CREATE TABLE  IF NOT EXISTS user_profiles
+(
+    user_id    UUID PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+    full_name  VARCHAR(100) DEFAULT NULL,
+    birth_date DATE         DEFAULT NULL,
+    gender     VARCHAR(10) CHECK (gender IN ('male', 'female', 'other', 'prefer not to say')),
+    phone      VARCHAR(20)  DEFAULT NULL,
+    location   VARCHAR(150) DEFAULT NULL,
+    about_me   TEXT         DEFAULT NULL,
+    website    TEXT         DEFAULT NULL,
+    avatar    TEXT         DEFAULT NULL,
+    cover    TEXT         DEFAULT NULL,
+
+    -- Social Media Links
+    facebook   TEXT         DEFAULT NULL,
+    twitter    TEXT         DEFAULT NULL,
+    linkedin   TEXT         DEFAULT NULL,
+    instagram  TEXT         DEFAULT NULL,
+    github     TEXT         DEFAULT NULL,
+    youtube    TEXT         DEFAULT NULL,
+    tiktok     TEXT         DEFAULT NULL,
+
+    created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);

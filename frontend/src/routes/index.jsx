@@ -10,6 +10,7 @@ import SetupGoogleAuthenticator from "../pages/SetupGoogle.jsx";
 import AccountLayout from "../components/AccountLayout.jsx";
 import AuthenticationLogin from "../pages/AuthenticationLogin.jsx";
 import BlogHomePage from "../pages/BlogHomePage.jsx";
+import ProfilePage from "../pages/ProfilePage.jsx";
 import RegistrationForm from "../components/RegistrationForm.jsx";
 
 const routes = createBrowserRouter([
@@ -44,6 +45,14 @@ const routes = createBrowserRouter([
                         element: (
                             <ProtectedRoute>
                                 <HomePage/>
+                            </ProtectedRoute>
+                        ),
+                    },
+ {
+                        path: '/account/profile',
+                        element: (
+                            <ProtectedRoute>
+                                <ProfilePage/>
                             </ProtectedRoute>
                         ),
                     },
