@@ -35,8 +35,8 @@ func (r *Repository) InsertOrUpdateUserProfile(profile dto.UpdateProfilePayload)
 	query := `
 		INSERT INTO user_profiles (
 			user_id, full_name, birth_date, gender, phone, location, about_me, website,
-			facebook, twitter, linkedin, instagram, github, youtube, tiktok, created_at, updated_at
-		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, NOW(), NOW())
+			facebook, twitter, linkedin, instagram, github, youtube, tiktok, created_at, updated_at, avatar, cover
+		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, NOW(), NOW(), $16, $17)
 		ON CONFLICT (user_id) 
 		DO UPDATE SET 
 			full_name = EXCLUDED.full_name,
@@ -53,21 +53,37 @@ func (r *Repository) InsertOrUpdateUserProfile(profile dto.UpdateProfilePayload)
 			github = EXCLUDED.github,
 			youtube = EXCLUDED.youtube,
 			tiktok = EXCLUDED.tiktok,
-			updated_at = NOW();
+			updated_at = NOW(),
+			avatar = EXCLUDED.avatar,
+			cover = EXCLUDED.cover;
 	`
 
 	parsedTime, err := time.Parse("2006-01-02", *profile.BirthDate)
 	if err != nil {
 		fmt.Println("Error parsing time:", err)
 	}
-
-	fmt.Println("parsedTime", parsedTime)
-
 	_, err = r.db.Exec(query,
 		profile.UserID, profile.FullName, parsedTime, profile.Gender,
 		profile.Phone, profile.Location, profile.AboutMe, profile.Website,
 		profile.Facebook, profile.Twitter, profile.LinkedIn, profile.Instagram,
-		profile.GitHub, profile.YouTube, profile.TikTok,
+		profile.GitHub, profile.YouTube, profile.TikTok, profile.Avatar, profile.Cover,
+	)
+
+	return err
+}
+
+func (r *Repository) InsertOrUpdateUserProfileAvatar(profile dto.UpdateProfilePayload) error {
+	query := `
+		INSERT INTO user_profiles (user_id, avatar, cover) VALUES ($1, $2, $3)
+		ON CONFLICT (user_id) 
+		DO UPDATE SET 
+			updated_at = NOW(),
+			avatar = EXCLUDED.avatar,
+			cover = EXCLUDED.cover;
+	`
+
+	_, err := r.db.Exec(query,
+		profile.UserID, profile.Avatar, profile.Cover,
 	)
 
 	return err
@@ -76,10 +92,10 @@ func (r *Repository) InsertOrUpdateUserProfile(profile dto.UpdateProfilePayload)
 func (r *Repository) GetUserProfile(userID string) (*models.UserProfile, error) {
 	query := `
 		SELECT 
-			u.id, u.avatar, u.created_at AS account_created_at, 
+			u.id, p.avatar, u.created_at AS account_created_at, 
 			COALESCE(p.full_name, ''), p.birth_date, p.gender, p.phone, p.location, p.about_me, p.website,
 			p.facebook, p.twitter, p.linkedin, p.instagram, p.github, p.youtube, p.tiktok, 
-			p.created_at, p.updated_at
+			p.created_at, p.updated_at, p.cover
 		FROM users u
 		LEFT JOIN user_profiles p ON u.id = p.user_id
 		WHERE u.id = $1;
@@ -94,7 +110,7 @@ func (r *Repository) GetUserProfile(userID string) (*models.UserProfile, error) 
 		&profile.Phone, &profile.Location, &profile.AboutMe, &profile.Website,
 		&profile.Facebook, &profile.Twitter, &profile.LinkedIn, &profile.Instagram,
 		&profile.GitHub, &profile.YouTube, &profile.TikTok,
-		&createdAt, &updatedAt, // Use sql.NullTime
+		&createdAt, &updatedAt, &profile.Cover,
 	)
 
 	if err != nil {

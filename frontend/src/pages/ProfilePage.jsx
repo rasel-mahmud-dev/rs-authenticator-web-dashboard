@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import useAuthStore from "../store/authState.js";
 import {useQuery} from "@tanstack/react-query";
@@ -6,7 +6,31 @@ import {api} from "../services/api.js";
 
 const UserProfile = () => {
     const {user} = useAuthStore(); // Get authenticated user details
-    const [preview, setPreview] = useState(user?.profileImage || "/boy.png");
+    const query = useQuery({
+        queryKey: ["profile"],
+        queryFn: () => api.get("/api/v1/profile")
+    })
+
+    const profile = query?.data?.data ?? {}
+
+    const {
+        user_id,
+        full_name,
+        account_created_at,
+        gender,
+        phone,
+        created_at,
+        updated_at,
+        about_me,
+        avatar,
+        cover
+    } = profile
+
+    const [preview, setPreview] = useState(avatar || "/boy.png");
+
+    useEffect(() => {
+        if (avatar) setPreview(avatar)
+    }, [avatar]);
 
     const resizeAndCropImage = (file) => {
         return new Promise((resolve) => {
@@ -16,7 +40,7 @@ const UserProfile = () => {
                 const canvas = document.createElement("canvas");
                 const ctx = canvas.getContext("2d");
 
-                const size = 500; // Target size (square)
+                const size = 500;
                 canvas.width = size;
                 canvas.height = size;
 
@@ -40,25 +64,20 @@ const UserProfile = () => {
         });
     };
 
-    // Handle file selection
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Resize & crop image
         const resizedBlob = await resizeAndCropImage(file);
 
-        // Create URL for preview
         const previewUrl = URL.createObjectURL(resizedBlob);
         setPreview(previewUrl);
 
-        // Prepare FormData
         const formData = new FormData();
         formData.append("image", resizedBlob, "profile.jpg");
 
         try {
-            // Send to Go backend
-            const response = await api.post("/api/v1/profile/upload", formData, {
+            const response = await api.post("/api/v1/profile/avatar", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -69,23 +88,6 @@ const UserProfile = () => {
             console.error("Upload Error:", error);
         }
     };
-    const query = useQuery({
-        queryKey: ["profile"],
-        queryFn: () => api.get("/api/v1/profile")
-    })
-
-    const profile = query?.data?.data ?? {}
-
-    const {
-        user_id,
-        full_name,
-        account_created_at,
-        gender,
-        phone,
-        created_at,
-        updated_at,
-        about_me
-    } = profile
 
 
     return (

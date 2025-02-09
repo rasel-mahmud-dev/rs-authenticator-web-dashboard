@@ -6,8 +6,8 @@ type UserProfile struct {
 	UserID           string     `json:"user_id"`
 	FullName         *string    `json:"full_name,omitempty"`
 	AccountCreatedAt string     `json:"account_created_at,omitempty"`
-	Avatar           *string    `json:"avatar,omitempty"`
-	Cover            *string    `json:"cover,omitempty"`
+	Avatar           string     `json:"avatar,omitempty"`
+	Cover            string     `json:"cover,omitempty"`
 	BirthDate        *time.Time `json:"birth_date,omitempty"`
 	Gender           *string    `json:"gender,omitempty"`
 	Phone            *string    `json:"phone,omitempty"`

@@ -3,8 +3,8 @@ package dto
 type UpdateProfilePayload struct {
 	UserID    string  `json:"userId"`
 	FullName  *string `json:"fullName,omitempty"`
-	Avatar    *string `json:"avatar,omitempty"`
-	Cover     *string `json:"cover,omitempty"`
+	Avatar    string  `json:"avatar,omitempty"`
+	Cover     string  `json:"cover,omitempty"`
 	BirthDate *string `json:"birthDate,omitempty"`
 	Gender    *string `json:"gender,omitempty"`
 	Phone     *string `json:"phone,omitempty"`

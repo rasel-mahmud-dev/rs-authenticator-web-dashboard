@@ -6,6 +6,7 @@ type StatusCodeType string
 
 var (
 	OK                             StatusCodeType = "SUCCESS-000"
+	BAD_REQUEST                    StatusCodeType = "SUCCESS-0023"
 	LOGIN_SUCCESS                  StatusCodeType = "SUCCESS-001"
 	LOGOUT_SUCCESS                 StatusCodeType = "SUCCESS-002"
 	ACCOUNT_CREATED                StatusCodeType = "SUCCESS-003"
