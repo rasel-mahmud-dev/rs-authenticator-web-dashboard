@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import useAuthStore from "../store/authState.js";
 import {useQuery} from "@tanstack/react-query";
@@ -6,13 +6,75 @@ import {api} from "../services/api.js";
 
 const UserProfile = () => {
     const {user} = useAuthStore(); // Get authenticated user details
+    const [preview, setPreview] = useState(user?.profileImage || "/boy.png");
 
+    const resizeAndCropImage = (file) => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+
+                const size = 500; // Target size (square)
+                canvas.width = size;
+                canvas.height = size;
+
+                const aspectRatio = img.width / img.height;
+                let sx, sy, sWidth, sHeight;
+                if (aspectRatio > 1) {
+                    sWidth = img.height;
+                    sHeight = img.height;
+                    sx = (img.width - sWidth) / 2;
+                    sy = 0;
+                } else {
+                    sWidth = img.width;
+                    sHeight = img.width;
+                    sx = 0;
+                    sy = (img.height - sHeight) / 2;
+                }
+
+                ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, size, size);
+                canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.8);
+            };
+        });
+    };
+
+    // Handle file selection
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Resize & crop image
+        const resizedBlob = await resizeAndCropImage(file);
+
+        // Create URL for preview
+        const previewUrl = URL.createObjectURL(resizedBlob);
+        setPreview(previewUrl);
+
+        // Prepare FormData
+        const formData = new FormData();
+        formData.append("image", resizedBlob, "profile.jpg");
+
+        try {
+            // Send to Go backend
+            const response = await api.post("/api/v1/profile/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            console.log("Upload Success:", response.data);
+        } catch (error) {
+            console.error("Upload Error:", error);
+        }
+    };
     const query = useQuery({
         queryKey: ["profile"],
         queryFn: () => api.get("/api/v1/profile")
     })
 
-    const data = query?.data?.data ?? {}
+    const profile = query?.data?.data ?? {}
 
     const {
         user_id,
@@ -22,7 +84,8 @@ const UserProfile = () => {
         phone,
         created_at,
         updated_at,
-    } = data
+        about_me
+    } = profile
 
 
     return (
@@ -36,12 +99,25 @@ const UserProfile = () => {
 
                 <div className="absolute bottom-4 transform translate-y-1/2">
                     <div className="relative w-36 h-36">
-                        <div className="avatar  ">
-                            <div className="  rounded-full">
-                                <img src="/boy.png"/>
+                        <div className="avatar">
+                            <div className="rounded-full w-36 h-36">
+                                <img src={preview} alt="Profile" className="w-36 h-36 object-cover rounded-full"/>
                             </div>
+
+                            {/* Hidden File Input */}
+                            <input
+                                type="file"
+                                accept="image/*"
+                                id="fileInput"
+                                className="hidden"
+                                onChange={handleFileChange}
+                            />
+
+                            {/* Button to trigger file input */}
                             <button
-                                className="w-5 h-5 flex items-center justify-center  text-[10px] absolute bottom-2 right-0 bg-gray-700 p-3 rounded-full hover:bg-gray-600">
+                                onClick={() => document.getElementById("fileInput").click()}
+                                className="w-6 h-6 flex items-center justify-center text-[10px] absolute bottom-2 right-0 bg-gray-700 p-3 rounded-full hover:bg-gray-600"
+                            >
                                 ✏️
                             </button>
                         </div>
@@ -62,34 +138,45 @@ const UserProfile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-800 p-6 rounded-lg shadow-md">
                     <div>
                         <h2 className="text-gray-400 text-sm">Email</h2>
-                        <p className="text-white">{user?.email || "johndoe@example.com"}</p>
+                        <p className="text-white">{profile.email || "johndoe@example.com"}</p>
                     </div>
                     <div>
                         <h2 className="text-gray-400 text-sm">Phone</h2>
-                        <p className="text-white">{phone || "+123 456 7890"}</p>
+                        <p className="text-white">{profile.phone || "+123 456 7890"}</p>
                     </div>
                     <div>
                         <h2 className="text-gray-400 text-sm">Role</h2>
-                        <p className="text-white">{user?.role || "User"}</p>
+                        <p className="text-white">{profile.role || "User"}</p>
                     </div>
                     <div>
                         <h2 className="text-gray-400 text-sm">Account Status</h2>
-                        <p className="text-white">{user?.status || "Active"}</p>
+                        <p className="text-white">{profile.status || "Active"}</p>
                     </div>
                     <div className="col-span-2">
                         <h2 className="text-gray-400 text-sm">Bio</h2>
-                        <p className="text-white">
-                            {user?.bio || "No bio available. Add a short bio about yourself."}
-                        </p>
+                        <p className="text-white">{profile.about_me || "No bio available."}</p>
+                    </div>
+
+                    <div>
+                        <h2 className="text-gray-400 text-sm">Gender</h2>
+                        <p className="text-white">{profile.gender || "Not specified"}</p>
                     </div>
                     <div>
-                        <h2 className="text-gray-400 text-sm">Location</h2>
-                        <p className="text-white">{user?.location || "Unknown"}</p>
+                        <h2 className="text-gray-400 text-sm">Date of Birth</h2>
+                        <p className="text-white">
+                            {profile.account_created_at ? new Date(profile.account_created_at).toLocaleDateString() : "N/A"}
+                        </p>
                     </div>
                     <div>
                         <h2 className="text-gray-400 text-sm">Joined</h2>
                         <p className="text-white">
-                            {user?.joined ? new Date(auth.joined).toLocaleDateString() : "N/A"}
+                            {profile.account_created_at ? new Date(profile.account_created_at).toLocaleDateString() : "N/A"}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className="text-gray-400 text-sm">Last Updated</h2>
+                        <p className="text-white">
+                            {profile.updated_at ? new Date(profile.updated_at).toLocaleDateString() : "N/A"}
                         </p>
                     </div>
                 </div>
@@ -97,7 +184,8 @@ const UserProfile = () => {
 
             {/* Action Buttons */}
             <div className="flex justify-center gap-4 mt-8 mb-10">
-                <Link to="/profile/edit" className="btn btn-primary px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600">
+                <Link to="/account/profile/edit"
+                      className="btn btn-primary px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600">
                     Edit Profile
                 </Link>
                 <button

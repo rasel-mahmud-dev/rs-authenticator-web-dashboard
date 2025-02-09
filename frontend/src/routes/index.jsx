@@ -12,6 +12,8 @@ import AuthenticationLogin from "../pages/AuthenticationLogin.jsx";
 import BlogHomePage from "../pages/BlogHomePage.jsx";
 import ProfilePage from "../pages/ProfilePage.jsx";
 import RegistrationForm from "../components/RegistrationForm.jsx";
+import EditProfilePage from "../pages/EditProfilePage.jsx";
+import AccountSettings from "../pages/AccountSettings.jsx";
 
 const routes = createBrowserRouter([
     {
@@ -48,11 +50,26 @@ const routes = createBrowserRouter([
                             </ProtectedRoute>
                         ),
                     },
- {
+                    {
                         path: '/account/profile',
                         element: (
                             <ProtectedRoute>
                                 <ProfilePage/>
+                            </ProtectedRoute>
+                        ),
+                    }, {
+                        path: '/account/settings',
+                        element: (
+                            <ProtectedRoute>
+                                <AccountSettings/>
+                            </ProtectedRoute>
+                        ),
+                    },
+                    {
+                        path: '/account/profile/edit',
+                        element: (
+                            <ProtectedRoute>
+                                <EditProfilePage/>
                             </ProtectedRoute>
                         ),
                     },

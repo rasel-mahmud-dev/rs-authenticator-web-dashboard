@@ -18,7 +18,6 @@ const HeaderNavbar = () => {
         sessionStorage.removeItem("token")
     };
 
-
     const links = (
         <>
 
@@ -96,17 +95,18 @@ const HeaderNavbar = () => {
                                         className="menu dropdown-content bg-primary-100 rounded-box relative z-[100] mt-4 w-52 p-2 shadow">
 
                                         <li>
-                                            <NavLink to="/profile" className="hover:bg-indigo-200">
+                                            <NavLink to="/account/profile" className="hover:bg-indigo-200">
                                                 Profile
                                             </NavLink>
                                         </li>
                                         <li>
-                                            <NavLink to="/settings" className="hover:bg-indigo-200">
+                                            <NavLink to="/account/settings" className="hover:bg-indigo-200">
                                                 Settings
                                             </NavLink>
                                         </li>
                                         <li>
-                                            <button data-test_id="logout_button" onClick={logout} className="hover:bg-indigo-200 w-full text-left">
+                                            <button data-test_id="logout_button" onClick={logout}
+                                                    className="hover:bg-indigo-200 w-full text-left">
                                                 Logout
                                             </button>
                                         </li>

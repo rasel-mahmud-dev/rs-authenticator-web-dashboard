@@ -14,7 +14,7 @@ const ConnectedAuthenticators = () => {
 
     const pageTitle = (
         <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold mb-4 text-gray-100">Connected Authenticator Apps</h2>
+            <h2 className="mb-4 text-gray-100 text-3xl font-bold text-center ">Connected Authenticator Apps</h2>
             <Link to="/account/authenticator-setup" className="btn btn-primary">Add Provider</Link>
         </div>
     )
@@ -40,7 +40,7 @@ const ConnectedAuthenticators = () => {
     }
 
     return (
-        <div className="p-4">
+        <div className="mt-10 max-w-screen-xl mx-auto px-4">
 
             {pageTitle}
 

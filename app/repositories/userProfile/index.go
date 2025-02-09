@@ -3,10 +3,13 @@ package userProfile
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"rs/auth/app/db"
+	"rs/auth/app/dto"
 	"rs/auth/app/models"
 	"rs/auth/app/utils"
 	"sync"
+	"time"
 )
 
 type Repository struct {
@@ -27,7 +30,8 @@ func NewRepository() *Repository {
 	return instance
 }
 
-func (r *Repository) InsertOrUpdateUserProfile(profile models.UserProfile) error {
+func (r *Repository) InsertOrUpdateUserProfile(profile dto.UpdateProfilePayload) error {
+
 	query := `
 		INSERT INTO user_profiles (
 			user_id, full_name, birth_date, gender, phone, location, about_me, website,
@@ -52,8 +56,15 @@ func (r *Repository) InsertOrUpdateUserProfile(profile models.UserProfile) error
 			updated_at = NOW();
 	`
 
-	_, err := r.db.Exec(query,
-		profile.UserID, profile.FullName, profile.BirthDate, profile.Gender,
+	parsedTime, err := time.Parse("2006-01-02", *profile.BirthDate)
+	if err != nil {
+		fmt.Println("Error parsing time:", err)
+	}
+
+	fmt.Println("parsedTime", parsedTime)
+
+	_, err = r.db.Exec(query,
+		profile.UserID, profile.FullName, parsedTime, profile.Gender,
 		profile.Phone, profile.Location, profile.AboutMe, profile.Website,
 		profile.Facebook, profile.Twitter, profile.LinkedIn, profile.Instagram,
 		profile.GitHub, profile.YouTube, profile.TikTok,
