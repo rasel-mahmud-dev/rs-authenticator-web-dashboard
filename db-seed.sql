@@ -124,7 +124,7 @@ ALTER TABLE auth_sessions
 
 
 DROP TABLE IF EXISTS user_profiles;
-CREATE TABLE  IF NOT EXISTS user_profiles
+CREATE TABLE IF NOT EXISTS user_profiles
 (
     user_id    UUID PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
     full_name  VARCHAR(100) DEFAULT NULL,
@@ -134,8 +134,8 @@ CREATE TABLE  IF NOT EXISTS user_profiles
     location   VARCHAR(150) DEFAULT NULL,
     about_me   TEXT         DEFAULT NULL,
     website    TEXT         DEFAULT NULL,
-    avatar    TEXT         DEFAULT NULL,
-    cover    TEXT         DEFAULT NULL,
+    avatar     TEXT         DEFAULT NULL,
+    cover      TEXT         DEFAULT NULL,
 
     -- Social Media Links
     facebook   TEXT         DEFAULT NULL,
@@ -149,3 +149,17 @@ CREATE TABLE  IF NOT EXISTS user_profiles
     created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
+
+
+DROP TABLE if exists user_traffic;
+CREATE TABLE if not exists user_traffic
+(
+    id            SERIAL PRIMARY KEY,
+    route_path    TEXT,
+    http_method   VARCHAR(10),
+    user_agent    TEXT,
+    ip_address    VARCHAR(45),
+    request_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    response_time INTEGER
+);
+

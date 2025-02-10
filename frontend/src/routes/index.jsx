@@ -2,10 +2,9 @@ import {createBrowserRouter} from 'react-router-dom';
 import ProtectedRoute from '../components/ProtectedRoute';
 import NotFound from "../components/NotFound.jsx";
 import LoginForm from "../components/LoginForm.jsx";
-import HomePage from "../pages/HomePage.jsx";
+import DashboardPage from "../pages/DashboardPage.jsx";
 import Layout from "../components/Layout.jsx";
 import ConnectedAuthenticators from "../pages/ConnectedAuthenticators.jsx";
-import AuthenticatorSetup from "../pages/AuthenticatorSetup.jsx";
 import SetupGoogleAuthenticator from "../pages/SetupGoogle.jsx";
 import AccountLayout from "../components/AccountLayout.jsx";
 import AuthenticationLogin from "../pages/AuthenticationLogin.jsx";
@@ -46,7 +45,7 @@ const routes = createBrowserRouter([
                         path: '',
                         element: (
                             <ProtectedRoute>
-                                <HomePage/>
+                                <DashboardPage/>
                             </ProtectedRoute>
                         ),
                     },
@@ -78,12 +77,9 @@ const routes = createBrowserRouter([
                         path: "/account/authenticator-apps",
                         element: <ProtectedRoute><ConnectedAuthenticators/></ProtectedRoute>
                     },
+
                     {
                         path: "/account/authenticator-setup",
-                        element: <ProtectedRoute><AuthenticatorSetup/></ProtectedRoute>
-                    },
-                    {
-                        path: "/account/authenticator-setup/:provider",
                         element: <ProtectedRoute><SetupGoogleAuthenticator/></ProtectedRoute>
                     },
                 ]

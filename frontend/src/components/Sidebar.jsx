@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import {FaCog, FaHome, FaUser} from 'react-icons/fa';
 import {TbDashboard} from "react-icons/tb";
-import {RiCollapseDiagonalFill, RiGoogleFill} from "react-icons/ri";
+import {RiGoogleFill} from "react-icons/ri";
+import useAuthStore from "../store/authState.js";
 
 const sidebarItems = [
     {name: 'Home', route: '/', icon: <FaHome/>},
@@ -14,31 +15,22 @@ const sidebarItems = [
 
 const Sidebar = () => {
     const location = useLocation();
-    const [isOpen, setOpen] = useState(true)
-
-    function handleResize() {
-        if (window.innerWidth > 1025) {
-            setOpen(true)
-        } else {
-            setOpen(false)
-        }
-    }
-
-    useEffect(() => {
-        window.addEventListener("resize", handleResize)
-        return () => window.removeEventListener("resize", handleResize)
-    }, []);
+    const {user} = useAuthStore()
 
     return (
-        <div className={`${isOpen ? "" : "compact-sidebar"}`}>
-            <div className="sidebar-w-mask"></div>
             <div className={`sidebar vh bg-gray-900 text-white flex flex-col  `}>
-                <div className="flex justify-center items-center h-24 bg-gray-900">
-                    <img
-                        src="https://via.placeholder.com/100"
-                        alt="Dashboard"
-                        className="rounded-full w-20 h-20"
-                    />
+                <div className="flex flex-col justify-center items-center  my-10 bg-gray-900">
+                    <div className="avatar">
+                        <div
+                            className="w-8 sm:w-12 lg:w-28 rounded-full ">
+                            <img src={user?.avatar}/>
+                        </div>
+                    </div>
+
+                    <div className="text-center mt-4">
+                        <h4 className="text-gray-100 font-bold"><span>{user?.username}</span></h4>
+                        <h4 className="text-gray-400 font-normal "><span>{user?.email}</span></h4>
+                    </div>
                 </div>
 
                 <nav className="flex-1 px-4 py-6">
@@ -58,7 +50,6 @@ const Sidebar = () => {
                         ))}
                     </ul>
                 </nav>
-            </div>
         </div>
     );
 };

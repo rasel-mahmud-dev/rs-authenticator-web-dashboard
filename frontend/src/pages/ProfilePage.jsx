@@ -5,11 +5,19 @@ import {useQuery} from "@tanstack/react-query";
 import {api} from "../services/api.js";
 
 const UserProfile = () => {
-    const {user} = useAuthStore(); // Get authenticated user details
     const query = useQuery({
         queryKey: ["profile"],
         queryFn: () => api.get("/api/v1/profile")
     })
+
+    const {user, setAuth} = useAuthStore()
+
+    const logout = () => {
+        setAuth(null)
+        localStorage.removeItem("token")
+        sessionStorage.removeItem("token")
+    };
+
 
     const profile = query?.data?.data ?? {}
 
@@ -191,9 +199,7 @@ const UserProfile = () => {
                     Edit Profile
                 </Link>
                 <button
-                    onClick={() => {
-                        // Logout logic here
-                    }}
+                    onClick={logout}
                     className="btn btn-secondary px-6 py-2 rounded-lg bg-red-500 hover:bg-red-600"
                 >
                     Log Out

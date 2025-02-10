@@ -19,6 +19,7 @@ type AuthSession struct {
 
 	// populated field
 	Avatar   string `json:"avatar,omitempty"`
+	Cover    string `json:"cover,omitempty"`
 	Username string `json:"username,omitempty"`
 	Email    string `json:"email,omitempty"`
 }

@@ -31,18 +31,15 @@
 }
 
 
-.btn-primary{
+.btn-primary {
     background: #293583;
     color: white;
 }
 
-.btn-primary.btn-outline{
+.btn-primary.btn-outline {
     background: transparent;
 }
 
-@media (min-width: 1200px) {
-
-}
 
 .layout-content {
     display: flex;
@@ -56,17 +53,13 @@
         z-index: 10;
     }
 
-    .sidebar-w-mask {
-        width: var(--sidebar-width);
-        height: 100vh;
+    main {
+        width: 100%;
+        margin-left: 300px;
     }
 
-    .compact-sidebar {
+    @media (max-width: 1024px) {
         --sidebar-width: 80px;
-
-        .sidebar-w-mask {
-            width: var(--sidebar-width);
-        }
 
         .sidebar {
 
@@ -87,14 +80,13 @@
                 .sidebar-icon {
                     font-size: 25px;
                 }
-
-
             }
         }
-    }
 
-    main {
-        width: 100%;
+        main {
+            width: 100%;
+            margin-left: 80px;
+        }
     }
 }
 
@@ -124,17 +116,13 @@
 
 
 .site-logo {
-
-
     img {
         width: 100px;
         height: 100px;
-
         object-fit: contain;
         border-radius: 100%;
     }
 }
-
 
 .profile-cover {
     width: 100%;

@@ -17,6 +17,7 @@ type configI struct {
 	DATABASE_NAME     string
 	CACHE_STORAGE     string
 	JWT_SECRET_KEY    string
+	CORS_WISHLIST     string
 	APP_LOGO_URL      string
 }
 
@@ -45,6 +46,7 @@ func init() {
 		DATABASE_NAME:     os.Getenv("DATABASE_NAME"),
 		CACHE_STORAGE:     os.Getenv("CACHE_STORAGE"),
 		JWT_SECRET_KEY:    os.Getenv("JWT_SECRET_KEY"),
+		CORS_WISHLIST:     os.Getenv("CORS_WISHLIST"),
 		APP_LOGO_URL:      "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
 	}
 }

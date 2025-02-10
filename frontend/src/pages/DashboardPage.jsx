@@ -6,7 +6,7 @@ import PieChartComponent from "../components/charts/PieChartComponent.jsx";
 import {useQuery} from "@tanstack/react-query";
 import {api} from "../services/api.js";
 
-const HomePage = () => {
+const DashboardPage = () => {
 
     const query = useQuery({
         queryKey: ["attempts"],
@@ -18,7 +18,7 @@ const HomePage = () => {
 
     return (
         <div className="px-4">
-            <div className="grid grid-cols-3  gap-4 py-4">
+            <div className="grid grid-cols-1 md:grid-cols-3  gap-4 py-4">
                 <UserLoginSlatsBarChart/>
                 <PieChartComponent label="Success" total={data?.total ?? 0} val={data?.success ?? 0}/>
                 <PieChartComponent isError={true} label="Failed" total={data?.total ?? 0} val={data?.failed}/>
@@ -32,4 +32,4 @@ const HomePage = () => {
     );
 };
 
-export default HomePage;
+export default DashboardPage;

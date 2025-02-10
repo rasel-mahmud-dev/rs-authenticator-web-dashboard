@@ -6,12 +6,6 @@ import {Link, NavLink} from "react-router-dom";
 const HeaderNavbar = () => {
     const {user, setAuth} = useAuthStore()
 
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
-
     const logout = () => {
         setAuth(null)
         localStorage.removeItem("token")
@@ -89,7 +83,18 @@ const HeaderNavbar = () => {
 
                                 <div className="dropdown  dropdown-end">
                                     <div data-test_id="auth-menu" tabIndex={0} role="button"
-                                         className="btn btn-ghost rounded-btn">{user?.username}</div>
+                                         className="btn btn-ghost rounded-btn">
+
+                                        <div className="avatar">
+                                            <div
+                                                className="w-8 rounded-full ">
+                                                <img src={user?.avatar}/>
+                                            </div>
+                                        </div>
+
+                                        <span>{user?.username}</span>
+                                    </div>
+
                                     <ul
                                         tabIndex={0}
                                         className="menu dropdown-content bg-primary-100 rounded-box relative z-[100] mt-4 w-52 p-2 shadow">

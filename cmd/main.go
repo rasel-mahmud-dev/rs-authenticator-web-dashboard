@@ -6,16 +6,21 @@ import (
 	"log"
 	"net/http"
 	"rs/auth/app/configs"
+	"rs/auth/app/middlewares"
 	"rs/auth/app/routes"
+	"strings"
 )
 
 func main() {
 	port := configs.Config.Port
 	router := mux.NewRouter()
+
+	router.Use(middlewares.Traffic)
 	routes.Init(router)
 
+	allowedOrigins := strings.Split(configs.Config.CORS_WISHLIST, ",")
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173", "http://192.168.0.148:5173"},
+		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization", "X-Requested-With"},
 		AllowCredentials: true,

@@ -30,17 +30,19 @@ func (r *authSessionRepository) GetAuthSessionByAccessToken(token string) *model
 	}
 
 	query := `SELECT 
-    				s.id, 
-       				s.is_revoked, 
-				   s.access_token, 
-				   s.refresh_token,
-				   s.user_id, 
-				   u.username, 
-				   u.email,
-				   COALESCE(u.avatar, '') AS avatar
-FROM auth_sessions s 
+    			s.id, 
+       			s.is_revoked, 
+				s.access_token, 
+				s.refresh_token,
+				s.user_id, 
+				u.username, 
+				u.email,
+				COALESCE(up.avatar, '') AS avatar,
+				COALESCE(up.cover, '') AS cover
+			FROM auth_sessions s 
 				join public.users u 
-					on u.id = s.user_id 
+					on u.id = s.user_id  
+				join user_profiles up on up.user_id = u.id
 			WHERE access_token = $1`
 
 	var authSession models.AuthSession
@@ -54,6 +56,7 @@ FROM auth_sessions s
 		&authSession.Username,
 		&authSession.Email,
 		&authSession.Avatar,
+		&authSession.Cover,
 	)
 
 	if err != nil {

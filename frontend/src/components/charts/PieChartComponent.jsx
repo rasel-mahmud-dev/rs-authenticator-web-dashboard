@@ -2,7 +2,7 @@ import React from 'react';
 import {buildStyles, CircularProgressbar} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-const PieChartComponent = ({val, total, label, isError = false}) => {
+const PieChartComponent = ({val= 0, total=0, label, isError = false}) => {
     const percentage = ((val / total) * 100) || 0
     const formattedAmount = `${val}/${total}`; // Format the amount
 

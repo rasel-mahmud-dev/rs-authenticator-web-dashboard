@@ -33,14 +33,14 @@ const AccountLayout = () => {
     return (
         <div className="">
             <HeaderNavbar/>
-            {authLoaded && user?.id && (
+             {/*{authLoaded && user?.id && (*/}
                 <div className="layout-content">
                     <Sidebar/>
                     <main className="pt-[75px]">
                         <Outlet/>
                     </main>
                 </div>
-            )}
+            {/*)}*/}
         </div>
     );
 };
