@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"rs/auth/app/repositories"
+	"rs/auth/app/repositories/trafficRepo"
 )
 
 func RegistrationSlatsHandler(w http.ResponseWriter, _r *http.Request) {
@@ -43,5 +44,14 @@ func LoginAttemptSlatsHandler(w http.ResponseWriter, r *http.Request) {
 		stats = userRepo.GetAttemptRateStats()
 	}
 
+	_ = json.NewEncoder(w).Encode(stats)
+}
+
+func FetchTrafficStats(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	//value := r.URL.Query().Get("t")
+	trafficRepo := trafficRepo.TrafficRepository
+	var stats, _ = trafficRepo.GetTrafficDetailStats()
 	_ = json.NewEncoder(w).Encode(stats)
 }

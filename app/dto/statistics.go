@@ -24,3 +24,11 @@ type AttemptRateStatsDetail struct {
 	Failed  int       `json:"failed"`
 	Success int       `json:"success"`
 }
+
+type DetailedTrafficStats struct {
+	RoutePath       string    `json:"route_path"`
+	Count           int       `json:"request_count"`
+	AvgResponseTime float64   `json:"avg_response_time"`
+	LastAccessed    time.Time `json:"last_accessed"`
+	RequestTime     time.Time `json:"date"`
+}

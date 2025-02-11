@@ -5,6 +5,7 @@ import UserLoginSlatsBarChart from "../components/charts/UserLoginSlatsBarChart.
 import PieChartComponent from "../components/charts/PieChartComponent.jsx";
 import {useQuery} from "@tanstack/react-query";
 import {api} from "../services/api.js";
+import TrafficLineChart from "../components/charts/TrafficLineChart.jsx";
 
 const DashboardPage = () => {
 
@@ -28,6 +29,11 @@ const DashboardPage = () => {
                 <RegistrationAreaChart/>
                 <AuthenticatedCountBarChart/>
             </div>
+
+            <div className="grid grid-cols-1  gap-4 py-4 ">
+                <TrafficLineChart/>
+            </div>
+
         </div>
     );
 };

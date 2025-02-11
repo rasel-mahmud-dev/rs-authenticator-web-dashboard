@@ -2,6 +2,7 @@ import React from 'react';
 import {Bar, BarChart, Cell, ResponsiveContainer, Tooltip,} from 'recharts';
 import {useQuery} from "@tanstack/react-query";
 import {api} from "../../services/api.js";
+import {toolTipContentStyle} from "./ChartUtils.jsx";
 
 const data = Array.from({length: 30}, (_, i) => ({
     date: i + 1,
@@ -37,8 +38,9 @@ const UserLoginSlatsBarChart = () => {
                 }}
             >
 
-                <Tooltip/>
-
+                <Tooltip
+                    contentStyle={toolTipContentStyle}
+                />
                 <Bar dataKey="success" radius={[10, 10, 0, 0]} barSize={10}>
                     {chartData.map((entry, index) => (
                         <Cell

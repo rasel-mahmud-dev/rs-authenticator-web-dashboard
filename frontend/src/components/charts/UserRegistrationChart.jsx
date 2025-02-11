@@ -3,7 +3,7 @@ import {Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis,} from 'rech
 import {useQuery} from "@tanstack/react-query";
 import {registrationSlats} from "../../services/statsService.js";
 import dayjs from "dayjs";
-import {XAxisUtil} from "./ChartUtils.jsx";
+import {toolTipContentStyle, XAxisUtil} from "./ChartUtils.jsx";
 
 const RegistrationAreaChart = () => {
 
@@ -18,7 +18,7 @@ const RegistrationAreaChart = () => {
 
     return (
         <div className="chart-bg pt-4 pb-14 pr-4">
-            <ResponsiveContainer width="100%" height={350} className="">
+            <ResponsiveContainer width="100%" height={320} className="">
                 <h3 className="chart-title px-4">User Onboarding</h3>
 
                 <AreaChart data={data} margin={{top: 0, right: 0, left: 0, bottom: 0}}>
@@ -32,7 +32,9 @@ const RegistrationAreaChart = () => {
                     {XAxisUtil()}
 
                     <YAxis className="text-xs  text-white font-medium" />
-                    <Tooltip/>
+                    <Tooltip
+                        contentStyle={toolTipContentStyle}
+                    />
                     <Area
                         type="monotone"
                         dataKey="count"

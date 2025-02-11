@@ -2,7 +2,9 @@ package trafficRepo
 
 import (
 	"database/sql"
+	"log"
 	"rs/auth/app/db"
+	"rs/auth/app/dto"
 	"rs/auth/app/models"
 	"rs/auth/app/utils"
 )
@@ -35,4 +37,32 @@ func (r *Repository) InsertApiTraffic(traffic models.UserTraffic) error {
 	)
 
 	return err
+}
+
+func (r *Repository) GetTrafficDetailStats() ([]dto.DetailedTrafficStats, error) {
+	query := `
+		SELECT DATE(request_time) AS request_date, route_path, COUNT(*) AS request_count
+		FROM user_traffic
+		GROUP BY request_date, route_path
+		ORDER BY request_date ASC
+	`
+	rows, err := r.db.Query(query)
+	if err != nil {
+		log.Println("Error fetching traffic stats:", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var stats []dto.DetailedTrafficStats
+	for rows.Next() {
+		var s dto.DetailedTrafficStats
+		err := rows.Scan(&s.RequestTime, &s.RoutePath, &s.Count)
+		if err != nil {
+			log.Println("Error scanning row:", err)
+			continue
+		}
+		stats = append(stats, s)
+	}
+
+	return stats, nil
 }

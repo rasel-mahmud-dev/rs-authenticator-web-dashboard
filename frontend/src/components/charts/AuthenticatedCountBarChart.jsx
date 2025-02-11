@@ -2,7 +2,7 @@ import React from 'react';
 import {Bar, BarChart, Legend, ResponsiveContainer, Tooltip,  YAxis,} from 'recharts';
 import {useQuery} from "@tanstack/react-query";
 import {authenticatorSlats} from "../../services/statsService.js";
-import {XAxisUtil} from "./ChartUtils.jsx";
+import {toolTipContentStyle, XAxisUtil} from "./ChartUtils.jsx";
 
 
 const AuthenticatedCountBarChart = () => {
@@ -16,8 +16,8 @@ const AuthenticatedCountBarChart = () => {
 
     return (
         <div className="chart-bg pt-4 pb-14 pr-4">
-            <ResponsiveContainer width="100%" height={350}>
-                <h3 className="chart-title px-4">Authenticated</h3>
+            <ResponsiveContainer width="100%" height={320}>
+                <h3 className="chart-title px-4">Authenticator</h3>
                 <BarChart data={data}>
                     <defs>
                         <linearGradient id="googleAuthGradient" x1="0" y1="0" x2="0" y2="1">
@@ -34,7 +34,9 @@ const AuthenticatedCountBarChart = () => {
                     {XAxisUtil()}
 
                     <YAxis className="text-xs  text-white font-medium" />
-                    <Tooltip/>
+                    <Tooltip
+                        contentStyle={toolTipContentStyle}
+                    />
                     <Legend/>
 
                     <Bar
