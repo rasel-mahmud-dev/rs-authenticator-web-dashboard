@@ -14,6 +14,8 @@ import RegistrationForm from "../components/RegistrationForm.jsx";
 import EditProfilePage from "../pages/EditProfilePage.jsx";
 import AccountSettings from "../pages/AccountSettings.jsx";
 import UsersList from "../pages/UsersList.jsx";
+import AboutMe from "../pages/AboutMe.jsx";
+import DownloadApp from "../pages/DownloadApp.jsx";
 
 const routes = createBrowserRouter([
     {
@@ -36,6 +38,12 @@ const routes = createBrowserRouter([
             {
                 path: 'login/authenticator',
                 element: <AuthenticationLogin/>,
+            }, {
+                path: 'about-me',
+                element: <AboutMe/>,
+            },{
+                path: 'download-app',
+                element: <DownloadApp/>,
             },
             {
 

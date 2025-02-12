@@ -5,7 +5,6 @@ import {api} from "../../services/api.js";
 import {toolTipContentStyle} from "./ChartUtils.jsx";
 
 
-
 const UserLoginSlatsBarChart = () => {
 
     const query = useQuery({
@@ -15,7 +14,6 @@ const UserLoginSlatsBarChart = () => {
 
     const data = query?.data?.data ?? [];
 
-    console.log(data, "dsfsds")
 
     const chartData = data?.map(entry => ({
         date: entry.date,
@@ -38,6 +36,7 @@ const UserLoginSlatsBarChart = () => {
             >
 
                 <Tooltip
+                    cursor={{ radius: [10, 10, 0, 0] }}
                     contentStyle={toolTipContentStyle}
                 />
                 <Bar dataKey="success" radius={[10, 10, 0, 0]} barSize={10}>

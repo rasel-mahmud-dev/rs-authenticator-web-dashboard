@@ -1,10 +1,20 @@
 import React, {useEffect} from "react";
 
 const covers = [
-    "https://images.unsplash.com/photo-1737074434131-73167e5fbcad?q=80&w=1740",
-    "https://images.unsplash.com/photo-1735299362091-33c94b71a758?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMDZ8fHxlbnwwfHx8fHw%3D",
-    "https://images.unsplash.com/photo-1736767431540-0d590ba5efc2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMjZ8fHxlbnwwfHx8fHw%3D",
-    "https://plus.unsplash.com/premium_photo-1733514433474-e91aeaed25fa?q=80&w=1664&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    // "/preview/ca236c3c-ff20-4e68-a87b-6bf97d047f80.webp",
+    // "/preview/ca236c3c-ff20-4e68-a87b-6bf97d047f80.png",
+
+    "/preview/png-home.png",
+    "/preview/png.png",
+    "/preview/png (1).png",
+    "/preview/png (2).png",
+    "/preview/png (3).png",
+    "/preview/png (4).png",
+    "/preview/png (5).png",
+    "/preview/png (6).png",
+    "/preview/png (7).png",
+    "/preview/png (8).png",
+    "/preview/png (9).png",
 ]
 
 
@@ -14,7 +24,7 @@ const BlogHomePage = () => {
         <div className="vh bg-base-200">
 
             <section className="py-10 home-section bg-base-100">
-                <div className="container mx-auto">
+                <div className="container mx-auto p-4 md:p-6" >
                     <h2 className="text-3xl font-bold text-center text-primary mb-8">
                         Featured Projects
                     </h2>
@@ -22,9 +32,9 @@ const BlogHomePage = () => {
                         {covers.map((project, index) => (
                             <div
                                 key={index}
-                                className="group relative bg-neutral shadow-lg overflow-hidden rounded-lg"
+                                className="group relative bg-neutral shadow-lg overflow-hidden project-image"
                             >
-                                <figure className="w-full h-64 overflow-hidden">
+                                <figure className="w-full  overflow-hidden">
                                     <img
                                         src={project}
                                         alt={`Project ${index + 1}`}
@@ -38,15 +48,14 @@ const BlogHomePage = () => {
             </section>
 
             <main className="container mx-auto py-10">
-                <div className="bg-base-100 shadow-lg rounded-lg p-6">
+                <div className="bg-base-100 shadow-lg rounded-lg p-4 md:p-6">
                     <h2 className="text-3xl font-bold text-primary mb-4">
-                        How MFA Works with Google Authenticator
+                        How Setup MFA Authenticator
                     </h2>
                     <p className="text-base-content mb-6">
                         Multi-Factor Authentication (MFA) is a security mechanism that
                         requires users to verify their identity using multiple steps. Google
-                        Authenticator is a popular tool for implementing MFA. Here's how it
-                        works:
+                        Authenticator is a popular tool for implementing MFA. Here' ..
                     </p>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

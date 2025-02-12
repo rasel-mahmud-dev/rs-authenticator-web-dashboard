@@ -27,13 +27,13 @@ const HeaderNavbar = () => {
                 </a>
             </li>
             <li>
-                <a href="#" className="text-lg font-medium hover:text-indigo-300">
-                    Services
+                <a href="/download-app" className="text-lg font-medium hover:text-indigo-300">
+                    Download App
                 </a>
             </li>
             <li>
-                <a href="#" className="text-lg font-medium hover:text-indigo-300">
-                    Contact
+                <a href="/about-me" className="text-lg font-medium hover:text-indigo-300">
+                    Me
                 </a>
             </li>
         </>
@@ -41,7 +41,7 @@ const HeaderNavbar = () => {
 
     return (
         <div className="header  bg-blue-950 w-full ">
-            <div className="navbar   container mx-auto text-white shadow-lg">
+            <div className="navbar container mx-auto text-white shadow-lg">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -64,7 +64,7 @@ const HeaderNavbar = () => {
                             {links}
                         </ul>
                     </div>
-                    <Link className="btn btn-ghost text-2xl " style={{fontFamily: "'Pacifico', cursive"}}
+                    <Link className="px-0 btn btn-ghost text-2xl " style={{fontFamily: "'Pacifico', cursive"}}
                           data-tour="step-1" to="/">
                         Rs Authenticator
                     </Link>

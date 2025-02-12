@@ -2,7 +2,7 @@ import React from 'react';
 import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, YAxis} from 'recharts';
 import {useQuery} from '@tanstack/react-query';
 import {fetchTrafficStats} from '../../services/statsService';
-import {toolTipContentStyle, XAxisUtil} from "./ChartUtils.jsx";
+import {COLORS, toolTipContentStyle, XAxisUtil} from "./ChartUtils.jsx";
 
 const TrafficLineChart = () => {
     const {data, isLoading, error} = useQuery({
@@ -47,7 +47,7 @@ const TrafficLineChart = () => {
                         payload={uniqueRoutes.map((route, index) => ({
                             value: renderRoutePath(route),
                             type: 'line',
-                            color: ["#8884d8", "#82ca9d", "#ff7300"][index % 3],
+                            color: COLORS[index % 3],
                         }))}
                     />
 
@@ -61,7 +61,7 @@ const TrafficLineChart = () => {
                             type="monotone"
                             dataKey={route}
                             name={renderRoutePath(route)}
-                            stroke={["#8884d8", "#82ca9d", "#ff7300"][index % 3]}
+                            stroke={COLORS[index % 3]}
                         />
                     ))}
                 </LineChart>

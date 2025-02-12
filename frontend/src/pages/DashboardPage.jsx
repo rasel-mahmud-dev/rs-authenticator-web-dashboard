@@ -7,6 +7,7 @@ import {useQuery} from "@tanstack/react-query";
 import {api} from "../services/api.js";
 import TrafficLineChart from "../components/charts/TrafficLineChart.jsx";
 import TrafficCountLineChart from "../components/charts/TrafficCountLineChart.jsx";
+import ApiLatencyChart from "../components/charts/ApiLatencyChart.jsx";
 
 const DashboardPage = () => {
 
@@ -32,8 +33,14 @@ const DashboardPage = () => {
             </div>
 
             <div className="grid grid-cols-1  gap-4 pt-4 ">
+                <ApiLatencyChart/>
+            </div>
+
+            <div className="grid grid-cols-1  gap-4 pt-4 ">
                 <TrafficLineChart/>
             </div>
+
+
             <div className="grid grid-cols-1  gap-4 py-4 ">
                 <TrafficCountLineChart/>
             </div>

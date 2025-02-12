@@ -26,6 +26,14 @@ export async function fetchTrafficStats(isCount = false) {
         throw Error("traffic slats: Unexpected status code");
     }
 }
+export async function fetchApiLatencySlats() {
+    const response = await api.get(`/api/v1/slats/api-latency`);
+    if (response.status === 200) {
+        return response.data;
+    } else {
+        throw Error("traffic slats: Unexpected status code");
+    }
+}
 
 export async function fetchUsers(currentPage, itemsPerPage) {
     const response = await api.get("/api/v1/slats/users?page=" + currentPage + "&limit=" + itemsPerPage);

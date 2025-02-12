@@ -36,7 +36,7 @@ const AccountLayout = () => {
             {authLoaded && user?.id && (
                 <div className="layout-content">
                     <Sidebar/>
-                    <main className="pt-[75px]">
+                    <main>
                         <Outlet/>
                     </main>
                 </div>

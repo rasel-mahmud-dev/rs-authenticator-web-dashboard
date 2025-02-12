@@ -48,6 +48,14 @@ func LoginAttemptSlatsHandler(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(stats)
 }
 
+func GetApiLatencyStats(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	trafficRepository := trafficRepo.TrafficRepository
+	var stats interface{}
+	stats, _ = trafficRepository.GetApiLatencyStats()
+	_ = json.NewEncoder(w).Encode(stats)
+}
+
 func FetchTrafficStats(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	value := r.URL.Query().Get("t")

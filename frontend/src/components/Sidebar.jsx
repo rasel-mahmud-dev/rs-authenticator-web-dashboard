@@ -4,14 +4,18 @@ import {FaCog, FaHome, FaUser} from 'react-icons/fa';
 import {TbDashboard} from "react-icons/tb";
 import {RiGoogleFill} from "react-icons/ri";
 import useAuthStore from "../store/authState.js";
+import {GoDownload} from "react-icons/go";
+import {SiGoogleauthenticator} from "react-icons/si";
+import {CgProfile} from "react-icons/cg";
 
 const sidebarItems = [
     {name: 'Home', route: '/', icon: <FaHome/>},
     {name: 'Dashboard', route: '/account', icon: <TbDashboard/>},
-    {name: 'Settings', route: '/account/settings', icon: <FaCog/>},
     {name: 'Profile', route: '/account/profile', icon: <FaUser/>},
-    {name: 'Users', route: '/account/users', icon: <FaUser/>},
-    {name: 'Authenticator', route: '/account/authenticator-apps', icon: <RiGoogleFill/>}, // Google Authenticator
+    {name: 'Users', route: '/account/users', icon: <CgProfile/>},
+    {name: 'Authenticator', route: '/account/authenticator-apps', icon: <SiGoogleauthenticator/>},
+    {name: 'Download App', route: '/download-app', icon: <GoDownload/>},
+    {name: 'Settings', route: '/account/settings', icon: <FaCog/>},
 ];
 
 const Sidebar = () => {
@@ -30,7 +34,7 @@ const Sidebar = () => {
 
                     <div className="text-center mt-4">
                         <h4 className="text-gray-100 font-bold"><span>{user?.username}</span></h4>
-                        <h4 className="text-gray-400 font-normal "><span>{user?.email}</span></h4>
+                        <h4 className="sidebar-email text-gray-400 font-normal "><span>{user?.email}</span></h4>
                     </div>
                 </div>
 

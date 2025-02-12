@@ -88,6 +88,15 @@
             margin-left: 80px;
         }
     }
+    @media screen and (max-width: 768px) {
+        .sidebar-email {
+            /*background: red;*/
+            width: 60px;
+            /*text-overflow-ellipsis: visible;*/
+            overflow: hidden;
+            text-align: right;
+        }
+    }
 }
 
 .full-viewport {
@@ -155,4 +164,28 @@
 .tab:is(.tab-active, [aria-selected="true"]):not(.tab-disabled):not([disabled]), .tab:is(input:checked) {
     border-color: #8494ff;
     color: #8494ff;
+}
+
+.project-image {
+    border-radius: 18px;
+    border: 1px solid #343e8f;
+
+    figure {
+        height: 260px;
+        overflow: hidden;
+
+        img {
+
+        }
+    }
+}
+
+.api-latency-chart .recharts-legend-wrapper {
+    bottom: -6px !important;
+}
+
+.recharts-tooltip-cursor{
+    fill: rgba(41, 53, 131, 0.42);
+    /*border-radius: 20px !important;*/
+
 }

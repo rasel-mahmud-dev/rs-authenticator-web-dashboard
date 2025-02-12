@@ -35,16 +35,19 @@ const AuthenticatedCountBarChart = () => {
 
                     <YAxis className="text-xs  text-white font-medium" />
                     <Tooltip
+                        cursor={{ radius: [20, 20, 0, 0] }}
                         contentStyle={toolTipContentStyle}
                     />
                     <Legend/>
 
                     <Bar
+                        barSize={15} radius={[8, 8, 0, 0]}
                         dataKey="authenticator"
                         fill="url(#googleAuthGradient)"
                         name="Authenticator"
                     />
                     <Bar
+                        barSize={15} radius={[8, 8, 0, 0]}
                         dataKey="password"
                         fill="url(#passwordGradient)"
                         name="Password"
