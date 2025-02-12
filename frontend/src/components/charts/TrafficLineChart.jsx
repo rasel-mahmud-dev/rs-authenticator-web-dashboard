@@ -7,12 +7,12 @@ import {toolTipContentStyle, XAxisUtil} from "./ChartUtils.jsx";
 const TrafficLineChart = () => {
     const {data, isLoading, error} = useQuery({
         queryKey: ['trafficStats'],
-        queryFn: fetchTrafficStats
+        queryFn: ()=> fetchTrafficStats(false)
     });
 
     const transformedData = transformData(data ?? []);
 
-    const uniqueRoutes = [...new Set(data?.map((d) => d.route_path))];
+    const uniqueRoutes = [...new Set(data?.map?.((d) => d.route_path))];
 
     function renderRoutePath(route) {
         return route?.replace("/api/v1", "");
@@ -30,14 +30,13 @@ const TrafficLineChart = () => {
                 <>{error?.message}</>
             </div>}
 
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={320}>
                 <LineChart data={transformedData}>
                     {XAxisUtil()}
                     <YAxis className="text-xs  text-white font-medium" />
                     <Tooltip
                         contentStyle={toolTipContentStyle}
                     />
-
 
                     <Legend
                         wrapperStyle={{
@@ -73,9 +72,10 @@ const TrafficLineChart = () => {
 
 // Helper function to transform the raw data
 const transformData = (rawData) => {
+    if(!Array.isArray(rawData)) return  []
     const groupedData = {};
 
-    rawData.forEach(({date, route_path, request_count}) => {
+    rawData?.forEach(({date, route_path, request_count}) => {
         if (!groupedData[date]) {
             groupedData[date] = {date};
         }

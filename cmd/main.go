@@ -15,8 +15,9 @@ func main() {
 	port := configs.Config.Port
 	router := mux.NewRouter()
 
-	router.Use(middlewares.Traffic)
 	routes.Init(router)
+
+	router.Use(middlewares.Traffic)
 
 	allowedOrigins := strings.Split(configs.Config.CORS_WISHLIST, ",")
 	corsHandler := cors.New(cors.Options{

@@ -4,10 +4,7 @@ import {useQuery} from "@tanstack/react-query";
 import {api} from "../../services/api.js";
 import {toolTipContentStyle} from "./ChartUtils.jsx";
 
-const data = Array.from({length: 30}, (_, i) => ({
-    date: i + 1,
-    logins: Math.floor(Math.random() * 100) + 1
-}));
+
 
 const UserLoginSlatsBarChart = () => {
 
@@ -18,7 +15,9 @@ const UserLoginSlatsBarChart = () => {
 
     const data = query?.data?.data ?? [];
 
-    const chartData = data.map(entry => ({
+    console.log(data, "dsfsds")
+
+    const chartData = data?.map(entry => ({
         date: entry.date,
         failed: entry.failed,
         success: entry.success
@@ -42,7 +41,7 @@ const UserLoginSlatsBarChart = () => {
                     contentStyle={toolTipContentStyle}
                 />
                 <Bar dataKey="success" radius={[10, 10, 0, 0]} barSize={10}>
-                    {chartData.map((entry, index) => (
+                    {chartData?.map((entry, index) => (
                         <Cell
                             key={`success-${index}`}
                             fill="#4d88ff"
@@ -51,7 +50,7 @@ const UserLoginSlatsBarChart = () => {
                 </Bar>
 
                 <Bar dataKey="failed" radius={[10, 10, 0, 0]} barSize={10}>
-                    {chartData.map((entry, index) => (
+                    {chartData?.map((entry, index) => (
                         <Cell
                             key={`failed-${index}`}
                             fill="#ff4d4d"

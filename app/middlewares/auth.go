@@ -18,11 +18,14 @@ func Auth(next http.HandlerFunc) http.HandlerFunc {
 		chain := &verify.RequestValidationHandler{}
 		chain.SetNext(&verify.ValidateAccessTokenHandler{})
 
-		chain.Handle(c)
+		isNext := chain.Handle(c)
 
 		ctx := context.WithValue(r.Context(), "authSession", c.AuthSession)
 		r = r.WithContext(ctx)
 
-		next(w, r)
+		if isNext {
+			next(w, r)
+		}
+
 	}
 }

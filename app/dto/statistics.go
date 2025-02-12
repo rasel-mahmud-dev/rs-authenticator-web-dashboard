@@ -32,3 +32,7 @@ type DetailedTrafficStats struct {
 	LastAccessed    time.Time `json:"last_accessed"`
 	RequestTime     time.Time `json:"date"`
 }
+type TrafficCountStats struct {
+	Count       int       `json:"request_count"`
+	RequestTime time.Time `json:"date"`
+}

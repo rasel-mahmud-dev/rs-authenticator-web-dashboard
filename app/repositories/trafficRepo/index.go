@@ -66,3 +66,31 @@ func (r *Repository) GetTrafficDetailStats() ([]dto.DetailedTrafficStats, error)
 
 	return stats, nil
 }
+
+func (r *Repository) GetTrafficCountStats() ([]dto.TrafficCountStats, error) {
+	query := `
+		SELECT DATE(request_time) AS request_date, COUNT(*) AS request_count
+		FROM user_traffic
+		GROUP BY request_date
+		ORDER BY request_date ASC
+	`
+	rows, err := r.db.Query(query)
+	if err != nil {
+		log.Println("Error fetching traffic stats:", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var stats []dto.TrafficCountStats
+	for rows.Next() {
+		var s dto.TrafficCountStats
+		err := rows.Scan(&s.RequestTime, &s.Count)
+		if err != nil {
+			log.Println("Error scanning row:", err)
+			continue
+		}
+		stats = append(stats, s)
+	}
+
+	return stats, nil
+}

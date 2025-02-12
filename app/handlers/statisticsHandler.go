@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"rs/auth/app/repositories"
 	"rs/auth/app/repositories/trafficRepo"
+	"strconv"
 )
 
 func RegistrationSlatsHandler(w http.ResponseWriter, _r *http.Request) {
@@ -49,9 +50,48 @@ func LoginAttemptSlatsHandler(w http.ResponseWriter, r *http.Request) {
 
 func FetchTrafficStats(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	//value := r.URL.Query().Get("t")
-	trafficRepo := trafficRepo.TrafficRepository
-	var stats, _ = trafficRepo.GetTrafficDetailStats()
+	value := r.URL.Query().Get("t")
+	trafficRepository := trafficRepo.TrafficRepository
+	var stats interface{}
+	if value == "detail" {
+		stats, _ = trafficRepository.GetTrafficDetailStats()
+	} else {
+		stats, _ = trafficRepository.GetTrafficCountStats()
+	}
 	_ = json.NewEncoder(w).Encode(stats)
+}
+
+func FetchUsers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	pageStr := r.URL.Query().Get("page")
+	page := 1
+	if pageStr != "" {
+		parsedPage, err := strconv.Atoi(pageStr)
+		if err != nil || parsedPage <= 0 {
+			http.Error(w, "Invalid page number", http.StatusBadRequest)
+			return
+		}
+		page = parsedPage
+	}
+
+	limitStr := r.URL.Query().Get("limit")
+	limit := 10
+	if limitStr != "" {
+		parsedLimit, err := strconv.Atoi(limitStr)
+		if err != nil || parsedLimit <= 0 {
+			http.Error(w, "Invalid limit number", http.StatusBadRequest)
+			return
+		}
+		limit = parsedLimit
+	}
+
+	userRepo := repositories.NewUserRepository()
+	users, totalItems, err := userRepo.GetAllUsers(page, limit)
+	if err != nil {
+		http.Error(w, "Error fetching users", http.StatusInternalServerError)
+		return
+	}
+
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{"data": users, "totalItems": totalItems})
 }

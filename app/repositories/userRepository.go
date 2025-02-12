@@ -51,6 +51,48 @@ func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 	return &user, nil
 }
 
+func (r *UserRepository) GetAllUsers(page int, limit int) ([]models.User, int, error) {
+	offset := (page - 1) * limit
+
+	query := `
+		SELECT id, username, email, created_at, COALESCE(avatar, '') AS avatar 
+		FROM users
+		ORDER BY created_at DESC 
+		LIMIT $1 OFFSET $2
+	`
+
+	var users []models.User
+
+	rows, err := r.db.Query(query, limit, offset)
+	if err != nil {
+		return nil, 0, utils.Error("error querying users: %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var user models.User
+		err := rows.Scan(&user.ID, &user.Username, &user.Email, &user.CreatedAt, &user.Avatar)
+		if err != nil {
+			return nil, 0, utils.Error("error scanning user data: %w", err)
+		}
+		users = append(users, user)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, 0, utils.Error("error iterating over rows: %w", err)
+	}
+
+	countQuery := `SELECT COUNT(*) FROM users`
+	var totalItems int
+
+	err = r.db.QueryRow(countQuery).Scan(&totalItems)
+	if err != nil {
+
+	}
+
+	return users, totalItems, nil
+}
+
 func (r *UserRepository) GetUserById(userId string) (*models.User, error) {
 	userC := cache.GetUserFromCache(userId)
 	if userC != nil {

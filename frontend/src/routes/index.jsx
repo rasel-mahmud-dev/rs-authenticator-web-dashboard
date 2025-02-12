@@ -13,6 +13,7 @@ import ProfilePage from "../pages/ProfilePage.jsx";
 import RegistrationForm from "../components/RegistrationForm.jsx";
 import EditProfilePage from "../pages/EditProfilePage.jsx";
 import AccountSettings from "../pages/AccountSettings.jsx";
+import UsersList from "../pages/UsersList.jsx";
 
 const routes = createBrowserRouter([
     {
@@ -69,6 +70,14 @@ const routes = createBrowserRouter([
                         element: (
                             <ProtectedRoute>
                                 <EditProfilePage/>
+                            </ProtectedRoute>
+                        ),
+                    },
+                    {
+                        path: '/account/users',
+                        element: (
+                            <ProtectedRoute>
+                                <UsersList/>
                             </ProtectedRoute>
                         ),
                     },

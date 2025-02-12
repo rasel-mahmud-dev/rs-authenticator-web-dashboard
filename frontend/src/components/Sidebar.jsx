@@ -10,6 +10,7 @@ const sidebarItems = [
     {name: 'Dashboard', route: '/account', icon: <TbDashboard/>},
     {name: 'Settings', route: '/account/settings', icon: <FaCog/>},
     {name: 'Profile', route: '/account/profile', icon: <FaUser/>},
+    {name: 'Users', route: '/account/users', icon: <FaUser/>},
     {name: 'Authenticator', route: '/account/authenticator-apps', icon: <RiGoogleFill/>}, // Google Authenticator
 ];
 
