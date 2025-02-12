@@ -99,8 +99,8 @@ const UserProfile = () => {
 
 
     return (
-        <div className="text-white">
-            {/* Profile Header */}
+        <div className="text-white vh
+        ">
             <div className="relative w-full  bg-gray-800 flex justify-center items-center">
 
                 <div className="profile-cover">

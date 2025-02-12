@@ -4,7 +4,9 @@
 
 
 :root {
-    --sidebar-width: 300px
+    --sidebar-width: 300px;
+    --primary-400: #272f63;
+    --primary-900: rgba(99, 115, 222, 0.88);
 }
 
 * {
@@ -28,12 +30,17 @@
     font-weight: 500;
     width: max-content;
     padding-bottom: 10px;
+    color: #e0e0e0;
 }
 
 
 .btn-primary {
     background: #293583;
     color: white;
+}
+
+.text-primary {
+    color: #8b99ee;
 }
 
 .btn-primary.btn-outline {
@@ -116,7 +123,7 @@
 }
 
 .home-section {
-    /*background: red;*/
+    background: #111829;
 }
 
 .active {
@@ -184,8 +191,45 @@
     bottom: -6px !important;
 }
 
-.recharts-tooltip-cursor{
+.recharts-tooltip-cursor {
     fill: rgba(41, 53, 131, 0.42);
     /*border-radius: 20px !important;*/
 
 }
+
+.tab:is(input[type="radio"]):after {
+    color: #6b7bff;
+}
+
+.tab:is(input[type="radio"]):checked:after {
+    color: #6b7bff;
+    font-weight: 700;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #ff0000 inset !important;
+}
+
+.label {
+}
+
+.input, .select, .textarea {
+    color: #a6a6a6;
+    background: transparent;
+}
+
+.input:focus, .input:focus-within,
+.select:focus, .select:focus-within,
+.textarea:focus, .textarea:focus-within {
+    background: rgba(107, 123, 255, 0.12);
+    box-shadow: none;
+    /*border-color:  var(--primary-900)  ;*/
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 2px;
+}
+

@@ -1,6 +1,6 @@
 :root {
     --background-light: rgba(170, 173, 194, 1);
-    --background-dark: rgb(56, 62, 111);
+    --background-dark: #1d232a;
     --text-light: rgba(0, 0, 0, 0.87);
     --text-dark: rgba(255, 255, 255, 0.87);
     --primary-light: #6200ea;
@@ -9,17 +9,18 @@
     --secondary-dark: #03dac6;
 }
 
-html {
-    background: var(--background-light);
+body{
+    background: var(--background-dark);
     color: var(--text-light);
+    height: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-light: var(--background-dark);
-        --text-light: var(--text-dark);
-        --primary-light: var(--primary-dark);
-        --secondary-light: var(--secondary-dark);
-        /* Override additional variables as needed */
-    }
-}
+
+/*:root {*/
+/*    --background-light: var(--background-dark);*/
+/*    --text-light: var(--text-dark);*/
+/*    --primary-light: var(--primary-dark);*/
+/*    --secondary-light: var(--secondary-dark);*/
+/*    !* Override additional variables as needed *!*/
+/*}*/
+

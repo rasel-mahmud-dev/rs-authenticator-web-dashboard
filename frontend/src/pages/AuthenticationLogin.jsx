@@ -55,8 +55,8 @@ const AuthenticationLogin = () => {
     const errorMessage = mutation?.error?.response?.data?.message
 
     return (
-        <div className="flex items-center justify-center vh overflow-hidden">
-            <div className="card  bg-gray-800 shadow-xl">
+        <div className="flex items-center justify-center   overflow-hidden">
+            <div className="card  bg-transparent md:bg-gray-800  shadow-none md:shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Authenticator</h2>
                     <p className="text-center text-gray-400 mb-4">Enter the OTP sent to your email</p>

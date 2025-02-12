@@ -76,10 +76,10 @@ const EditProfilePage = () => {
         mutation.mutate(profile);
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <div className="vh">Loading...</div>;
 
     return (
-        <div className="mt-10 max-w-screen-2xl mx-auto px-4">
+        <div className="mt-10 vh max-w-screen-2xl mx-auto px-4">
             <div className="flex justify-center relative ">
                 <Link to="/account/profile">
                     <button className="btn btn-outline btn-primary absolute left-0">Back to profile</button>
@@ -90,7 +90,7 @@ const EditProfilePage = () => {
             <div className="max-w-3xl mx-auto ">
                 <form onSubmit={handleSubmit} className="space-y-4 my-8">
 
-                    <div role="tablist" className="tabs tabs-bordered profile-edit-tablist">
+                    <div role="tablist" className="tabs tabs-bordered profile-edit-tablist ">
                         <input defaultChecked type="radio" name="my_tabs_1" role="tab" className="tab"
                                aria-label="General Information"/>
                         <div role="tabpanel" className="tab-content py-10">

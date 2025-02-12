@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 
 const covers = [
     // "/preview/ca236c3c-ff20-4e68-a87b-6bf97d047f80.webp",
@@ -21,10 +21,10 @@ const covers = [
 const BlogHomePage = () => {
 
     return (
-        <div className="vh bg-base-200">
+        <div className="">
 
-            <section className="py-10 home-section bg-base-100">
-                <div className="container mx-auto p-4 md:p-6" >
+            <section className="py-10 home-section  ">
+                <div className="container mx-auto p-4 md:p-6">
                     <h2 className="text-3xl font-bold text-center text-primary mb-8">
                         Featured Projects
                     </h2>
@@ -47,12 +47,12 @@ const BlogHomePage = () => {
                 </div>
             </section>
 
-            <main className="container mx-auto py-10">
-                <div className="bg-base-100 shadow-lg rounded-lg p-4 md:p-6">
+            <section className="container  mx-auto py-10">
+                <div className=" shadow-lg rounded-lg p-4 md:p-6">
                     <h2 className="text-3xl font-bold text-primary mb-4">
                         How Setup MFA Authenticator
                     </h2>
-                    <p className="text-base-content mb-6">
+                    <p className="  mb-6 text-gray-400">
                         Multi-Factor Authentication (MFA) is a security mechanism that
                         requires users to verify their identity using multiple steps. Google
                         Authenticator is a popular tool for implementing MFA. Here' ..
@@ -120,7 +120,7 @@ const BlogHomePage = () => {
                         </a>
                     </div>
                 </div>
-            </main>
+            </section>
 
             {/* Footer */}
             <footer className="bg-primary text-primary-content py-4">

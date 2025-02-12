@@ -21,7 +21,7 @@ const ConnectedAuthenticators = () => {
 
     if (fetchAuthenticatorsQuery.isLoading) {
         return (
-            <div className="mt-10 max-w-screen-xl mx-auto px-4">
+            <div className="mt-10 vh max-w-screen-xl mx-auto px-4">
                 {pageTitle}
                 <h2 className="text-lg font-semibold text-gray-100">Loading connected authenticators...</h2>
             </div>
@@ -30,7 +30,7 @@ const ConnectedAuthenticators = () => {
 
     if (fetchAuthenticatorsQuery.isError) {
         return (
-            <div className="mt-10 max-w-screen-xl mx-auto px-4">
+            <div className="mt-10 vh max-w-screen-xl mx-auto px-4">
                 {pageTitle}
                 <h2 className="text-lg font-semibold text-red-500">
                     Failed to load connected authenticators. Please try again later.
@@ -40,7 +40,7 @@ const ConnectedAuthenticators = () => {
     }
 
     return (
-        <div className="mt-10 max-w-screen-xl mx-auto px-4">
+        <div className="mt-10 vh max-w-screen-xl mx-auto px-4">
 
             {pageTitle}
 

@@ -28,7 +28,7 @@ const UsersList = () => {
     };
 
     return (
-        <div className="mt-10 max-w-screen-2xl mx-auto px-4">
+        <div className="mt-10 vh max-w-screen-2xl mx-auto px-4">
             <h1 className="text-gray-100 text-3xl font-bold text-center">Users ({totalItem})</h1>
 
             <div className="overflow-x-auto">
@@ -51,19 +51,19 @@ const UsersList = () => {
                         <tr key={index}>
                             <th>
                                 <label>
-                                    <input type="checkbox" className="checkbox"/>
+                                    <input type="checkbox" className="checkbox bg-primary-100"/>
                                 </label>
                             </th>
                             <td>
                                 <div className="flex items-center gap-3">
-                                    <div className="avatar">
+                                    <div className="avatar text-gray-400">
                                         <div className="mask mask-squircle h-12 w-12">
                                             <img src={user.avatar} alt="Avatar"/>
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="font-bold">{user?.username}</div>
-                                        <div className="text-sm opacity-50">{user.email}</div>
+                                        <div className="font-bold text-gray-200">{user?.username}</div>
+                                        <div className="text-sm text-gray-400">{user.email}</div>
                                     </div>
                                 </div>
                             </td>
@@ -74,7 +74,7 @@ const UsersList = () => {
                             </td>
                             <td>{user.favoriteColor}</td>
                             <th>
-                                <button className="btn btn-ghost btn-xs">details</button>
+                                <button className="btn btn-ghost btn-xs text-gray-400">details</button>
                             </th>
                         </tr>
                     ))}
@@ -82,7 +82,7 @@ const UsersList = () => {
 
                 </table>
 
-                <div className="pagination flex justify-center py-4">
+                <div className="pagination flex justify-center py-4 gap-x-2">
                     <button
                         className="btn btn-primary btn-sm"
                         onClick={() => handlePageChange(currentPage - 1)}
