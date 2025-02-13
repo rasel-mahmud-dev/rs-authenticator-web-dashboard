@@ -22,19 +22,19 @@ const HeaderNavbar = () => {
 
             </li>
             <li>
-                <a href="/account" className="text-lg font-medium hover:text-indigo-300">
+                <NavLink to="/account" className="text-lg font-medium hover:text-indigo-300">
                     Dashboard
-                </a>
+                </NavLink>
             </li>
             <li>
-                <a href="/download-app" className="text-lg font-medium hover:text-indigo-300">
+                <NavLink to="/download-app" className="text-lg font-medium hover:text-indigo-300">
                     Download App
-                </a>
+                </NavLink>
             </li>
             <li>
-                <a href="/about-me" className="text-lg font-medium hover:text-indigo-300">
+                <NavLink to="/about-me" className="text-lg font-medium hover:text-indigo-300">
                     Me
-                </a>
+                </NavLink>
             </li>
         </>
     )
@@ -60,7 +60,7 @@ const HeaderNavbar = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                            className="menu menu-sm dropdown-content bg-gray-800 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                             {links}
                         </ul>
                     </div>

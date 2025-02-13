@@ -206,20 +206,12 @@
     font-weight: 700;
 }
 
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #ff0000 inset !important;
-}
-
 .label {
 }
 
 .input, .select, .textarea {
     color: #a6a6a6;
-    background: transparent;
+    background: #1d232a;
 }
 
 .input:focus, .input:focus-within,
@@ -227,9 +219,53 @@ input:-webkit-autofill:active {
 .textarea:focus, .textarea:focus-within {
     background: rgba(107, 123, 255, 0.12);
     box-shadow: none;
-    /*border-color:  var(--primary-900)  ;*/
-    outline-style: solid;
-    outline-width: 2px;
+    outline: var(--primary-900) solid 2px;
     outline-offset: 2px;
 }
 
+.form-phone {
+    @media screen and (max-width: 768px) {
+        input {
+            background: rgba(107, 123, 255, 0.12);
+        }
+    }
+}
+
+
+.android-frame {
+    position: relative;
+    border-radius: 20px;
+    border: 5px solid #777777;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+
+    figure {
+        img {
+
+        }
+    }
+}
+
+.android-frame::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #dc3636;
+    border-radius: 50%;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.android-frame::after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 2px;
+    background: rgba(211, 211, 211, 0.34);
+    border-radius: 4px;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}

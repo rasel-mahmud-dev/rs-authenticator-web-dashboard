@@ -38,13 +38,13 @@ const LoginForm = () => {
     const errorMessage = mutation?.error?.response?.data?.message
 
     return (
-        <div className="flex items-center justify-center    overflow-hidden">
-            <div className="card w-96 bg-transparent md:bg-gray-800  shadow-none md:shadow-xl">
+        <div className="flex items-center justify-center relative vh overflow-hidden">
+            <div className="card w-96 bg-transparent absolute left-1/2 -translate-x-1/2 top-[10vh] md:bg-gray-800  shadow-none md:shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Welcome Back</h2>
                     <p className="text-center text-gray-400 mb-4">Sign in to your account</p>
                     {errorMessage && <p className="text-center text-red-500 mb-4">{errorMessage}</p>}
-                    <form onSubmit={handleLogin}>
+                    <form onSubmit={handleLogin} className="form-phone">
                         <div className="form-control mb-4">
                             <label className="label">
                                 <span className="label-text text-gray-300">Email</span>

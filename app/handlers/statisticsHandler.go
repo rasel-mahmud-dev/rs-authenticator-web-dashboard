@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"rs/auth/app/cache"
 	"rs/auth/app/repositories"
 	"rs/auth/app/repositories/trafficRepo"
 	"strconv"
@@ -52,8 +53,18 @@ func GetApiLatencyStats(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	trafficRepository := trafficRepo.TrafficRepository
 	var stats interface{}
-	stats, _ = trafficRepository.GetApiLatencyStats()
-	_ = json.NewEncoder(w).Encode(stats)
+	statsw := cache.GetItem[interface{}]("GetApiLatencyStats")
+	if statsw.Data == nil {
+		stats, _ = trafficRepository.GetApiLatencyStats()
+		cache.SetItem("GetApiLatencyStats", stats)
+	} else {
+		stats = statsw.Data
+	}
+
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"cachedTime": statsw.CreatedAt,
+		"data":       stats,
+	})
 }
 
 func FetchTrafficStats(w http.ResponseWriter, r *http.Request) {

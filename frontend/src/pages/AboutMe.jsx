@@ -2,9 +2,8 @@ import React from "react";
 
 const AboutMe = () => {
     return (
-
-        <div className="mt-10 max-w-screen-2xl mx-auto px-4">
-            <div className="max-w-3xl mx-auto ">
+        <div className="flex mt-0 md:mt-10 vh max-w-screen-2xl mx-auto px-4">
+            <div className="top-0 md:top-[20vh] relative  max-w-3xl mx-auto ">
                 <h1 className="text-gray-100 text-3xl font-bold text-center">About Me</h1>
 
                 <p className="text-lg text-gray-300 mt-8">
@@ -17,7 +16,7 @@ const AboutMe = () => {
                 </p>
                 <div className="mt-6 flex justify-center">
                     <a href="https://rasel-portfolio.vercel.app/#contact-section" target="_blank"
-                       className="btn btn-primary">Contact Me</a>
+                       className="btn  px-10 btn-primary">Contact</a>
                 </div>
             </div>
         </div>

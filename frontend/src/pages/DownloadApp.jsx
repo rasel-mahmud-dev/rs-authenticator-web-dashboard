@@ -1,14 +1,12 @@
 import React from "react";
+import appCovers from "../assets/appCovers.json"
 
 const DownloadApp = () => {
     const appInfo = {
         name: "Download App",
         description: "Download the latest version of the app",
         logo: "https://rasel-portfolio.vercel.app/logo.png",
-        images: [
-            "/preview/Screenshot_2025-02-12-01-16-13-334_com.rs.rsauthenticator.jpg",
-            "/preview/1739301496522.jpg",
-        ]
+        images: appCovers
     };
 
     const versions = [
@@ -57,15 +55,17 @@ const DownloadApp = () => {
             <h1 className="text-white text-3xl font-bold">{appInfo.name}</h1>
             <p className="text-gray-300 mt-2">{appInfo.description}</p>
 
-            <div className="grid grid-cols-12 mt-6 gap-x-4 py-10">
+            <div className="grid grid-cols-12 mt-6 gap-x-2 py-10">
 
                 <div className="col-span-4">
-                    <div className="grid grid-cols-1 gap-6">
-                        {appInfo?.images?.map((project, index) => (
+                    <div className="flex flex-wrap gap-4">
+                        {appCovers?.map((project, index) => (
                             <div
                                 key={index}
-                                className="group relative bg-neutral shadow-lg overflow-hidden rounded-xl ">
-                                <figure className="w-full   overflow-hidden">
+                                className="w-32 android-frame">
+
+                                {/* Screenshot inside the frame */}
+                                <figure className="w-full h-full overflow-hidden relative z-0">
                                     <img
                                         src={project}
                                         alt={`Project ${index + 1}`}
@@ -74,6 +74,7 @@ const DownloadApp = () => {
                                 </figure>
                             </div>
                         ))}
+
                     </div>
                 </div>
 
@@ -100,7 +101,7 @@ const DownloadApp = () => {
                                     download
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="btn btn-outline   text-white font-bold py-2 px-4 rounded transition-all"
+                                    className="btn btn-outline   text-white font-bold   px-4 rounded-lg transition-all"
                                 >
                                     Download
                                 </a>

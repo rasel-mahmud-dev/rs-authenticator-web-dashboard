@@ -1,11 +1,13 @@
 import React from "react";
+import ProjectInfo from "../components/ProjectInfo.jsx";
 
 const covers = [
     // "/preview/ca236c3c-ff20-4e68-a87b-6bf97d047f80.webp",
     // "/preview/ca236c3c-ff20-4e68-a87b-6bf97d047f80.png",
 
     "/preview/png-home.png",
-    "/preview/png.png",
+    "/preview/png (10)33.png",
+    "/preview/api_latency.png",
     "/preview/png (1).png",
     "/preview/png (2).png",
     "/preview/png (3).png",
@@ -22,6 +24,8 @@ const BlogHomePage = () => {
 
     return (
         <div className="">
+
+             <ProjectInfo />
 
             <section className="py-10 home-section  ">
                 <div className="container mx-auto p-4 md:p-6">

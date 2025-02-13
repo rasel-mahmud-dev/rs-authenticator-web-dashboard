@@ -6,9 +6,15 @@ import (
 	"rs/auth/app/configs"
 	"rs/auth/app/models"
 	"rs/auth/app/utils"
+	"time"
 )
 
-var store = make(map[string]interface{})
+type Cache[T any] struct {
+	CreatedAt time.Time `json:"created_at"`
+	Data      *T        `json:"data"`
+}
+
+var store = make(map[string]Cache[interface{}])
 var fileSystemCache *FileSystemCache
 var cacheStorage string
 
@@ -25,38 +31,52 @@ func init() {
 }
 
 func SetItem(key string, value interface{}) {
-
-	if cacheStorage == "filesystem" {
-		fileSystemCache.SetItem(key, value)
-	} else {
-		store[key] = value
-	}
+	go func(key string, value interface{}) {
+		newEntity := Cache[interface{}]{
+			CreatedAt: time.Now(),
+			Data:      &value,
+		}
+		if cacheStorage == "filesystem" {
+			fileSystemCache.SetItem(key, newEntity)
+		} else {
+			store[key] = newEntity
+		}
+	}(key, value)
 }
-func GetItem[T any](key string) T {
-	var zero T
+
+func GetItem[T any](key string) Cache[T] {
+	var zero Cache[T]
+
 	if cacheStorage == "filesystem" {
 		data, found := fileSystemCache.GetItem(key)
 		if !found {
 			return zero
 		}
-		var value T
+		var value Cache[T]
 		if err := json.Unmarshal(data, &value); err != nil {
 			fmt.Printf("Failed to decode cache data: %v\n", err)
 			return zero
 		}
-		return value
-	} else {
-		val, exists := store[key]
-		if exists {
-			if typedVal, ok := val.(T); ok {
-				return typedVal
-			}
+
+		return Cache[T]{
+			CreatedAt: value.CreatedAt,
+			Data:      value.Data,
 		}
+	} else {
+		//val, exists := store[key]
+		//if exists {
+		//	if typedVal, ok := val.(T); ok {
+		//		return typedVal
+		//	}
+		//}
 	}
 	return zero
 }
 
 func GetUserFromCache(email string) *models.User {
 	userC := GetItem[*models.User](email)
-	return userC
+	if userC.Data != nil {
+		return *userC.Data
+	}
+	return nil
 }

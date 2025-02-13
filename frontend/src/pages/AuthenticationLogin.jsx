@@ -55,14 +55,14 @@ const AuthenticationLogin = () => {
     const errorMessage = mutation?.error?.response?.data?.message
 
     return (
-        <div className="flex items-center justify-center   overflow-hidden">
-            <div className="card  bg-transparent md:bg-gray-800  shadow-none md:shadow-xl">
+        <div className="vh  mt-10 md:mt-0 overflow-hidden">
+            <div className="relative top-0 md:top-[20vh] mx-auto  card  max-w-md  bg-transparent md:bg-gray-800  shadow-none md:shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Authenticator</h2>
                     <p className="text-center text-gray-400 mb-4">Enter the OTP sent to your email</p>
                     {errorMessage && <p className="text-center text-red-500 mb-4">{errorMessage}</p>}
 
-                    <form onSubmit={handleLogin}>
+                    <form onSubmit={handleLogin} className="form-phone">
                         <div className="flex justify-center mb-4 space-x-2">
                             {otp.map((_, index) => (
                                 <input

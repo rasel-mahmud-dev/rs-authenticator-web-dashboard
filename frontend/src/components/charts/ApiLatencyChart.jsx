@@ -11,15 +11,11 @@ const ApiLatencyChart = () => {
         queryFn: fetchApiLatencySlats
     });
 
+
+
     function renderRoutePath(route) {
         return route?.replace("/api/v1", "");
     }
-
-
-    const toolTipWrapperStyle = {
-        cursor: 'pointer', // Change cursor to pointer on hover
-        radius: 10
-    };
 
     const CustomTooltip = ({ active, payload, label, ...a }) => {
         if (active && payload && payload.length) {
@@ -44,7 +40,7 @@ const ApiLatencyChart = () => {
 
 
             <ResponsiveContainer width="100%" height={320} className="api-latency-chart">
-                <BarChart data={data} >
+                <BarChart data={data?.data} >
                     <YAxis className="text-xs text-white font-medium"
                            label={{value: 'Response Time (ms)', angle: -90, position: 'insideLeft'}}/>
                     <Tooltip
@@ -60,7 +56,7 @@ const ApiLatencyChart = () => {
                             fontWeight: 'normal',
                             lineHeight: '1.5'
                         }}
-                        payload={data?.map((item, index) => ({
+                        payload={data?.data?.map((item, index) => ({
                             value: renderRoutePath(item.route_path),
                             type: 'line',
                             color: COLORS[index % 3],
@@ -68,7 +64,7 @@ const ApiLatencyChart = () => {
                     />
 
                     <Bar  barSize={20} radius={[8, 8, 0, 0]} dataKey="avg_response_time" name="Response Time (ms)" className="flex justify-center">
-                        {data?.map((entry, index) => (
+                        {data?.data?.map((entry, index) => (
                             <Cell
                                 va
                                 key={`cell-${index}`}

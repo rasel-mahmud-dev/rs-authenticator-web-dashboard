@@ -32,13 +32,13 @@ const RegistrationForm = () => {
     const errorMessage = mutation?.error?.response?.data?.message;
 
     return (
-        <div className="flex items-center justify-center   overflow-hidden">
-            <div className="card w-96 bg-transparent md:bg-gray-800  shadow-none md:shadow-xl">
+        <div className="vh  mt-10 md:mt-0 overflow-hidden">
+            <div className="relative top-0 md:top-[20vh] w-96 rounded-xl mx-auto md:bg-gray-800  shadow-none md:shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Create an Account</h2>
                     <p className="text-center text-gray-400 mb-4">Sign up to get started</p>
                     {errorMessage && <p className="text-center text-red-500 mb-4">{errorMessage}</p>}
-                    <form onSubmit={handleRegister}>
+                    <form onSubmit={handleRegister} className="form-phone">
                         <div className="form-control mb-4">
                             <label className="label">
                                 <span className="label-text text-gray-300">Username</span>

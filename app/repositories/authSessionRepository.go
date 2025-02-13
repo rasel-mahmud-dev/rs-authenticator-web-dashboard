@@ -24,9 +24,10 @@ func init() {
 
 func (r *authSessionRepository) GetAuthSessionByAccessToken(token string) *models.AuthSession {
 	authSessionCached := cache.GetItem[*models.AuthSession](token)
-	if authSessionCached != nil {
+
+	if authSessionCached.Data != nil {
 		utils.LoggerInstance.Info("auth session from cache")
-		return authSessionCached
+		return *authSessionCached.Data
 	}
 
 	query := `SELECT 
