@@ -28,7 +28,7 @@ const Sidebar = () => {
                     <div className="avatar">
                         <div
                             className="w-8 sm:w-12 lg:w-28 rounded-full ">
-                            <img src={user?.avatar}/>
+                            <img src={user?.avatar || "/boy.png"}/>
                         </div>
                     </div>
 

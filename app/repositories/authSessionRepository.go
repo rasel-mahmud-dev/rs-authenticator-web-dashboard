@@ -41,9 +41,9 @@ func (r *authSessionRepository) GetAuthSessionByAccessToken(token string) *model
 				COALESCE(up.avatar, '') AS avatar,
 				COALESCE(up.cover, '') AS cover
 			FROM auth_sessions s 
-				join public.users u 
+				 join public.users u 
 					on u.id = s.user_id  
-				join user_profiles up on up.user_id = u.id
+				left join user_profiles up on up.user_id = u.id
 			WHERE access_token = $1`
 
 	var authSession models.AuthSession
@@ -110,10 +110,15 @@ func (r *authSessionRepository) InsertAuthFailedAttempt(attempt models.UserAuthA
 			ip_address, user_agent, last_attempt_at, is_successful, created_at, updated_at
 		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 
+	var userId *string
+	if attempt.UserID != "" {
+		userId = &attempt.UserID
+	}
+
 	currentTime := time.Now()
 	_, err := r.db.Exec(
 		query,
-		attempt.UserID,
+		userId,
 		attempt.AttemptType,
 		attempt.MFASecurityID,
 		attempt.SecurityToken,
@@ -126,6 +131,7 @@ func (r *authSessionRepository) InsertAuthFailedAttempt(attempt models.UserAuthA
 	)
 
 	if err != nil {
+		fmt.Println(err)
 		utils.LoggerInstance.Error("Error inserting auth attempt: " + err.Error())
 		return
 	}

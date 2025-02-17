@@ -3,6 +3,7 @@ import {useMutation} from "@tanstack/react-query";
 import {loginWithAuthenticator} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
 import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const AuthenticationLogin = () => {
     const {setAuth} = useAuthStore();
@@ -17,12 +18,14 @@ const AuthenticationLogin = () => {
             setAuth(data?.data);
             localStorage.setItem("auth-remember-me", true);
             localStorage.setItem("token", data?.data?.token);
+            toast.success("Great! You have successfully logged in by otp code!");
             navigate('/account')
         },
         onError: (error) => {
-            console.error("Login failed:", error);
+            toast.error("Oops! Authentication failed.");
+            console.error("Authentication failed:", error);
         }
-    });
+    })
 
     function handleOtpChange(value, index) {
         const newOtp = [...otp];
@@ -56,7 +59,8 @@ const AuthenticationLogin = () => {
 
     return (
         <div className="vh  mt-10 md:mt-0 overflow-hidden">
-            <div className="relative top-0 md:top-[20vh] mx-auto  card  max-w-md  bg-transparent md:bg-gray-800  shadow-none md:shadow-xl">
+            <div
+                className="relative top-0 md:top-[20vh] mx-auto  card  max-w-md  bg-transparent md:bg-gray-800  shadow-none md:shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Authenticator</h2>
                     <p className="text-center text-gray-400 mb-4">Enter the OTP sent to your email</p>
@@ -77,13 +81,23 @@ const AuthenticationLogin = () => {
                                 />
                             ))}
                         </div>
-                        <button  className="btn btn-primary w-full" type="submit">Verify</button>
+                        <button className="btn btn-primary w-full" type="submit">Verify</button>
                     </form>
-                    <p className="text-center text-gray-500 mt-4">
-                        <a href="/login" className="text-primary font-medium">
-                            Login with password
-                        </a>
-                    </p>
+
+                    <div>
+                        <p className="text-center text-gray-500 mt-4">
+                            <a href="/login" className="text-primary font-medium">
+                                Login with password
+                            </a>
+                        </p>
+
+                        <p className="text-center text-gray-500 mt-4">
+                            <a href="/account-recovery" className="text-primary font-medium">
+                                Recovery with backup code
+                            </a>
+                        </p>
+
+                    </div>
                 </div>
             </div>
         </div>

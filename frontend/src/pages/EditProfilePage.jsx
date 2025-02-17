@@ -56,11 +56,11 @@ const EditProfilePage = () => {
         mutationFn: (profileData) => api.put("/api/v1/profile", profileData),
         onSuccess: () => {
             // handle success (e.g., navigate, show success message)
-            toast("Successfully updated profile.")
+            toast.success("Successfully updated profile.")
         },
         onError: () => {
             // handle error (e.g., show error message)
-            toast("Failed to updated profile.")
+            toast.error("Failed to updated profile.")
         },
     });
 

@@ -21,8 +21,8 @@ func (h *GenerateTotpSecretHandler) Handle(c *context.BaseContext) bool {
 
 	codeName := fmt.Sprintf("RsAuth (%s)", authSession.Email)
 	secret, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      fmt.Sprintf("RsAuth|%s", configs.Config.APP_LOGO_URL),
-		AccountName: authSession.Email,
+		Issuer:      "RsAuthenticatorWeb2",
+		AccountName: fmt.Sprintf("%s|%s", authSession.Email, configs.Config.APP_LOGO_URL),
 		Period:      30,
 		Digits:      otp.DigitsSix,
 		Algorithm:   otp.AlgorithmSHA256,

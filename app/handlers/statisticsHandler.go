@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"rs/auth/app/cache"
 	"rs/auth/app/repositories"
 	"rs/auth/app/repositories/trafficRepo"
 	"strconv"
@@ -52,17 +51,9 @@ func LoginAttemptSlatsHandler(w http.ResponseWriter, r *http.Request) {
 func GetApiLatencyStats(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	trafficRepository := trafficRepo.TrafficRepository
-	var stats interface{}
-	statsw := cache.GetItem[interface{}]("GetApiLatencyStats")
-	if statsw.Data == nil {
-		stats, _ = trafficRepository.GetApiLatencyStats()
-		cache.SetItem("GetApiLatencyStats", stats)
-	} else {
-		stats = statsw.Data
-	}
-
+	stats, _ := trafficRepository.GetApiLatencyStats()
 	_ = json.NewEncoder(w).Encode(map[string]interface{}{
-		"cachedTime": statsw.CreatedAt,
+		"cachedTime": nil,
 		"data":       stats,
 	})
 }
@@ -82,7 +73,6 @@ func FetchTrafficStats(w http.ResponseWriter, r *http.Request) {
 
 func FetchUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
 	pageStr := r.URL.Query().Get("page")
 	page := 1
 	if pageStr != "" {

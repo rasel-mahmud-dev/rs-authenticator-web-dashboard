@@ -234,6 +234,19 @@ func (r *mfaSecurityRepo) UpdateMfaSecurityToken(token models.MfaSecurityToken) 
 	return nil
 }
 
+func (r *mfaSecurityRepo) RemoveAuthenticator(userId string, id string) error {
+	query := `
+		UPDATE mfa_security_tokens
+		SET is_active = false, updated_at = CURRENT_TIMESTAMP, is_init = false
+		WHERE user_id = $1 AND id = $2 
+	`
+	_, err := r.db.Exec(query, userId, id)
+	if err != nil {
+		return fmt.Errorf("failed to disable MFA security token: %v", err)
+	}
+	return nil
+}
+
 func validateOtpCode(otpCode string, secret string) (bool, error) {
 	opts := totp.ValidateOpts{
 		Period:    30,
@@ -254,7 +267,7 @@ func (r *mfaSecurityRepo) VerifyMfaPasscode(otpCode string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	
+
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {

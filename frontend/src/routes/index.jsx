@@ -5,7 +5,7 @@ import LoginForm from "../components/LoginForm.jsx";
 import DashboardPage from "../pages/DashboardPage.jsx";
 import Layout from "../components/Layout.jsx";
 import ConnectedAuthenticators from "../pages/ConnectedAuthenticators.jsx";
-import SetupGoogleAuthenticator from "../pages/SetupGoogle.jsx";
+import SetupGoogleAuthenticator from "../pages/SetupAuthenticator.jsx";
 import AccountLayout from "../components/AccountLayout.jsx";
 import AuthenticationLogin from "../pages/AuthenticationLogin.jsx";
 import BlogHomePage from "../pages/BlogHomePage.jsx";
@@ -16,6 +16,7 @@ import AccountSettings from "../pages/AccountSettings.jsx";
 import UsersList from "../pages/UsersList.jsx";
 import AboutMe from "../pages/AboutMe.jsx";
 import DownloadApp from "../pages/DownloadApp.jsx";
+import RecoveryAccount from "../components/RecoveryAccount.jsx";
 
 const routes = createBrowserRouter([
     {
@@ -32,16 +33,22 @@ const routes = createBrowserRouter([
                 element: <LoginForm/>,
             },
             {
+                path: 'account-recovery',
+                element: <RecoveryAccount/>,
+            },
+            {
                 path: 'registration',
                 element: <RegistrationForm/>,
             },
             {
                 path: 'login/authenticator',
                 element: <AuthenticationLogin/>,
-            }, {
+            },
+            {
                 path: 'about-me',
                 element: <AboutMe/>,
-            },{
+            },
+            {
                 path: 'download-app',
                 element: <DownloadApp/>,
             },

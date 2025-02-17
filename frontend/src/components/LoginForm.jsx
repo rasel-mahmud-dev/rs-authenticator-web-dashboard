@@ -1,11 +1,13 @@
-import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import {login} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
+import {toast} from "react-toastify";
 
 const LoginForm = () => {
-
+    const [query] = useSearchParams()
+    let email = query.get("email") || "test@gmail.com"
     const {setAuth} = useAuthStore()
 
     const navigate = useNavigate()
@@ -20,10 +22,11 @@ const LoginForm = () => {
             } else {
                 sessionStorage.setItem("token", data?.data?.token);
             }
+            toast.success("Great! You have successfully logged in!");
             navigate('/account')
         },
         onError: (error) => {
-            console.error("Login failed:", error);
+            console.error("Oops! Authentication failed");
         }
     });
 
@@ -39,7 +42,8 @@ const LoginForm = () => {
 
     return (
         <div className="flex items-center justify-center relative vh overflow-hidden">
-            <div className="card w-96 bg-transparent absolute left-1/2 -translate-x-1/2 top-[10vh] md:bg-gray-800  shadow-none md:shadow-xl">
+            <div
+                className="card w-96 bg-transparent absolute left-1/2 -translate-x-1/2 top-[10vh] md:bg-gray-800  shadow-none md:shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Welcome Back</h2>
                     <p className="text-center text-gray-400 mb-4">Sign in to your account</p>
@@ -52,7 +56,7 @@ const LoginForm = () => {
                             <input
                                 type="email"
                                 name="email"
-                                defaultValue="rasel@gmail.com"
+                                defaultValue={email}
                                 placeholder="Enter your email"
                                 className="input input-bordered w-full"
                             />

@@ -9,7 +9,7 @@ const ConnectedAuthenticators = () => {
         queryFn: () => api.get("/api/v1/authenticated-apps"),
     });
 
-    const authenticators = fetchAuthenticatorsQuery?.data?.data?.data;
+    const authenticators = fetchAuthenticatorsQuery?.data?.data?.data || [];
 
 
     const pageTitle = (
@@ -47,7 +47,7 @@ const ConnectedAuthenticators = () => {
             <div className="mt-4">
 
                 <ul className="space-y-4">
-                    {authenticators.map((authenticator, index) => (
+                    {authenticators?.map((authenticator, index) => (
                         <li
                             key={index}
                             className="flex justify-between items-center p-4 bg-gray-800 rounded-lg"
@@ -79,9 +79,9 @@ const ConnectedAuthenticators = () => {
 
 const handleUnlinkAuthenticator = async (authenticatorId) => {
     try {
-        await api.post(`/unlink-authenticator/${authenticatorId}`); // Replace with your API endpoint
+        await api.post(`/api/v1/unlink-authenticator/${authenticatorId}`);
         alert("Authenticator unlinked successfully!");
-        window.location.reload(); // Refresh the page to update the list
+        window.location.reload();
     } catch (error) {
         console.error("Failed to unlink authenticator:", error);
         alert("Failed to unlink the authenticator. Please try again.");

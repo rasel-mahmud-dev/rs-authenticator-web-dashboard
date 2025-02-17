@@ -1,6 +1,6 @@
 import React from "react";
 import appCovers from "../assets/appCovers.json"
-
+import {Link } from 'react-router-dom'
 
 const ProjectInfo = () => {
     const frontendFeatures = [
@@ -26,19 +26,39 @@ const ProjectInfo = () => {
                 </h2>
 
                 <div className="max-w-2xl mx-auto">
-                    <p className="mb-6 text-gray-400">
-                        The backend is built with <strong>Golang</strong> and uses <strong>PostgreSQL</strong> to store
-                        user data,
-                        authentication sessions, traffic logs, and MFA connection secrets.
+
+                    <p className="mb-6">
+                        The backend is built with <strong>Golang</strong> and
+                        utilizes <strong>PostgreSQL</strong> to manage
+                        user data, authentication sessions, traffic logs, and MFA connection secrets. This
+                        ensures a robust
+                        and scalable authentication system with secure data storage.
                     </p>
 
-                    <p className="mb-6 text-gray-400">
-                        It implements the <strong>Chain of Responsibility</strong> design pattern to efficiently split
-                        and reuse handlers
-                        for specific tasks. Additionally, caching mechanisms are integrated into certain endpoints and
-                        repositories
-                        to reduce database load and enhance response times.
+                    <p className="mb-6">
+                        It implements <strong>image upload functionality using Cloudinary</strong> on the
+                        server side,
+                        allowing users to update their profile photos efficiently. This integration ensures
+                        optimized
+                        image handling with minimal server load.
                     </p>
+
+                    <p className="mb-6">
+                        To enhance code reusability and maintainability, the system follows the
+                        <strong>Chain of Responsibility design pattern</strong>. This approach enables the
+                        efficient splitting
+                        and reuse of handlers for specific tasks, improving modularity and reducing
+                        redundancy.
+                    </p>
+
+                    <p className="mb-6">
+                        Additionally, caching mechanisms are incorporated into selected endpoints and
+                        repositories. This
+                        significantly reduces database load, enhances system performance, and ensures faster
+                        response
+                        times for a smoother user experience.
+                    </p>
+
 
                     <h3 className="text-2xl font-semibold text-gray-300 mb-4">
                         Frontend Features
@@ -57,34 +77,41 @@ const ProjectInfo = () => {
                 </h2>
 
                 <div>
-                    <div className=" ">
-                        <div className="flex justify-center gap-6">
-                            {appCovers?.map((project, index) => (
-                                <div
-                                    key={index}
-                                    className="w-64 android-frame">
-
-                                    {/* Screenshot inside the frame */}
-                                    <figure className="w-full h-full overflow-hidden relative z-0">
-                                        <img
-                                            src={project}
-                                            alt={`Project ${index + 1}`}
-                                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                        />
-                                    </figure>
-                                </div>
-                            ))}
-                        </div>
-
-
-                    </div>
 
                     <div className="max-w-2xl mx-auto">
+
+
+                        <Link to="/download-app">
+                            <img src="/ic_launcher.png" alt="app-logo"
+                                 className="mx-auto border rounded-3xl p-2 border-gray-500 w-16 h-16 mb-4"/>
+                        </Link>
+
                         <p className="mb-6 text-gray-400">
                             <strong>RsAuthenticator</strong> is a secure authenticator app developed using <strong>Kotlin
                             Jetpack Compose</strong>.
                             It ensures <strong>100% secure authentication</strong> without requiring internet access.
                         </p>
+                    </div>
+
+                    <div className="flex justify-center gap-6">
+                        {appCovers?.map((project, index) => (
+                            <div
+                                key={index}
+                                className="w-64 android-frame">
+
+                                {/* Screenshot inside the frame */}
+                                <figure className="w-full h-full overflow-hidden relative z-0">
+                                    <img
+                                        src={project}
+                                        alt={`Project ${index + 1}`}
+                                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                    />
+                                </figure>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="max-w-2xl mx-auto mt-10">
 
                         <h3 className="text-2xl font-semibold text-gray-300 mb-4">
                             Key Features
@@ -96,7 +123,8 @@ const ProjectInfo = () => {
                         </ul>
 
                         <p className="mt-6 text-gray-400">
-                            With <strong>RsAuthenticator</strong>, you gain complete control over your authentication
+                            With <strong>RsAuthenticator</strong>, you gain complete control over your
+                            authentication
                             process while prioritizing
                             security and convenience.
                         </p>

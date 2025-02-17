@@ -1,9 +1,8 @@
 import React from "react";
 import ProjectInfo from "../components/ProjectInfo.jsx";
+import {Link} from "react-router-dom"
 
 const covers = [
-    // "/preview/ca236c3c-ff20-4e68-a87b-6bf97d047f80.webp",
-    // "/preview/ca236c3c-ff20-4e68-a87b-6bf97d047f80.png",
 
     "/preview/png-home.png",
     "/preview/png (10)33.png",
@@ -51,32 +50,35 @@ const BlogHomePage = () => {
                 </div>
             </section>
 
-            <section className="container  mx-auto py-10">
-                <div className=" shadow-lg rounded-lg p-4 md:p-6">
+            <section className="container  text-center mx-auto py-10">
+                <div className=" max-w-6xl mx-auto shadow-lg rounded-lg p-4 md:p-6">
                     <h2 className="text-3xl font-bold text-primary mb-4">
                         How Setup MFA Authenticator
                     </h2>
-                    <p className="  mb-6 text-gray-400">
+                    <p className=" text-center mb-6 text-gray-400">
                         Multi-Factor Authentication (MFA) is a security mechanism that
-                        requires users to verify their identity using multiple steps. Google
-                        Authenticator is a popular tool for implementing MFA. Here' ..
+                        requires users to verify their identity using multiple steps.
                     </p>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="grid  text-start grid-cols-1 lg:grid-cols-2 gap-8">
                         {/* Step 1 */}
                         <div className="card bg-neutral text-neutral-content shadow-lg">
                             <div className="card-body">
                                 <h3 className="card-title text-xl">Step 1: Setting Up the App</h3>
                                 <p>
-                                    - Download and install Google Authenticator from your app store.
+                                    - First, <Link to="/download-app" className="text-blue-500 hover:underline">download
+                                    RsAuth</Link> from our <strong>Download Page</strong>, or alternatively, you can
+                                    use <strong>Google Authenticator</strong> to test the setup.
                                     <br/>
-                                    - Log in to the application or service where you want to enable
-                                    MFA.
+                                    - Next, log in to the application or service where you want to enable Multi-Factor
+                                    Authentication (MFA).
                                     <br/>
-                                    - Look for the "Enable MFA" option, which often generates a QR
-                                    code.
+                                    - Once logged in, navigate to the <strong>"Enable MFA"</strong> section. This is
+                                    usually where the system will prompt you to scan a QR code for setting up the
+                                    authentication.
                                 </p>
                             </div>
+
                         </div>
 
                         {/* Step 2 */}
@@ -84,7 +86,7 @@ const BlogHomePage = () => {
                             <div className="card-body">
                                 <h3 className="card-title text-xl">Step 2: Scanning the QR Code</h3>
                                 <p>
-                                    Open the Google Authenticator app and use the "Scan a QR code"
+                                    Open the Authenticator app and use the "Scan a QR code"
                                     option to link your account. The app will then generate a unique
                                     six-digit code for your account.
                                 </p>
@@ -97,7 +99,7 @@ const BlogHomePage = () => {
                                 <h3 className="card-title text-xl">Step 3: Using the Generated Code</h3>
                                 <p>
                                     Whenever you log in, the system will ask for the six-digit code
-                                    from Google Authenticator. This code changes every 30 seconds
+                                    from Authenticator. This code changes every 30 seconds
                                     and ensures only authorized users can access the account.
                                 </p>
                             </div>

@@ -37,7 +37,15 @@ func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 		return userC, nil
 	}
 
-	query := "SELECT id, username, password, email, COALESCE(avatar, '') AS avatar FROM users WHERE email = $1"
+	query := `SELECT 
+    u.id, 
+    u.username, 
+    u.password, 
+    u.email, 
+    COALESCE(p.avatar, '') AS avatar FROM users u
+		LEFT JOIN public.user_profiles p 
+		    ON u.id = p.user_id 
+ 	WHERE email = $1`
 	var user models.User
 
 	err := r.db.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.Avatar)
@@ -55,9 +63,9 @@ func (r *UserRepository) GetAllUsers(page int, limit int) ([]models.User, int, e
 	offset := (page - 1) * limit
 
 	query := `
-		SELECT id, username, email, created_at, COALESCE(avatar, '') AS avatar 
-		FROM users
-		ORDER BY created_at DESC 
+		SELECT u.id, u.username, u.email, u.created_at, COALESCE(up.avatar, '') AS avatar 
+		FROM users u left join public.user_profiles up on u.id = up.user_id
+		ORDER BY u.created_at DESC 
 		LIMIT $1 OFFSET $2
 	`
 
@@ -82,7 +90,7 @@ func (r *UserRepository) GetAllUsers(page int, limit int) ([]models.User, int, e
 		return nil, 0, utils.Error("error iterating over rows: %w", err)
 	}
 
-	countQuery := `SELECT COUNT(*) FROM users`
+	countQuery := `SELECT COUNT(id) FROM users`
 	var totalItems int
 
 	err = r.db.QueryRow(countQuery).Scan(&totalItems)

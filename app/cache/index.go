@@ -63,12 +63,7 @@ func GetItem[T any](key string) Cache[T] {
 			Data:      value.Data,
 		}
 	} else {
-		//val, exists := store[key]
-		//if exists {
-		//	if typedVal, ok := val.(T); ok {
-		//		return typedVal
-		//	}
-		//}
+		// ... other caching storages
 	}
 	return zero
 }

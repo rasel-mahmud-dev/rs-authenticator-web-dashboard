@@ -26,4 +26,8 @@ type UserProfile struct {
 
 	CreatedAt *time.Time `json:"created_at"`
 	UpdatedAt *time.Time `json:"updated_at"`
+
+	// populated field
+	Email    string `json:"email,omitempty"`
+	Username string `json:"username,omitempty"`
 }

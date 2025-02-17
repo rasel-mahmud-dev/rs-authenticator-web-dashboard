@@ -1,5 +1,6 @@
 import React from "react";
 import appCovers from "../assets/appCovers.json"
+import {Link} from "react-router-dom";
 
 const DownloadApp = () => {
     const appInfo = {
@@ -18,39 +19,18 @@ const DownloadApp = () => {
                 "Basic user authentication added.",
                 "Bug fixes and performance improvements."
             ],
-        },
-        {
-            version: "0.0.2",
-            link: "https://rasel-portfolio.vercel.app/#contact-section",
-            releaseNotes: [
-                "Improved UI/UX design.",
-                "Added dark mode support.",
-                "Fixed login issue for some users."
-            ],
-        },
-        {
-            version: "0.0.3",
-            link: "https://rasel-portfolio.vercel.app/#contact-section",
-            releaseNotes: [
-                "Enhanced security features.",
-                "Added multi-language support.",
-                "Fixed minor bugs in dashboard."
-            ],
-        },
-        {
-            version: "0.0.4",
-            link: "https://rasel-portfolio.vercel.app/#contact-section",
-            releaseNotes: [
-                "Major performance improvements.",
-                "New file upload functionality added.",
-                "Improved API response time."
-            ],
-        },
+        }
     ];
 
     return (
         <div className="mt-10 max-w-screen-lg mx-auto px-4 text-center">
-            <img src={appInfo.logo} alt="App Logo" className="w-20 h-20 mx-auto mb-4"/>
+
+
+            <Link to="/download-app">
+                <img src="/ic_launcher.png" alt="app-logo"
+                     className="mx-auto border rounded-3xl p-2 border-gray-500 w-16 h-16 mb-4"/>
+            </Link>
+
 
             <h1 className="text-white text-3xl font-bold">{appInfo.name}</h1>
             <p className="text-gray-300 mt-2">{appInfo.description}</p>

@@ -2,7 +2,6 @@ import {api} from "./api.js";
 
 export async function login(credentials) {
     const response = await api.post("/api/v1/auth/login", credentials);
-    console.log(response, "sdfklsdlkjlk")
     if (response.status === 200) {
         console.log("Login successful:", response.data);
         return response.data;
@@ -13,12 +12,7 @@ export async function login(credentials) {
 
 export async function register(credentials) {
     const response = await api.post("/api/v1/auth/registration", credentials);
-    if (response.status === 200) {
-        console.log("Login successful:", response.data);
-        return response.data;
-    } else {
-        throw Error("Login failed: Unexpected status code");
-    }
+    return response.data;
 }
 
 export async function loginWithAuthenticator({otpCode}) {
@@ -37,5 +31,17 @@ export async function verifyAuthentication() {
         return response.data;
     } else {
         throw Error("")
+    }
+}
+
+
+
+export async function accountRecoveryWithBackupCode({code}) {
+    const response = await api.post("/api/v1/auth/login-with-authenticator", {otpCode});
+    if (response.status === 200) {
+        console.log("Login successful:", response.data);
+        return response.data;
+    } else {
+        throw Error("Login failed: Unexpected status code");
     }
 }

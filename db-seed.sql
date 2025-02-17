@@ -105,7 +105,7 @@ CREATE TABLE if not exists user_auth_attempts
 (
     id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     code_name       VARCHAR(1024),
-    user_id         UUID        NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    user_id         UUID             default NULL,
     attempt_type    VARCHAR(50) NOT NULL, -- Type of attempt (failed, backup_code, etc.)
     mfa_security_id VARCHAR(255),
     security_token  VARCHAR(16)      default NULL,
@@ -117,6 +117,9 @@ CREATE TABLE if not exists user_auth_attempts
     updated_at      TIMESTAMP        DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE user_auth_attempts
+    ALTER COLUMN user_id DROP NOT NULL,
+    ALTER COLUMN user_id SET DEFAULT NULL;
 
 CREATE TYPE auth_method_enum AS ENUM ('authenticator', 'password');
 ALTER TABLE auth_sessions
@@ -162,4 +165,8 @@ CREATE TABLE if not exists user_traffic
     request_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     response_time INTEGER
 );
+
+
+ALTER TABLE user_profiles
+    DROP CONSTRAINT user_profiles_gender_check;
 

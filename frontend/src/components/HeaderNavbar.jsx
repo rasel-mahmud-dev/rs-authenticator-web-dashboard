@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import useAuthStore from "../store/authState.js";
 import {Link, NavLink} from "react-router-dom";
+import {FaGithub} from "react-icons/fa";
 
 
 const HeaderNavbar = () => {
@@ -75,10 +76,15 @@ const HeaderNavbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end relative">
-                    {/*<a className="btn">Button</a>*/}
 
-                    {user ? (
-                        <div className="flex flex-1 justify-end px-2">
+                    <div className="flex flex-1 items-center justify-end px-2">
+
+                        <a target="_blank" className="btn btn-ghost"
+                           href="https://github.com/rasel-mahmud-dev/rs-authenticator-app">
+                            <FaGithub className="text-2xl"/>
+                        </a>
+
+                        {user ? (
                             <div className="flex items-stretch">
 
                                 <div className="dropdown  dropdown-end">
@@ -88,7 +94,7 @@ const HeaderNavbar = () => {
                                         <div className="avatar">
                                             <div
                                                 className="w-8 rounded-full ">
-                                                <img src={user?.avatar}/>
+                                                <img src={user?.avatar || "/boy.png"}/>
                                             </div>
                                         </div>
 
@@ -120,16 +126,18 @@ const HeaderNavbar = () => {
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-                    ) : (
-                        <div>
-                            <Link to="/login">
-                                <button className="btn btn-outline btn-light text-white hover:bg-indigo-400">
-                                    Sign In
-                                </button>
-                            </Link>
-                        </div>
-                    )}
+                        ) : (
+                            <div>
+                                <Link to="/login">
+                                    <button className="btn btn-outline btn-light text-white hover:bg-indigo-400">
+                                        Sign In
+                                    </button>
+                                </Link>
+
+                            </div>
+                        )}
+                    </div>
+
 
                 </div>
             </div>

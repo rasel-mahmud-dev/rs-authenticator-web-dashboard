@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import useAuthStore from "../store/authState.js";
 import {useQuery} from "@tanstack/react-query";
 import {api} from "../services/api.js";
+import {toast} from "react-toastify";
 
 const UserProfile = () => {
     const query = useQuery({
@@ -31,7 +32,8 @@ const UserProfile = () => {
         updated_at,
         about_me,
         avatar,
-        cover
+        cover,
+        username
     } = profile
 
     const [preview, setPreview] = useState(avatar || "/boy.png");
@@ -85,15 +87,16 @@ const UserProfile = () => {
         formData.append("image", resizedBlob, "profile.jpg");
 
         try {
-            const response = await api.post("/api/v1/profile/avatar", formData, {
+            toast.info("Uploading Profile Photo")
+            await api.post("/api/v1/profile/avatar", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
 
-            console.log("Upload Success:", response.data);
+            toast.success("Successfully Update Profile Photo")
         } catch (error) {
-            console.error("Upload Error:", error);
+            toast.error("Upload Error:");
         }
     };
 
@@ -140,7 +143,7 @@ const UserProfile = () => {
             {/* Profile Info */}
             <div className="text-center mt-24">
                 <h1 className="text-3xl font-semibold">{user?.username || "John Doe"}</h1>
-                <p className="text-gray-400">@{full_name || "johndoe"}</p>
+                <p className="text-gray-400">@{full_name || username}</p>
             </div>
 
             {/* Profile Details Section */}
@@ -148,11 +151,11 @@ const UserProfile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-800 p-6 rounded-lg shadow-md">
                     <div>
                         <h2 className="text-gray-400 text-sm">Email</h2>
-                        <p className="text-white">{profile.email || "johndoe@example.com"}</p>
+                        <p className="text-white">{profile?.email}</p>
                     </div>
                     <div>
                         <h2 className="text-gray-400 text-sm">Phone</h2>
-                        <p className="text-white">{profile.phone || "+123 456 7890"}</p>
+                        <p className="text-white">{profile?.phone}</p>
                     </div>
                     <div>
                         <h2 className="text-gray-400 text-sm">Role</h2>

@@ -81,6 +81,7 @@ func init() {
 	HttpStatus = map[StatusCodeType]int{
 		ACCOUNT_CREATED:           201,
 		INVALID_CREDENTIALS:       400,
+		DUPLICATE_ENTITY:          409,
 		REQUEST_VALIDATION_FAILED: 400,
 		USER_NOT_FOUND:            404,
 		ACCOUNT_LOCKED:            423,

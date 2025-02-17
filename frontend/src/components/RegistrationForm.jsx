@@ -1,22 +1,27 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import {register} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
+import {toast} from "react-toastify";
+import { faker } from '@faker-js/faker';
 
 const RegistrationForm = () => {
-    const {setAuth} = useAuthStore();
     const navigate = useNavigate();
+
+    const fakeEmail = faker.internet.email().toLowerCase();
+    const randomName = faker.internet.username().toLowerCase();
+
+
 
     const mutation = useMutation({
         mutationFn: register,
-        onSuccess: (data) => {
-            console.log(data)
-            // setAuth(data?.data);
-            // localStorage.setItem("token", data?.data?.token);
-            navigate("/login");
+        onSuccess: (_data, variables) => {
+            toast.success("Great! You have successfully registered!");
+            navigate(`/login?email=${variables.email}`);
         },
         onError: (error) => {
+            toast.error("Oops! Registration failed.");
             console.error("Registration failed:", error);
         },
     });
@@ -45,6 +50,7 @@ const RegistrationForm = () => {
                             </label>
                             <input
                                 type="text"
+                                defaultValue={randomName}
                                 name="username"
                                 placeholder="Enter username"
                                 className="input input-bordered w-full"
@@ -56,6 +62,7 @@ const RegistrationForm = () => {
                             </label>
                             <input
                                 type="email"
+                                defaultValue={fakeEmail}
                                 name="email"
                                 placeholder="Enter your email"
                                 className="input input-bordered w-full"

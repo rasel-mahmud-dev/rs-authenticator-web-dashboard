@@ -22,8 +22,8 @@ const ApiLatencyChart = () => {
             const item = payload?.[0]
             return (
                 <div className="p-4 flex flex-col gap-2" style={toolTipContentStyle}>
-                    <h4 className="text-sm  font-semibold text-white">{`${item?.payload?.route_path}`}</h4>
-                    <span className="text-xs   text-white">{`AVG Response time: ${item?.value}ms`}</span>
+                    <h4 className="text-sm  font-semibold text-white">{`${renderRoutePath(item?.payload?.route_path)}`}</h4>
+                    <span className="text-xs   text-white">{`AVG Response time: ${item?.value?.toFixed(2)}ms`}</span>
                     <p className="text-xs   text-white">{`Request Count: ${item?.payload?.request_count}`}</p>
                 </div>
             );

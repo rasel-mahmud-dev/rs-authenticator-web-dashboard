@@ -2,6 +2,7 @@ package mfaSecurity
 
 import (
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"net/http"
 	"rs/auth/app/dto"
 	"rs/auth/app/models"
@@ -68,4 +69,15 @@ func GetAllConnectedAuthenticatorApps(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Respond(w, statusCode.OK, "OK", items)
+}
+
+func RemoveAuthenticator(w http.ResponseWriter, r *http.Request) {
+	authSession := (*r).Context().Value("authSession").(*models.AuthSession)
+	if authSession == nil {
+		response.Respond(w, statusCode.UNAUTHORIZED, "UNAUTHORIZED", nil)
+		return
+	}
+	id := mux.Vars(r)["id"]
+	repositories.MfaSecurityTokenRepo.RemoveAuthenticator(authSession.UserId, id)
+	response.Respond(w, statusCode.OK, "OK", nil)
 }

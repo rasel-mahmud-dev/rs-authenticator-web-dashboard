@@ -92,10 +92,10 @@ func (r *Repository) InsertOrUpdateUserProfileAvatar(profile dto.UpdateProfilePa
 func (r *Repository) GetUserProfile(userID string) (*models.UserProfile, error) {
 	query := `
 		SELECT 
-			u.id, p.avatar, u.created_at AS account_created_at, 
+			u.id, COALESCE(p.avatar, ''), u.created_at AS account_created_at, 
 			COALESCE(p.full_name, ''), p.birth_date, p.gender, p.phone, p.location, p.about_me, p.website,
 			p.facebook, p.twitter, p.linkedin, p.instagram, p.github, p.youtube, p.tiktok, 
-			p.created_at, p.updated_at, p.cover
+			p.created_at, p.updated_at, COALESCE(p.cover, ''),  u.email, u.username
 		FROM users u
 		LEFT JOIN user_profiles p ON u.id = p.user_id
 		WHERE u.id = $1;
@@ -110,7 +110,7 @@ func (r *Repository) GetUserProfile(userID string) (*models.UserProfile, error) 
 		&profile.Phone, &profile.Location, &profile.AboutMe, &profile.Website,
 		&profile.Facebook, &profile.Twitter, &profile.LinkedIn, &profile.Instagram,
 		&profile.GitHub, &profile.YouTube, &profile.TikTok,
-		&createdAt, &updatedAt, &profile.Cover,
+		&createdAt, &updatedAt, &profile.Cover, &profile.Email, &profile.Username,
 	)
 
 	if err != nil {

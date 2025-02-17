@@ -1,7 +1,6 @@
 package common
 
 import (
-	"fmt"
 	"rs/auth/app/context"
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
@@ -42,8 +41,6 @@ func (h *PasswordValidationHandler) Handle(c *context.BaseContext) bool {
 		}
 		handler := InsertAuthFailedAttemptHandler{}
 		handler.Handle(c)
-
-		fmt.Println("sdlfskdflkjll::lksdjf")
 
 		response.Respond(c.ResponseWriter, statusCode.INVALID_CREDENTIALS, "Invalid email or password", nil)
 		return false
