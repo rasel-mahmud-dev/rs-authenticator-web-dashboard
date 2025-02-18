@@ -50,7 +50,8 @@ func (r *UserRepository) GetAuthenticationStats() ([]dto.AuthenticatorStats, err
 		SELECT 
 			DATE(created_at) AS date,
 			COUNT(CASE WHEN auth_method = 'authenticator' THEN 1 END) AS authenticator,
-			COUNT(CASE WHEN auth_method = 'password' THEN 1 END) AS password
+			COUNT(CASE WHEN auth_method = 'password' THEN 1 END) AS password,
+			COUNT(CASE WHEN auth_method = 'recovery_code' THEN 1 END) AS recovery_code
 		FROM auth_sessions
 		WHERE created_at >= $1
 		GROUP BY DATE(created_at)
@@ -66,7 +67,7 @@ func (r *UserRepository) GetAuthenticationStats() ([]dto.AuthenticatorStats, err
 	var stats []dto.AuthenticatorStats
 	for rows.Next() {
 		var stat dto.AuthenticatorStats
-		err := rows.Scan(&stat.Date, &stat.Authenticator, &stat.Password)
+		err := rows.Scan(&stat.Date, &stat.Authenticator, &stat.Password, &stat.RecoveryCode)
 		if err != nil {
 			return nil, err
 		}

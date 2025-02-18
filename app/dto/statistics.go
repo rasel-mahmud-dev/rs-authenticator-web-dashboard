@@ -11,6 +11,7 @@ type AuthenticatorStats struct {
 	Date          string `json:"date"`
 	Authenticator int    `json:"authenticator"`
 	Password      int    `json:"password"`
+	RecoveryCode  int    `json:"recovery_code"`
 }
 
 type GetAttemptRateStatsResult struct {

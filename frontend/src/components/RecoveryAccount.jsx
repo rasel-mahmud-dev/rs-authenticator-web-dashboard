@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
-import { accountRecoveryWithBackupCode } from '../services/authSerivce.js';
+import React, {useState} from 'react';
+import {toast} from 'react-toastify';
+import {useMutation} from '@tanstack/react-query';
+import {accountRecoveryWithBackupCode} from '../services/authSerivce.js';
+import {useNavigate} from "react-router-dom";
+import useAuthStore from "../store/authState.js";
 
 const RecoveryAccount = () => {
     const [backupCode, setBackupCode] = useState('');
 
+    const navigate = useNavigate()
+    const {setAuth} = useAuthStore()
+
     const mutation = useMutation({
         mutationFn: accountRecoveryWithBackupCode,
-        onSuccess: () => {
+        
+        onSuccess: (data, variables) => {
+            setAuth(data?.data);
+            localStorage.setItem("auth-remember-me", true);
+            localStorage.setItem("token", data?.data?.token);
             toast.success('Backup code accepted! You have successfully logged in.');
-            setBackupCode('');
+            navigate('/account')
         },
+
         onError: () => {
             toast.error('Invalid backup code. Please try again.');
         },
@@ -19,7 +29,7 @@ const RecoveryAccount = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        mutation.mutate(backupCode);
+        mutation.mutate({code: backupCode});
     };
 
     return (

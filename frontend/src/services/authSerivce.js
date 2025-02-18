@@ -37,11 +37,11 @@ export async function verifyAuthentication() {
 
 
 export async function accountRecoveryWithBackupCode({code}) {
-    const response = await api.post("/api/v1/auth/login-with-authenticator", {otpCode});
+    const response = await api.post("/api/v1/mfa/account-recovery", {code});
     if (response.status === 200) {
-        console.log("Login successful:", response.data);
+        console.log("account-recovery successful:", response.data);
         return response.data;
     } else {
-        throw Error("Login failed: Unexpected status code");
+        throw Error("account-recovery failed: Unexpected status code");
     }
 }

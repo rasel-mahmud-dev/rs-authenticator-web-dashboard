@@ -121,9 +121,12 @@ ALTER TABLE user_auth_attempts
     ALTER COLUMN user_id DROP NOT NULL,
     ALTER COLUMN user_id SET DEFAULT NULL;
 
-CREATE TYPE auth_method_enum AS ENUM ('authenticator', 'password');
+CREATE TYPE auth_method_enum AS ENUM ('authenticator', 'password', 'recovery_code');
 ALTER TABLE auth_sessions
     ADD COLUMN IF NOT EXISTS auth_method auth_method_enum default 'password';
+
+ALTER TYPE auth_method_enum ADD VALUE 'recovery_code';
+ALTER TYPE auth_provider ADD VALUE 'recovery_code';
 
 
 DROP TABLE IF EXISTS user_profiles;

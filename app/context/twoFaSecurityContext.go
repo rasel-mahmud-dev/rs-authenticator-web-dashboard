@@ -13,4 +13,5 @@ type TwoFaSecurityContext struct {
 	GenerateMfaBody            dto.GenerateMfaQRRequestPayload
 	IsGeneratedNewRecoveryCode bool
 	RecoveryCodes              []models.RecoveryCode
+	AccountRecoveryCode        string
 }

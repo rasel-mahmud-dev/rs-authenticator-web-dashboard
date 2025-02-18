@@ -16,5 +16,6 @@ type BaseContext struct {
 	TwoFaSecurityContext
 	LoginContext
 	AuthenticatorLoginContext
-	AuthMethod string
+	AuthMethod             string
+	AccountRecoveryCodeRow models.RecoveryCode
 }

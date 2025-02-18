@@ -29,13 +29,18 @@ const AuthenticatedCountBarChart = () => {
                             <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
                             <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.2}/>
                         </linearGradient>
+
+                        <linearGradient id="password2Gradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#d9534f" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#d9534f" stopOpacity={0.2}/>
+                        </linearGradient>
                     </defs>
 
                     {XAxisUtil()}
 
-                    <YAxis className="text-xs  text-white font-medium" />
+                    <YAxis className="text-xs  text-white font-medium"/>
                     <Tooltip
-                        cursor={{ radius: [20, 20, 0, 0] }}
+                        cursor={{radius: [20, 20, 0, 0]}}
                         contentStyle={toolTipContentStyle}
                     />
                     <Legend/>
@@ -51,6 +56,12 @@ const AuthenticatedCountBarChart = () => {
                         dataKey="password"
                         fill="url(#passwordGradient)"
                         name="Password"
+                    />
+                    <Bar
+                        barSize={15} radius={[8, 8, 0, 0]}
+                        dataKey="recovery_code"
+                        fill="url(#password2Gradient)"
+                        name="Recovery Code"
                     />
 
                 </BarChart>

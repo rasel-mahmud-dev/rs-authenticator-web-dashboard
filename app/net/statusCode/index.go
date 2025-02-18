@@ -75,6 +75,7 @@ var (
 	UNAUTHORIZED_SESSION_NOT_FOUND StatusCodeType = "ERR-028"
 	UNAUTHORIZED_TOKEN_INVALID     StatusCodeType = "ERR-028"
 	UNAUTHORIZED_TOKEN_MISSING     StatusCodeType = "ERR-028"
+	INVALID_RECOVERY_CODE          StatusCodeType = "ERR-028"
 )
 
 func init() {

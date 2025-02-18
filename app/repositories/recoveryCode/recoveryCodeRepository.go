@@ -2,6 +2,7 @@ package recoveryCode
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"rs/auth/app/db"
 	"rs/auth/app/models"
@@ -104,4 +105,41 @@ func (r *Repository) GetLast10RecoveryCodes(userID string) ([]models.RecoveryCod
 	}
 
 	return recoveryCodes, nil
+}
+
+func (r *Repository) GetValidRecoveryCode(code string) (models.RecoveryCode, error) {
+	query := `
+		SELECT id, user_id, code, is_used, created_at, updated_at, expires_at
+		FROM recovery_codes
+		WHERE code = $1
+		AND is_used = FALSE
+		AND expires_at > NOW()
+		ORDER BY created_at DESC
+		LIMIT 1
+	`
+
+	var recovery models.RecoveryCode
+	err := r.db.QueryRow(query, code).Scan(&recovery.ID, &recovery.UserID, &recovery.Code, &recovery.IsUsed, &recovery.CreatedAt, &recovery.UpdatedAt, &recovery.ExpiresAt)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return models.RecoveryCode{}, nil
+		}
+		return models.RecoveryCode{}, err
+	}
+
+	return recovery, nil
+}
+
+func (r *Repository) MakeInvalidRecoveryCodeById(id string) error {
+	query := `
+		UPDATE recovery_codes SET expires_at = NOW(), is_used = TRUE
+		WHERE id = $1
+	`
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
 }
