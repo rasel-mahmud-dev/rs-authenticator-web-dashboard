@@ -170,3 +170,19 @@ CREATE TABLE if not exists user_traffic
 ALTER TABLE user_profiles
     DROP CONSTRAINT user_profiles_gender_check;
 
+
+
+CREATE TABLE recovery_codes
+(
+    id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id    UUID        NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    code       VARCHAR(10) NOT NULL,
+    is_used    BOOLEAN          DEFAULT FALSE,
+    expires_at TIMESTAMP   NOT NULL,
+    created_at TIMESTAMP        DEFAULT NOW(),
+    updated_at TIMESTAMP        DEFAULT NOW()
+);
+
+CREATE INDEX idx_recovery_code ON recovery_codes (code);
+CREATE INDEX idx_expires_at ON recovery_codes (expires_at);
+CREATE INDEX idx_user_id ON recovery_codes (user_id);

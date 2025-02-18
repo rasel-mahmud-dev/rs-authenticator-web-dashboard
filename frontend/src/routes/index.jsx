@@ -17,6 +17,7 @@ import UsersList from "../pages/UsersList.jsx";
 import AboutMe from "../pages/AboutMe.jsx";
 import DownloadApp from "../pages/DownloadApp.jsx";
 import RecoveryAccount from "../components/RecoveryAccount.jsx";
+import RecoveryCodes from "../pages/RecoveryCodes.jsx";
 
 const routes = createBrowserRouter([
     {
@@ -36,6 +37,7 @@ const routes = createBrowserRouter([
                 path: 'account-recovery',
                 element: <RecoveryAccount/>,
             },
+
             {
                 path: 'registration',
                 element: <RegistrationForm/>,
@@ -96,12 +98,14 @@ const routes = createBrowserRouter([
                             </ProtectedRoute>
                         ),
                     },
-
                     {
                         path: "/account/authenticator-apps",
                         element: <ProtectedRoute><ConnectedAuthenticators/></ProtectedRoute>
                     },
-
+                    {
+                        path: '/account/recovery-codes',
+                        element: <RecoveryCodes/>,
+                    },
                     {
                         path: "/account/authenticator-setup",
                         element: <ProtectedRoute><SetupGoogleAuthenticator/></ProtectedRoute>

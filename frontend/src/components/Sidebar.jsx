@@ -7,6 +7,7 @@ import useAuthStore from "../store/authState.js";
 import {GoDownload} from "react-icons/go";
 import {SiGoogleauthenticator} from "react-icons/si";
 import {CgProfile} from "react-icons/cg";
+import {LuKeyRound} from "react-icons/lu";
 
 const sidebarItems = [
     {name: 'Home', route: '/', icon: <FaHome/>},
@@ -14,6 +15,8 @@ const sidebarItems = [
     {name: 'Profile', route: '/account/profile', icon: <FaUser/>},
     {name: 'Users', route: '/account/users', icon: <CgProfile/>},
     {name: 'Authenticator', route: '/account/authenticator-apps', icon: <SiGoogleauthenticator/>},
+    {name: 'Recovery codes', route: '/account/recovery-codes', icon: <LuKeyRound/>},
+    // {name: 'Two-factor authentication', route: '/account/recovery-codes', icon: <LuKeyRound/>},
     {name: 'Download App', route: '/download-app', icon: <GoDownload/>},
     {name: 'Settings', route: '/account/settings', icon: <FaCog/>},
 ];

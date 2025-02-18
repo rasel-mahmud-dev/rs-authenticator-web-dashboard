@@ -10,7 +10,7 @@ func Init(router *mux.Router) {
 	//router.HandleFunc("/api/configuration", handlers.ConfigurationHandler).Methods("GET")
 	router.HandleFunc("/api/health", handlers.HealthHandler).Methods("GET")
 	AuthRoutes(router)
-	AuthenticatorRoutes(router)
+	MultiFactorAuthenticationRoutes(router)
 	StatisticsRoutes(router)
 	UserProfileRoutes(router)
 }

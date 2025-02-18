@@ -1,0 +1,107 @@
+package recoveryCode
+
+import (
+	"database/sql"
+	"fmt"
+	"rs/auth/app/db"
+	"rs/auth/app/models"
+	"rs/auth/app/utils"
+	"strings"
+)
+
+type Repository struct {
+	db *sql.DB
+}
+
+var RecoveryCodeRepository *Repository
+
+func init() {
+	utils.LoggerInstance.Info("create user repo instance...")
+	RecoveryCodeRepository = &Repository{db: db.GetDB()}
+}
+
+//func (r *Repository) InsertRecoveryCodes(traffic models.RecoveryCode) error {
+//	query := `
+//		INSERT INTO user_traffic (
+//			route_path, http_method, user_agent, ip_address, request_time, response_time
+//		) VALUES ($1, $2, $3, $4, $5, $6)
+//	`
+//
+//	_, err := r.db.Exec(query,
+//		traffic.RoutePath,
+//		traffic.HTTPMethod,
+//		traffic.UserAgent,
+//		traffic.IPAddress,
+//		traffic.RequestTime,
+//		traffic.ResponseTime,
+//	)
+//
+//	return err
+//}
+
+func (r *Repository) InsertMultipleRecoveryCodes(recoveryCodes []models.RecoveryCode) error {
+	if len(recoveryCodes) == 0 {
+		return nil // No data to insert
+	}
+
+	query := `INSERT INTO recovery_codes (user_id, code, is_used, created_at, updated_at, expires_at) VALUES`
+	values := []interface{}{}
+	placeholders := []string{}
+
+	for i, recovery := range recoveryCodes {
+		n := i * 6
+		placeholders = append(placeholders,
+			fmt.Sprintf("($%d, $%d, $%d, $%d, $%d, $%d)",
+				n+1, n+2, n+3, n+4, n+5, n+6))
+
+		values = append(values, recovery.UserID, recovery.Code,
+			recovery.IsUsed, recovery.CreatedAt, recovery.UpdatedAt, recovery.ExpiresAt)
+	}
+
+	finalQuery := query + strings.Join(placeholders, ",")
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec(finalQuery, values...)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
+}
+
+func (r *Repository) GetLast10RecoveryCodes(userID string) ([]models.RecoveryCode, error) {
+	query := `
+		SELECT id, user_id, code, is_used, created_at, updated_at, expires_at
+		FROM recovery_codes
+		WHERE user_id = $1
+		ORDER BY created_at DESC
+		LIMIT 10
+	`
+
+	rows, err := r.db.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var recoveryCodes []models.RecoveryCode
+	for rows.Next() {
+		var recovery models.RecoveryCode
+		err := rows.Scan(&recovery.ID, &recovery.UserID, &recovery.Code, &recovery.IsUsed, &recovery.CreatedAt, &recovery.UpdatedAt, &recovery.ExpiresAt)
+		if err != nil {
+			return nil, err
+		}
+		recoveryCodes = append(recoveryCodes, recovery)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return recoveryCodes, nil
+}

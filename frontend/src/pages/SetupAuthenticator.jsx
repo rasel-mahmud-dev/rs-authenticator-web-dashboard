@@ -3,11 +3,8 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import {api} from "../services/api.js";
 import {toast} from "react-toastify";
-import BackupCodes from "../components/BackupCodes.jsx";
-
 
 const SetupGoogleAuthenticator = () => {
-
 
     const navigate = useNavigate()
     const generateSecret = useMutation({
@@ -79,9 +76,7 @@ const SetupGoogleAuthenticator = () => {
                     ReGenerate
                 </button>
 
-                <div className="mt-6">
-                    <BackupCodes recovery_codes={data?.recovery_codes} />
-                </div>
+
 
                 <div className="mt-6 flex space-x-4">
 
