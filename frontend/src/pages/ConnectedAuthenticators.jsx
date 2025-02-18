@@ -6,7 +6,7 @@ import {Link} from "react-router-dom"
 const ConnectedAuthenticators = () => {
     const fetchAuthenticatorsQuery = useQuery({
         queryKey: ["connected-authenticators"],
-        queryFn: () => api.get("/api/v1/authenticated-apps"),
+        queryFn: () => api.get("/api/v1/mfa/authenticated-apps"),
     });
 
     const authenticators = fetchAuthenticatorsQuery?.data?.data?.data || [];
@@ -79,7 +79,7 @@ const ConnectedAuthenticators = () => {
 
 const handleUnlinkAuthenticator = async (authenticatorId) => {
     try {
-        await api.post(`/api/v1/unlink-authenticator/${authenticatorId}`);
+        await api.post(`/api/v1/mfa/unlink-authenticator/${authenticatorId}`);
         alert("Authenticator unlinked successfully!");
         window.location.reload();
     } catch (error) {

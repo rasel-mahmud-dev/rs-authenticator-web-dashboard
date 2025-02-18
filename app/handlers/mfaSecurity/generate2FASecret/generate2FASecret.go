@@ -19,7 +19,6 @@ func Generate2FASecretHandler(w http.ResponseWriter, r *http.Request) {
 
 	chain := &PreparedContextState{}
 	chain.SetNext(&AuthSessionHandler{}).
-		SetNext(&CheckInitTokenHandler{}).
 		SetNext(&GenerateTotpSecretHandler{}).
 		SetNext(&GenerateQRCodeHandler{}).
 		SetNext(&ResponseHandler{})

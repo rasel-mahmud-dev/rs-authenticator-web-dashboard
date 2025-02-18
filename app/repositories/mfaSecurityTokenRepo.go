@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/lib/pq"
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"rs/auth/app/db"
@@ -26,39 +25,30 @@ func init() {
 
 func (r *mfaSecurityRepo) InsertMfaSecurityToken(token models.MfaSecurityToken) (models.MfaSecurityToken, error) {
 	query := `
-		INSERT INTO mfa_security_tokens (user_id, secret, recovery_codes, qr_code_url, is_active, created_at, updated_at, app_name, device_info, code_name, is_init)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-		RETURNING id, user_id, secret, recovery_codes, qr_code_url, is_active, created_at, updated_at, app_name, device_info, code_name, is_init
+		INSERT INTO mfa_security_tokens (user_id, secret, qr_code_url, is_active, created_at, updated_at, app_name,  code_name)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		RETURNING id, user_id, secret, qr_code_url, is_active, created_at, updated_at, app_name, code_name
 	`
-
-	var recoveryCodes []byte
 
 	var savedToken models.MfaSecurityToken
 	err := r.db.QueryRow(query,
 		token.UserID,
 		token.Secret,
-		pq.Array(token.RecoveryCodes),
 		&token.QrCodeURL,
 		false,      // is_active
 		time.Now(), // created_at
 		time.Now(), // updated_at
 		token.AppName,
-		token.DeviceInfo,
-		token.CodeName,
-		true,
-	).Scan(
+		token.CodeName).Scan(
 		&savedToken.ID,
 		&savedToken.UserID,
 		&savedToken.Secret,
-		&recoveryCodes,
 		&savedToken.QrCodeURL,
 		&savedToken.IsActive,
 		&savedToken.CreatedAt,
 		&savedToken.UpdatedAt,
 		&savedToken.AppName,
-		&savedToken.DeviceInfo,
 		&savedToken.CodeName,
-		&savedToken.IsInit,
 	)
 
 	if err != nil {
@@ -66,38 +56,27 @@ func (r *mfaSecurityRepo) InsertMfaSecurityToken(token models.MfaSecurityToken) 
 		return savedToken, fmt.Errorf("failed to insert MFA security token: %v", err)
 	}
 
-	if recoveryCodes != nil {
-		err = pq.Array(&savedToken.RecoveryCodes).Scan(recoveryCodes)
-		if err != nil {
-			utils.LoggerInstance.Warn("failed to convert recovery codes: %v", err)
-		}
-	}
-
 	return savedToken, nil
 }
 
 func (r *mfaSecurityRepo) GetById(id string, userId string) (models.MfaSecurityToken, error) {
 	query := `
-		SELECT id, user_id, secret, recovery_codes, qr_code_url, is_active, created_at, updated_at, app_name, device_info, code_name, is_init
+		SELECT id, user_id, secret,  qr_code_url, is_active, created_at, updated_at, app_name,  code_name
 		FROM mfa_security_tokens
 		WHERE id = $1 AND user_id = $2
 	`
-	var recoveryCodes []byte
 	var token models.MfaSecurityToken
 
 	err := r.db.QueryRow(query, id, userId).Scan(
 		&token.ID,
 		&token.UserID,
 		&token.Secret,
-		&recoveryCodes,
 		&token.QrCodeURL,
 		&token.IsActive,
 		&token.CreatedAt,
 		&token.UpdatedAt,
 		&token.AppName,
-		&token.DeviceInfo,
 		&token.CodeName,
-		&token.IsInit,
 	)
 
 	if err != nil {
@@ -107,37 +86,27 @@ func (r *mfaSecurityRepo) GetById(id string, userId string) (models.MfaSecurityT
 		return token, fmt.Errorf("failed to get MFA security token: %v", err)
 	}
 
-	if recoveryCodes != nil {
-		err = pq.Array(&token.RecoveryCodes).Scan(recoveryCodes)
-		if err != nil {
-			return token, fmt.Errorf("failed to convert recovery codes: %v", err)
-		}
-	}
 	return token, nil
 }
 
 func (r *mfaSecurityRepo) GetLastInit(userId string) (*models.MfaSecurityToken, error) {
 	query := `
-		SELECT id, user_id, secret, recovery_codes, qr_code_url, is_active, created_at, updated_at, app_name, device_info, code_name, is_init
+		SELECT id, user_id, secret, qr_code_url, is_active, created_at, updated_at, app_name,  code_name
 		FROM mfa_security_tokens
-		WHERE is_init = true AND user_id = $1 limit 1
+		WHERE user_id = $1 limit 1
 	`
-	var recoveryCodes []byte
 	var token models.MfaSecurityToken
 
 	err := r.db.QueryRow(query, userId).Scan(
 		&token.ID,
 		&token.UserID,
 		&token.Secret,
-		&recoveryCodes,
 		&token.QrCodeURL,
 		&token.IsActive,
 		&token.CreatedAt,
 		&token.UpdatedAt,
 		&token.AppName,
-		&token.DeviceInfo,
 		&token.CodeName,
-		&token.IsInit,
 	)
 
 	if err != nil {
@@ -145,19 +114,13 @@ func (r *mfaSecurityRepo) GetLastInit(userId string) (*models.MfaSecurityToken, 
 		return nil, fmt.Errorf("failed to get MFA security token: %v", err)
 	}
 
-	if recoveryCodes != nil {
-		err = pq.Array(&token.RecoveryCodes).Scan(recoveryCodes)
-		if err != nil {
-			return nil, fmt.Errorf("failed to convert recovery codes: %v", err)
-		}
-	}
 	return &token, nil
 }
 
 func (r *mfaSecurityRepo) ResetInitToken(userId string) error {
 	query := `UPDATE mfa_security_tokens 
-		set is_active = false, is_init = false
-    WHERE is_init = true AND user_id = $1`
+		set is_active = false
+    WHERE user_id = $1`
 
 	_, err := r.db.Exec(query, userId)
 	if err != nil {
@@ -169,8 +132,8 @@ func (r *mfaSecurityRepo) ResetInitToken(userId string) error {
 
 func (r *mfaSecurityRepo) GetAllItems(userId string) ([]models.MfaSecurityToken, error) {
 	query := `
-		SELECT id, user_id, secret, recovery_codes, qr_code_url, is_active, created_at, updated_at, app_name, device_info, code_name, is_init, linked_at
-		FROM mfa_security_tokens where user_id = $1 AND is_active = true AND is_init = false	 
+		SELECT id, user_id, secret, qr_code_url, is_active, created_at, updated_at, app_name, code_name, linked_at
+		FROM mfa_security_tokens where user_id = $1 AND is_active = true
 	`
 
 	var tokens []models.MfaSecurityToken
@@ -181,31 +144,21 @@ func (r *mfaSecurityRepo) GetAllItems(userId string) ([]models.MfaSecurityToken,
 	defer rows.Close()
 	for rows.Next() {
 		var token models.MfaSecurityToken
-		var recoveryCodes []byte
 		if err := rows.Scan(
 			&token.ID,
 			&token.UserID,
 			&token.Secret,
-			&recoveryCodes,
 			&token.QrCodeURL,
 			&token.IsActive,
 			&token.CreatedAt,
 			&token.UpdatedAt,
 			&token.AppName,
-			&token.DeviceInfo,
 			&token.CodeName,
-			&token.IsInit,
 			&token.LinkedAt,
 		); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %v", err)
 		}
 
-		if recoveryCodes != nil {
-			err = pq.Array(&token.RecoveryCodes).Scan(recoveryCodes)
-			if err != nil {
-				return nil, fmt.Errorf("failed to convert recovery codes: %v", err)
-			}
-		}
 		tokens = append(tokens, token)
 	}
 
@@ -218,7 +171,7 @@ func (r *mfaSecurityRepo) GetAllItems(userId string) ([]models.MfaSecurityToken,
 func (r *mfaSecurityRepo) UpdateMfaSecurityToken(token models.MfaSecurityToken) error {
 	query := `
 		UPDATE mfa_security_tokens
-		SET is_active = $1, updated_at = $2, app_name = $3, is_init = false, linked_at = $2
+		SET is_active = $1, updated_at = $2, app_name = $3, linked_at = $2
 		WHERE user_id = $4 AND id = $5 
 	`
 	_, err := r.db.Exec(query,
@@ -237,7 +190,7 @@ func (r *mfaSecurityRepo) UpdateMfaSecurityToken(token models.MfaSecurityToken) 
 func (r *mfaSecurityRepo) RemoveAuthenticator(userId string, id string) error {
 	query := `
 		UPDATE mfa_security_tokens
-		SET is_active = false, updated_at = CURRENT_TIMESTAMP, is_init = false
+		SET is_active = false, updated_at = CURRENT_TIMESTAMP
 		WHERE user_id = $1 AND id = $2 
 	`
 	_, err := r.db.Exec(query, userId, id)

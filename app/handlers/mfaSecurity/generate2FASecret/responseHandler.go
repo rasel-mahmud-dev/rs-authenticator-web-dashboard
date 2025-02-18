@@ -5,9 +5,8 @@ import (
 	"rs/auth/app/handlers"
 	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
-	"rs/auth/app/repositories"
 	"rs/auth/app/response"
-	"rs/auth/app/utils"
+	"time"
 )
 
 type ResponseHandler struct {
@@ -20,23 +19,18 @@ func (h *ResponseHandler) Handle(c *context2.BaseContext) bool {
 	codeName := c.TwoFaSecurityContext.CodeName
 	secretKey := c.TwoFaSecurityContext.SecretKey
 
-	backupCodes := utils.GenerateBackupCodes(12)
-
-	mfaToken, err := repositories.MfaSecurityTokenRepo.InsertMfaSecurityToken(models.MfaSecurityToken{
-		UserID:        authSession.UserId,
-		Secret:        secretKey,
-		CodeName:      &codeName,
-		RecoveryCodes: backupCodes,
-		QrCodeURL:     &qrBase64,
-		DeviceInfo:    nil,
-	})
-
-	if err != nil {
-		utils.LoggerInstance.Error("Failed to save 2FA secret")
-		response.Respond(c.ResponseWriter, statusCode.INTERNAL_SERVER_ERROR, "Failed to save 2FA secret", nil)
-		return false
+	mfaToken := models.MfaSecurityToken{
+		UserID:    authSession.UserId,
+		CodeName:  &codeName,
+		Secret:    secretKey,
+		QrCodeURL: &qrBase64,
+		IsActive:  true,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		LinkedAt:  nil,
+		AppName:   "RsAuth",
 	}
-
+	
 	response.Respond(c.ResponseWriter, statusCode.OK, "Success", mfaToken)
 	return false
 }

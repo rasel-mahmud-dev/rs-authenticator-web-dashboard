@@ -8,11 +8,11 @@ const SetupGoogleAuthenticator = () => {
 
     const navigate = useNavigate()
     const generateSecret = useMutation({
-        mutationFn: ({isNew}) => api.post("/api/v1/generate-2fa-secret", {isNew}),
+        mutationFn: ({isNew}) => api.post("/api/v1/mfa/generate-2fa-secret", {isNew}),
     })
 
     const completeAuthSetup = useMutation({
-        mutationFn: ({id, isCompleted, provider}) => api.post("/api/v1/generate-2fa-secret-complete", {
+        mutationFn: ({id, isCompleted, provider}) => api.post("/api/v1/mfa/generate-2fa-secret-complete", {
             provider,
             id,
             isCompleted

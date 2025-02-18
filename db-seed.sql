@@ -87,17 +87,27 @@ CREATE TABLE mfa_security_tokens
     user_id        UUID         NOT NULL,
     code_name      VARCHAR(1024),
     secret         VARCHAR(255) NOT NULL,
-    recovery_codes TEXT[]           DEFAULT NULL,
     qr_code_url    TEXT             DEFAULT NULL,
     is_active      BOOLEAN          DEFAULT FALSE,
-    is_init        BOOLEAN          DEFAULT TRUE,
     created_at     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     updated_at     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     linked_at      TIMESTAMP        DEFAULT NULL,
     app_name       VARCHAR(100)     DEFAULT 'Google',
-    device_info    TEXT             DEFAULT NULL,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+-- Remove the device_info column
+ALTER TABLE mfa_security_tokens
+    DROP COLUMN IF EXISTS device_info;
+
+-- Remove the is_init column
+ALTER TABLE mfa_security_tokens
+    DROP COLUMN IF EXISTS is_init;
+
+-- Remove the recovery_codes column
+ALTER TABLE mfa_security_tokens
+    DROP COLUMN IF EXISTS recovery_codes;
+
 
 
 DROP table if exists user_auth_attempts;
