@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import {api} from "../services/api.js";
 import {toast} from "react-toastify";
@@ -12,10 +12,10 @@ const SetupGoogleAuthenticator = () => {
     })
 
     const completeAuthSetup = useMutation({
-        mutationFn: ({id, isCompleted, provider}) => api.post("/api/v1/mfa/generate-2fa-secret-complete", {
-            provider,
-            id,
-            isCompleted
+        mutationFn: ({codeName, secret, qrCodeURL}) => api.post("/api/v1/mfa/generate-2fa-secret-complete", {
+            codeName,
+            secret,
+            qrCodeURL
         }),
     })
 
@@ -23,7 +23,11 @@ const SetupGoogleAuthenticator = () => {
 
     async function handleCompleteSetup() {
         try {
-            const response = await completeAuthSetup.mutateAsync({provider: "google", id: data.id, isCompleted: true})
+            const response = await completeAuthSetup.mutateAsync({
+                codeName: data?.code_name,
+                secret: data?.secret,
+                qrCodeURL: data?.qr_code_url
+            })
             if (response?.status === 200) {
                 navigate("/account/authenticator-apps")
                 toast.success("Successfully connected.")
@@ -52,6 +56,7 @@ const SetupGoogleAuthenticator = () => {
 
     }
 
+
     return (
         <div className="p-4 vh bg-gray-800 rounded-lg">
             <div className="max-w-3xl mx-auto">
@@ -61,11 +66,14 @@ const SetupGoogleAuthenticator = () => {
                 <p className="text-gray-300 my-4">
                     Scan the QR code below with your Google Authenticator app or enter the secret key manually.
                 </p>
-                <img
-                    src={data?.qr_code_url}
-                    alt="QR Code"
-                    className="  mb-4"
-                />
+                {generateSecret?.isLoading ? <p>Loading...</p> : (
+                    <img
+                        src={data?.qr_code_url}
+                        alt="QR Code"
+                        className="  mb-4"
+                    />
+                )}
+
                 <p className="font-mono text-gray-200">Code Name: {data?.code_name}</p>
                 <p className="font-mono text-gray-200">Secret Key: <span data-test_id="secret_key">{data?.secret}</span>
                 </p>
@@ -75,7 +83,6 @@ const SetupGoogleAuthenticator = () => {
                 >
                     ReGenerate
                 </button>
-
 
 
                 <div className="mt-6 flex space-x-4">

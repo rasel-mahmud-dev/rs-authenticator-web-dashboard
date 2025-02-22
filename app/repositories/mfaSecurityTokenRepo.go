@@ -35,9 +35,9 @@ func (r *mfaSecurityRepo) InsertMfaSecurityToken(token models.MfaSecurityToken) 
 		token.UserID,
 		token.Secret,
 		&token.QrCodeURL,
-		false,      // is_active
-		time.Now(), // created_at
-		time.Now(), // updated_at
+		&token.IsActive, // is_active
+		time.Now(),      // created_at
+		time.Now(),      // updated_at
 		token.AppName,
 		token.CodeName).Scan(
 		&savedToken.ID,

@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutMe = () => {
     return (
-        <div className="flex mt-0 md:mt-10 vh max-w-screen-2xl mx-auto px-4">
+        <div className="flex mt-0 md:mt-10   max-w-screen-2xl mx-auto px-4">
             <div className="top-0 md:top-[20vh] relative  max-w-3xl mx-auto ">
                 <h1 className="text-gray-100 text-3xl font-bold text-center">About Me</h1>
 

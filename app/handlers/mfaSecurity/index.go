@@ -29,27 +29,26 @@ func Finalize2FASecret(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = repositories.MfaSecurityTokenRepo.GetById(body.Id, authSession.UserId)
-	if err != nil {
-		response.Respond(w, statusCode.INVALID_JSON_FORMAT, "Setup session destroyed", nil)
-		return
+	el := models.MfaSecurityToken{
+		UserID:    authSession.UserId,
+		CodeName:  &body.CodeName,
+		Secret:    body.Secret,
+		QrCodeURL: &body.QrCodeURL,
+		IsActive:  true,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		AppName:   "RsAuth",
 	}
 
-	err = repositories.MfaSecurityTokenRepo.UpdateMfaSecurityToken(models.MfaSecurityToken{
-		UserID:    authSession.UserId,
-		AppName:   body.AppName,
-		IsActive:  body.IsCompleted,
-		ID:        body.Id,
-		UpdatedAt: time.Now(),
-	})
-
+	token, err := repositories.MfaSecurityTokenRepo.InsertMfaSecurityToken(el)
 	if err != nil {
 		utils.LoggerInstance.Error(err.Error())
 		response.Respond(w, statusCode.INTERNAL_SERVER_ERROR, "Unable to completed authenticator app setup", nil)
 		return
 	}
 
-	response.Respond(w, statusCode.OK, "OK", nil)
+	utils.LoggerInstance.Info("Successfully completed authenticator app setup", token)
+	response.Respond(w, statusCode.OK, "OK", token)
 }
 
 func GetAllConnectedAuthenticatorApps(w http.ResponseWriter, r *http.Request) {

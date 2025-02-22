@@ -6,6 +6,7 @@ const ProjectInfo = () => {
     const frontendFeatures = [
         "Registration Trends",
         "Login Methods Breakdown (Password vs. Authenticator App)",
+        "Account Recovery codes",
         "Authenticator Success and Failure Counts",
         "API Traffic Analytics",
         "API Latency Monitoring",
@@ -30,7 +31,8 @@ const ProjectInfo = () => {
                     <p className="mb-6">
                         The backend is built with <strong>Golang</strong> and
                         utilizes <strong>PostgreSQL</strong> to manage
-                        user data, authentication sessions, traffic logs, and MFA connection secrets. This
+                        user data, authentication sessions, traffic logs, <strong>recovery codes</strong> and <strong>MFA
+                        connection secrets</strong>. This
                         ensures a robust
                         and scalable authentication system with secure data storage.
                     </p>
@@ -45,7 +47,7 @@ const ProjectInfo = () => {
 
                     <p className="mb-6">
                         To enhance code reusability and maintainability, the system follows the
-                        <strong>Chain of Responsibility design pattern</strong>. This approach enables the
+                        <strong> Chain of Responsibility design pattern</strong>. This approach enables the
                         efficient splitting
                         and reuse of handlers for specific tasks, improving modularity and reducing
                         redundancy.
@@ -65,8 +67,8 @@ const ProjectInfo = () => {
                     </h3>
                     <ul className="list-disc list-inside text-gray-400 space-y-2">
                         {frontendFeatures.map((feature, index) => (
-                            <li key={index}>
-                                <span>{feature}</span>
+                            <li className="text-orange-500" key={index}>
+                                <span className="">{feature}</span>
                             </li>
                         ))}
                     </ul>
@@ -97,9 +99,8 @@ const ProjectInfo = () => {
                         {appCovers?.map((project, index) => (
                             <div
                                 key={index}
-                                className="w-64 android-frame">
+                                className="w-36 android-frame">
 
-                                {/* Screenshot inside the frame */}
                                 <figure className="w-full h-full overflow-hidden relative z-0">
                                     <img
                                         src={project}

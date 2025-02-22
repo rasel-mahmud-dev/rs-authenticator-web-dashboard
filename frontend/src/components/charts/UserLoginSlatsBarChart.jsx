@@ -1,8 +1,9 @@
 import React from 'react';
-import {Bar, BarChart, Cell, ResponsiveContainer, Tooltip,} from 'recharts';
+import {Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis,} from 'recharts';
 import {useQuery} from "@tanstack/react-query";
 import {api} from "../../services/api.js";
-import {toolTipContentStyle} from "./ChartUtils.jsx";
+import {toolTipContentStyle, XAxisUtil} from "./ChartUtils.jsx";
+import dayjs from "dayjs";
 
 
 const UserLoginSlatsBarChart = () => {
@@ -28,12 +29,18 @@ const UserLoginSlatsBarChart = () => {
 
                 data={data}
                 margin={{
-                    top: 20,
-                    right: 30,
+                    top: 0,
+                    right: 0,
                     left: 0,
-                    bottom: 5,
+                    bottom: -10,
                 }}
             >
+
+                <XAxis
+                    dataKey="date"
+                    className="text-[10px]  text-white"
+                    tickFormatter={(date) => dayjs(date).format("DD/MM")}
+                />
 
                 <Tooltip
                     cursor={{ radius: [10, 10, 0, 0] }}

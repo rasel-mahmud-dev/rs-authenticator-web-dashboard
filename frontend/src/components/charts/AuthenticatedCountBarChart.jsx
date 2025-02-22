@@ -46,19 +46,19 @@ const AuthenticatedCountBarChart = () => {
                     <Legend/>
 
                     <Bar
-                        barSize={15} radius={[8, 8, 0, 0]}
+                        barSize={10} radius={[8, 8, 0, 0]}
                         dataKey="authenticator"
                         fill="url(#googleAuthGradient)"
                         name="Authenticator"
                     />
                     <Bar
-                        barSize={15} radius={[8, 8, 0, 0]}
+                        barSize={10} radius={[8, 8, 0, 0]}
                         dataKey="password"
                         fill="url(#passwordGradient)"
                         name="Password"
                     />
                     <Bar
-                        barSize={15} radius={[8, 8, 0, 0]}
+                        barSize={10} radius={[8, 8, 0, 0]}
                         dataKey="recovery_code"
                         fill="url(#password2Gradient)"
                         name="Recovery Code"
