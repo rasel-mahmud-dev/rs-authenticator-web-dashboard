@@ -10,7 +10,6 @@ const DownloadApp = () => {
     const appInfo = {
         name: "Download App",
         description: "Download the latest version of the app",
-        logo: "https://rasel-portfolio.vercel.app/logo.png",
         images: appCovers
     };
 
@@ -74,9 +73,9 @@ const DownloadApp = () => {
     }
 
     return (
-        <div className="mt-10 max-w-screen-lg mx-auto px-4 text-center">
+        <div className="mt-10 max-w-screen-lg mx-auto px-4 text-center ">
 
-            <h1 className="text-white text-3xl font-bold">{appInfo.name}</h1>
+            <h1 className="text-gray-100 text-3xl font-bold text-center">{appInfo.name}</h1>
             <p className="text-gray-300 mt-2">{appInfo.description}</p>
 
             <div className="max-w-3xl mx-auto p-6  mt-4  text-white shadow-lg rounded-lg">
@@ -119,24 +118,12 @@ const DownloadApp = () => {
                             key={version}
                             className="  text-left"
                         >
-                            {/*<div className="flex justify-between items-center">*/}
-                            {/*    <h2 className="text-white text-xl font-semibold">Version {version}</h2>*/}
-
-                            {/*</div>*/}
 
                             <ul className="mt-3 text-gray-300 text-sm list-disc pl-5 space-y-1">
                                 {releaseNotes.map((note, index) => (
                                     <li key={index}>{note}</li>
                                 ))}
                             </ul>
-
-                            {/*<div className="mt-6 ">*/}
-                            {/*    <button onClick={() => handleDownload(link)}*/}
-                            {/*            className="btn btn-outline   text-white font-bold   px-4 rounded-lg transition-all"*/}
-                            {/*    >*/}
-                            {/*        Download APK*/}
-                            {/*    </button>*/}
-                            {/*</div>*/}
                         </div>
                     ))}
                 </div>
@@ -163,7 +150,8 @@ const DownloadApp = () => {
                 <div
                     className={`fixed backdrop-blur inset-0  select-none  z-[1000]  bg-black bg-opacity-80 flex flex-col justify-center items-center  transition-opacity duration-300 ease-in-out  transform ${selectedIndex !== -1 ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-10 pointer-events-none'}`}>
                     <button onClick={closePreview} className="absolute top-4 right-4 text-white text-2xl">✖</button>
-                    <img src={appCovers[selectedIndex]} alt="Preview" className="max-w-full max-h-[90vh]"/>
+                    <img src={appCovers[selectedIndex]} alt="Preview"
+                         className=" android-frame  max-w-full max-h-[90vh]"/>
 
                     <div className="flex md:block gap-x-4">
                         <div className="relative md:absolute top-1/2 bottom-0 md:left-1/4">
