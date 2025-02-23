@@ -25,14 +25,11 @@ const BlogHomePage = () => {
 
     return (
         <div className="">
-
              <ProjectInfo />
-
             <ProjectVideo />
-
             <AndroidAppHomeSection />
 
-            <section className="py-10    ">
+            <section className="py-10  home-section  ">
                 <div className="container mx-auto p-4 md:p-6">
                     <h2 className="text-3xl font-bold text-center text-primary mb-8">
                         Web UI/Screens
