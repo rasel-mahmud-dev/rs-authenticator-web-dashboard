@@ -4,30 +4,21 @@ import (
 	"database/sql"
 	"errors"
 	"rs/auth/app/cache"
-	"time"
-
 	"rs/auth/app/db"
 	"rs/auth/app/models"
 	"rs/auth/app/utils"
-	"sync"
+	"time"
 )
 
 type UserRepository struct {
 	db *sql.DB
 }
 
-var (
-	instance *UserRepository
-	once     sync.Once
-)
+var UserRepositoryInstance *UserRepository
 
-func NewUserRepository() *UserRepository {
-	once.Do(func() {
-		dbInstance := db.GetDB()
-		utils.LoggerInstance.Info("create user repo instance...")
-		instance = &UserRepository{db: dbInstance}
-	})
-	return instance
+func init() {
+	utils.LoggerInstance.Info("create user repo instance...")
+	UserRepositoryInstance = &UserRepository{db: db.GetDB()}
 }
 
 func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {

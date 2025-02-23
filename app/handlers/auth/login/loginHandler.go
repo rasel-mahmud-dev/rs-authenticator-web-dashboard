@@ -18,6 +18,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	chain.SetNext(&RequestValidationHandler{}).
 		SetNext(&UserExistenceHandler{}).
 		SetNext(&common.PasswordValidationHandler{}).
+		SetNext(&common.Check2FAuthenticationStatusHandler{}).
 		SetNext(&GenerateJwtHandler{}).
 		SetNext(&authSession.NewSessionHandler{}).
 		SetNext(&ResponseHandler{})

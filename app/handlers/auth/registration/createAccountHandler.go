@@ -18,8 +18,7 @@ type CreateAccountHandler struct {
 func (h *CreateAccountHandler) Handle(c *context.BaseContext) bool {
 	payload := c.RegistrationContext.Payload
 	utils.LoggerInstance.Debug("Create account chain.")
-	userRepo := repositories.NewUserRepository()
-	user, err := userRepo.CreateAccount(models.User{
+	user, err := repositories.UserRepositoryInstance.CreateAccount(models.User{
 		Username: payload.Username,
 		Password: hash.Hash.GenerateHash(payload.Password),
 		Email:    payload.Email,

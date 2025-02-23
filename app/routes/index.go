@@ -13,4 +13,5 @@ func Init(router *mux.Router) {
 	MultiFactorAuthenticationRoutes(router)
 	StatisticsRoutes(router)
 	UserProfileRoutes(router)
+	FileDownload(router)
 }

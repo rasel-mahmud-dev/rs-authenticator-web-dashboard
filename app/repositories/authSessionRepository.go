@@ -18,7 +18,7 @@ type authSessionRepository struct {
 var AuthSessionRepository *authSessionRepository
 
 func init() {
-	utils.LoggerInstance.Info("create user repo instance...")
+	utils.LoggerInstance.Info("create auth session repo instance...")
 	AuthSessionRepository = &authSessionRepository{db: db.GetDB()}
 }
 

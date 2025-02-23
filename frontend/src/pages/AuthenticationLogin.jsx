@@ -2,10 +2,10 @@ import React, {useRef, useState} from "react";
 import {useMutation} from "@tanstack/react-query";
 import {loginWithAuthenticator} from "../services/authSerivce.js";
 import useAuthStore from "../store/authState.js";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 
-const AuthenticationLogin = () => {
+const AuthenticationLogin = ({userId}) => {
     const {setAuth} = useAuthStore();
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const inputRefs = useRef([]);
@@ -52,7 +52,7 @@ const AuthenticationLogin = () => {
     function handleLogin(e) {
         e.preventDefault();
         const otpCode = otp.join("");
-        mutation.mutate({otpCode});
+        mutation.mutate({otpCode, userId});
     }
 
     const errorMessage = mutation?.error?.response?.data?.message
@@ -63,7 +63,7 @@ const AuthenticationLogin = () => {
                 className="relative top-0 md:top-[20vh] mx-auto  card  max-w-md  bg-transparent md:bg-gray-800  shadow-none md:shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Authenticator</h2>
-                    <p className="text-center text-gray-400 mb-4">Enter the OTP sent to your email</p>
+                    <p className="text-center text-gray-400 mb-4">Enter the OTP from your authenticator app.</p>
                     {errorMessage && <p className="text-center text-red-500 mb-4">{errorMessage}</p>}
 
                     <form onSubmit={handleLogin} className="form-phone">
@@ -85,15 +85,17 @@ const AuthenticationLogin = () => {
                     </form>
 
                     <div>
+
+                        <p className="text-center text-gray-600 mt-4 text-sm">
+                            Lost your phone?{" "}
+                            <Link to="/account-recovery" className="text-primary font-semibold hover:underline">
+                                Recover using a backup code
+                            </Link>
+                        </p>
+                        
                         <p className="text-center text-gray-500 mt-4">
                             <a href="/login" className="text-primary font-medium">
-                                Login with password
-                            </a>
-                        </p>
-
-                        <p className="text-center text-gray-500 mt-4">
-                            <a href="/account-recovery" className="text-primary font-medium">
-                                Recovery with backup code
+                                Back
                             </a>
                         </p>
 

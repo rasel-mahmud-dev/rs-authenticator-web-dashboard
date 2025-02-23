@@ -15,8 +15,7 @@ type UserExistenceHandler struct {
 
 func (h *UserExistenceHandler) Handle(c *context2.BaseContext) bool {
 	loginRequest := c.LoginContext.LoginRequest
-	userRepo := repositories.NewUserRepository()
-	user, err := userRepo.GetUserByEmail(loginRequest.Email)
+	user, err := repositories.UserRepositoryInstance.GetUserByEmail(loginRequest.Email)
 	if err != nil || user == nil {
 		utils.LoggerInstance.Info("User does not exist in database.")
 		response.Respond(c.ResponseWriter, statusCode.INVALID_CREDENTIALS, "Invalid email or password", nil)

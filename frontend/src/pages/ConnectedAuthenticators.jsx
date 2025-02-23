@@ -2,6 +2,7 @@ import React from "react";
 import {useQuery} from "@tanstack/react-query";
 import {api} from "../services/api.js";
 import {Link} from "react-router-dom"
+import dayjs from "dayjs";
 
 const ConnectedAuthenticators = () => {
     const fetchAuthenticatorsQuery = useQuery({
@@ -57,9 +58,11 @@ const ConnectedAuthenticators = () => {
                                     {authenticator.code_name}
                                 </h3>
 
-                                <p className="text-sm text-gray-400">
-                                    Linked on: {new Date(authenticator.created_at).toLocaleString()}
+                                <p className="text-sm text-gray-400 mt-1">
+                                    Linked
+                                    on: {dayjs(authenticator?.created_at)?.toLocaleString()}
                                 </p>
+
                             </div>
                             <button
                                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"

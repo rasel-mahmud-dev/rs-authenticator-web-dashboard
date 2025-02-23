@@ -83,16 +83,16 @@ DROP TABLE if exists user_auth_attempts;
 DROP TABLE if exists mfa_security_tokens;
 CREATE TABLE mfa_security_tokens
 (
-    id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id        UUID         NOT NULL,
-    code_name      VARCHAR(1024),
-    secret         VARCHAR(255) NOT NULL,
-    qr_code_url    TEXT             DEFAULT NULL,
-    is_active      BOOLEAN          DEFAULT FALSE,
-    created_at     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
-    updated_at     TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
-    linked_at      TIMESTAMP        DEFAULT NULL,
-    app_name       VARCHAR(100)     DEFAULT 'Google',
+    id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id     UUID         NOT NULL,
+    code_name   VARCHAR(1024),
+    secret      VARCHAR(255) NOT NULL,
+    qr_code_url TEXT             DEFAULT NULL,
+    is_active   BOOLEAN          DEFAULT FALSE,
+    created_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    linked_at   TIMESTAMP        DEFAULT NULL,
+    app_name    VARCHAR(100)     DEFAULT 'Google',
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
@@ -199,3 +199,12 @@ CREATE TABLE recovery_codes
 CREATE INDEX idx_recovery_code ON recovery_codes (code);
 CREATE INDEX idx_expires_at ON recovery_codes (expires_at);
 CREATE INDEX idx_user_id ON recovery_codes (user_id);
+
+
+CREATE TABLE file_downloads(
+    id             SERIAL PRIMARY KEY,
+    file_url       TEXT NOT NULL,
+    ip_address     VARCHAR(45),
+    user_agent     TEXT,
+    created_at     TIMESTAMP DEFAULT current_timestamp
+);

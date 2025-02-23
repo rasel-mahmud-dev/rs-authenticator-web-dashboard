@@ -210,13 +210,10 @@ func validateOtpCode(otpCode string, secret string) (bool, error) {
 	return totp.ValidateCustom(otpCode, secret, time.Now().UTC(), opts)
 }
 
-func (r *mfaSecurityRepo) VerifyMfaPasscode(otpCode string) (string, error) {
-	query := `
-		SELECT user_id, secret FROM mfa_security_tokens
-		WHERE is_active = TRUE
-	`
+func (r *mfaSecurityRepo) VerifyMfaPasscode(userId string, otpCode string) (string, error) {
+	query := `SELECT user_id, secret FROM mfa_security_tokens WHERE user_id = $1 AND is_active = TRUE`
 
-	rows, err := r.db.Query(query)
+	rows, err := r.db.Query(query, userId)
 	if err != nil {
 		return "", err
 	}
@@ -243,4 +240,16 @@ func (r *mfaSecurityRepo) VerifyMfaPasscode(otpCode string) (string, error) {
 		}
 	}
 	return "", errors.New("invalid otp code")
+}
+
+func (r *mfaSecurityRepo) Is2FaEnabled(userId string) bool {
+	query := `SELECT count(user_id) as count FROM mfa_security_tokens WHERE user_id = $1 AND is_active = TRUE`
+
+	var connectedItem int
+	err := r.db.QueryRow(query, userId).Scan(&connectedItem)
+	if err != nil {
+		fmt.Println("Error querying the database:", err)
+		return false
+	}
+	return connectedItem > 0
 }

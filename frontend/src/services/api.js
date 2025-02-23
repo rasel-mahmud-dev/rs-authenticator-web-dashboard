@@ -1,9 +1,10 @@
 import axios from "axios";
 
+export const baseUrl = import.meta.env.DEV ? "http://localhost:8080" : "https://go-netlify-app.vercel.app"
 
 export const api = axios.create({
     // baseURL: "http://192.168.10.148:8080",
-    baseURL: import.meta.env.DEV ? "http://localhost:8080" : "https://go-netlify-app.vercel.app",
+    baseURL: baseUrl,
     withCredentials: true
 })
 

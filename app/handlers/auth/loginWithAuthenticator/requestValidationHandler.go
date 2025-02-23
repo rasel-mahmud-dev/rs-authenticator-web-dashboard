@@ -17,6 +17,7 @@ func (h *RequestValidationHandler) Handle(c *context.BaseContext) bool {
 	payload := c.AuthenticatorLoginContext.RequestBody
 	err := validators.ValidateStruct(&dto.AuthenticatorLoginRequestBody{
 		OtpCode: payload.OtpCode,
+		UserId:  payload.UserId,
 	})
 	if err != nil {
 		response.Respond(c.ResponseWriter, statusCode.REQUEST_VALIDATION_FAILED, err.Error(), nil)

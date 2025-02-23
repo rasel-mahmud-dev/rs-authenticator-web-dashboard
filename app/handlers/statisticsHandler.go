@@ -11,8 +11,7 @@ import (
 func RegistrationSlatsHandler(w http.ResponseWriter, _r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	userRepo := repositories.NewUserRepository()
-	stats, err := userRepo.GetUserRegistrationStats()
+	stats, err := repositories.UserRepositoryInstance.GetUserRegistrationStats()
 	if err != nil {
 		return
 	}
@@ -22,9 +21,7 @@ func RegistrationSlatsHandler(w http.ResponseWriter, _r *http.Request) {
 
 func AuthenticationSlatsHandler(w http.ResponseWriter, _r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	userRepo := repositories.NewUserRepository()
-	stats, err := userRepo.GetAuthenticationStats()
+	stats, err := repositories.UserRepositoryInstance.GetAuthenticationStats()
 	if err != nil {
 		return
 	}
@@ -36,13 +33,12 @@ func LoginAttemptSlatsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	value := r.URL.Query().Get("t")
-	userRepo := repositories.NewUserRepository()
 	var stats interface{}
 	if value == "detail" {
-		stats, _ = userRepo.GetAttemptRateDetailStats()
+		stats, _ = repositories.UserRepositoryInstance.GetAttemptRateDetailStats()
 
 	} else {
-		stats = userRepo.GetAttemptRateStats()
+		stats = repositories.UserRepositoryInstance.GetAttemptRateStats()
 	}
 
 	_ = json.NewEncoder(w).Encode(stats)
@@ -95,12 +91,10 @@ func FetchUsers(w http.ResponseWriter, r *http.Request) {
 		limit = parsedLimit
 	}
 
-	userRepo := repositories.NewUserRepository()
-	users, totalItems, err := userRepo.GetAllUsers(page, limit)
+	users, totalItems, err := repositories.UserRepositoryInstance.GetAllUsers(page, limit)
 	if err != nil {
 		http.Error(w, "Error fetching users", http.StatusInternalServerError)
 		return
 	}
-
 	_ = json.NewEncoder(w).Encode(map[string]interface{}{"data": users, "totalItems": totalItems})
 }

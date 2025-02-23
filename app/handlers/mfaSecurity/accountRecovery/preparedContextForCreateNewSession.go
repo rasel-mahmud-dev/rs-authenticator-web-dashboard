@@ -20,7 +20,7 @@ func (h *PreparedContextForCreateNewSession) Handle(c *context.BaseContext) bool
 		return false
 	}
 
-	user, err := repositories.NewUserRepository().GetUserById(recoveryCodeRow.UserID)
+	user, err := repositories.UserRepositoryInstance.GetUserById(recoveryCodeRow.UserID)
 	if err != nil {
 		response.Respond(c.ResponseWriter, statusCode.INVALID_RECOVERY_CODE, "Internal error user fetch failed from database.", nil)
 		return false

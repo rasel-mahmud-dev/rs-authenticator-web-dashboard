@@ -7,4 +7,5 @@ type LoginRequest struct {
 
 type AuthenticatorLoginRequestBody struct {
 	OtpCode string `json:"otpCode" validate:"required,min=6,max=6"`
+	UserId  string `json:"userId" validate:"required"`
 }

@@ -15,8 +15,7 @@ type CheckExistenceUserHandler struct {
 
 func (h *CheckExistenceUserHandler) Handle(c *context.BaseContext) bool {
 
-	userRepo := repositories.NewUserRepository()
-	user, err := userRepo.GetUserByEmail(c.Email)
+	user, err := repositories.UserRepositoryInstance.GetUserByEmail(c.Email)
 	if err != nil {
 		utils.LoggerInstance.Error(err.Error())
 		response.Respond(c.ResponseWriter, statusCode.INTERNAL_SERVER_ERROR, "Internal error", nil)

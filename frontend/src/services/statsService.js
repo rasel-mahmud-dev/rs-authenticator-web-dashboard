@@ -43,3 +43,12 @@ export async function fetchUsers(currentPage, itemsPerPage) {
         throw Error("traffic slats: Unexpected status code");
     }
 }
+
+export async function getTotalDownload() {
+    const response = await api.get("/api/v1/download/count");
+    if (response.status === 200) {
+        return response.data;
+    } else {
+        throw Error("traffic slats: Unexpected status code");
+    }
+}

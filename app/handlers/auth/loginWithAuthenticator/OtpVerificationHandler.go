@@ -19,7 +19,7 @@ type OtpVerificationHandler struct {
 func (h *OtpVerificationHandler) Handle(c *context2.BaseContext) bool {
 	payload := c.AuthenticatorLoginContext.RequestBody
 	utils.LoggerInstance.Info("OtpVerificationHandler: ", payload)
-	userId, err := repositories.MfaSecurityTokenRepo.VerifyMfaPasscode(payload.OtpCode)
+	userId, err := repositories.MfaSecurityTokenRepo.VerifyMfaPasscode(payload.UserId, payload.OtpCode)
 	if err != nil {
 		c.LoginContext.UserAuthAttempt = models.UserAuthAttempt{
 			UserID:        "",
@@ -38,8 +38,7 @@ func (h *OtpVerificationHandler) Handle(c *context2.BaseContext) bool {
 		response.Respond(c.ResponseWriter, statusCode.INVALID_OTP, "Invalid otp code.", nil)
 		return false
 	}
-	userRepo := repositories.NewUserRepository()
-	user, err := userRepo.GetUserById(userId)
+	user, err := repositories.UserRepositoryInstance.GetUserById(userId)
 	if err != nil || user == nil {
 		utils.LoggerInstance.Info("User does not exist in database.")
 		response.Respond(c.ResponseWriter, statusCode.INVALID_CREDENTIALS, "Invalid email or password", nil)
