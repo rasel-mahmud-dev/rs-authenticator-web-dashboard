@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import appCovers from "../assets/appCovers.json"
 import {api} from "../services/api.js";
 import {toast} from "react-toastify";
@@ -13,6 +13,23 @@ const DownloadApp = () => {
         logo: "https://rasel-portfolio.vercel.app/logo.png",
         images: appCovers
     };
+
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+
+    const closePreview = () => {
+        setSelectedIndex(-1);
+    };
+
+    const prevImage = (e) => {
+        e.stopPropagation()
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    };
+
+    const nextImage = (e) => {
+        e.stopPropagation()
+        setSelectedIndex((prev) => (prev < appCovers.length - 1 ? prev + 1 : prev));
+    };
+
 
     const versions = [
         {
@@ -63,7 +80,7 @@ const DownloadApp = () => {
             <p className="text-gray-300 mt-2">{appInfo.description}</p>
 
             <div className="max-w-3xl mx-auto p-6  mt-4  text-white shadow-lg rounded-lg">
-                <div className="flex  text-start items-center justify-between gap-4">
+                <div className="block md:flex  text-start items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                         <img
                             src="/ic_launcher.png"
@@ -124,35 +141,50 @@ const DownloadApp = () => {
                     ))}
                 </div>
 
-
                 <div className="mt-10">
                     <p className="text-start font-medium text-xl text-white">Rs Authenticator Screenshots</p>
-
                     <div className="flex flex-wrap gap-4 mt-4">
                         {appCovers?.map((project, index) => (
                             <div
                                 key={index}
                                 className="w-32  ">
-
-                                {/* Screenshot inside the frame */}
                                 <figure className="w-full h-full overflow-hidden relative z-0">
-                                    <img
-                                        src={project}
-                                        alt={`Project ${index + 1}`}
-                                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                    <img onClick={() => setSelectedIndex(index)}
+                                         src={project}
+                                         alt={`Project ${index + 1}`}
+                                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                                     />
                                 </figure>
                             </div>
                         ))}
+                    </div>
+                </div>
 
+                <div
+                    className={`fixed backdrop-blur inset-0  select-none  z-[1000]  bg-black bg-opacity-80 flex flex-col justify-center items-center  transition-opacity duration-300 ease-in-out  transform ${selectedIndex !== -1 ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-10 pointer-events-none'}`}>
+                    <button onClick={closePreview} className="absolute top-4 right-4 text-white text-2xl">✖</button>
+                    <img src={appCovers[selectedIndex]} alt="Preview" className="max-w-full max-h-[90vh]"/>
+
+                    <div className="flex md:block gap-x-4">
+                        <div className="relative md:absolute top-1/2 bottom-0 md:left-1/4">
+                            <button className="btn btn-outline btn-primary px-6" onClick={prevImage}
+                                    disabled={selectedIndex === 0}>
+                                Prev
+                            </button>
+
+                        </div>
+                        <div className="relative md:absolute top-1/2 bottom-0 md:right-1/4    ">
+                            <button className="btn btn-outline btn-primary px-6" onClick={nextImage}
+                                    disabled={selectedIndex === appCovers.length - 1}>
+                                Next
+                            </button>
+                        </div>
                     </div>
 
                 </div>
-
-
             </div>
         </div>
-    );
+    )
 };
 
 export default DownloadApp;
