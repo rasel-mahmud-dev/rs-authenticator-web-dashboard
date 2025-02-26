@@ -104,7 +104,7 @@ const DownloadApp = () => {
                 <div className="flex justify-between items-center mt-10 text-gray-400">
                     <div className="text-yellow-400 gap-x-2 flex items-center font-semibold">
                         <DownloadCloud/>
-                        <span className="text-yellow-400">{totalDownload} Downloads</span>
+                        <span className="text-yellow-400">{totalDownload} <span className="hidden md:inline">Downloads</span></span>
                     </div>
                     <div>Feb 20, 2025</div>
                     <div>Android 10.0+</div>
