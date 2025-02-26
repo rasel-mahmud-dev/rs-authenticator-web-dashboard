@@ -11,9 +11,10 @@ const ProjectVideo = () => {
                 <div
                     className="transition-all duration-500 ease-in-out hover:scale-105    hover:shadow-lg  max-w-7xl border border-primary rounded-xl overflow-hidden mx-auto   ">
                     <video
-                        src="/guide-rasel-mahmud.mp4"
+                        poster="/rs-authenticator-thumb.webp"
+                        src="/rs-authenticator-2.mp4"
                         controls
-                        className="  w-full "
+                        className="w-full "
                     />
                 </div>
             </div>

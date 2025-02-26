@@ -6,6 +6,10 @@ import {getTotalDownload} from "../services/statsService.js";
 import {useQuery} from "@tanstack/react-query";
 import {DownloadCloud} from "lucide-react";
 
+
+let loadingQueue = 0
+
+
 const DownloadApp = () => {
     const appInfo = {
         name: "Download App",
@@ -49,26 +53,20 @@ const DownloadApp = () => {
 
     const totalDownload = data?.data?.totalDownload || 0
 
+
     async function handleDownload() {
         try {
-            const response = await api.get(`/api/v1/download`, {
-                responseType: "blob",
-            });
-            const blob = new Blob([response.data]);
-            const downloadUrl = URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
-            link.href = downloadUrl;
-            link.setAttribute("download", "rs-authenticator-release.apk");
-            document.body.appendChild(link);
-            link.click();
-
-            document.body.removeChild(link);
-            URL.revokeObjectURL(downloadUrl);
-            toast.success("Successfully file downloaded.");
-            refetch()
+            loadingQueue = toast.loading("Generating download link..");
+            const {data} = await api.get(`/api/v1/download`);
+            const downloadURL = data?.data?.downloadURL
+            if (downloadURL) {
+                refetch()
+                window.open(downloadURL, "_blank")
+            }
         } catch (error) {
             toast.error("Error downloading file: " + error?.message);
+        } finally {
+            toast.done(loadingQueue)
         }
     }
 

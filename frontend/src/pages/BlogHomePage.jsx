@@ -25,9 +25,9 @@ const BlogHomePage = () => {
 
     return (
         <div className="">
-             <ProjectInfo />
-            <ProjectVideo />
-            <AndroidAppHomeSection />
+            <ProjectInfo/>
+            <ProjectVideo/>
+            <AndroidAppHomeSection/>
 
             <section className="py-10  home-section  ">
                 <div className="container mx-auto p-4 md:p-6">
@@ -132,11 +132,14 @@ const BlogHomePage = () => {
             </section>
 
             {/* Footer */}
-            <footer className="bg-primary text-primary-content py-4">
+            <footer className="text-primary-content py-4">
                 <div className="container mx-auto text-center">
-                    <p>&copy; 2025 MFA Blog. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Rasel Mahmud. All rights reserved.</p>
+                    <p>Made by <a href="https://rasel-portfolio.vercel.app/#" className="text-primary">Rasel Mahmud</a>
+                    </p>
                 </div>
             </footer>
+
         </div>
     );
 };

@@ -1,7 +1,7 @@
 
 
 echo "Deploying backend."
-vercel deploy --prod
+#vercel deploy --prod
 
 
 echo "Deploying frontend."

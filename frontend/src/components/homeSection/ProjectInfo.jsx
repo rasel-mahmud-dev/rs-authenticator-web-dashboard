@@ -27,13 +27,13 @@ const ProjectInfo = () => {
                     About Project App/Web
                 </h2>
 
-                <div className="grid grid-cols-12 gap-x-20">
-                    <div className="col-span-5 select-none ">
-                        <div className="mx-auto max-w-[500px]">
+                <div className="block lg:grid grid-cols-12 gap-0 lg:gap-x-20">
+                    <div className=" col-span-5 select-none mx-auto ">
+                        <div className="mx-auto max-w-[500px] px-10 lg:px-0">
                             <AppPreviewGallery images={appCovers}/></div>
                     </div>
 
-                    <div className="col-span-6">
+                    <div className=" col-span-6 mt-10 lg:mt-0">
                         <p className="mb-6">
                             The backend is built with <strong>Golang</strong> and
                             utilizes <strong>PostgreSQL</strong> to manage

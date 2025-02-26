@@ -1,10 +1,7 @@
 package fileDownload
 
 import (
-	"fmt"
-	"io"
 	"net/http"
-	"os"
 	"rs/auth/app/models"
 	"rs/auth/app/net/statusCode"
 	fileDownloadRepository "rs/auth/app/repositories/fileDownload"
@@ -12,41 +9,23 @@ import (
 	"time"
 )
 
+const googleDriveURL = "https://drive.google.com/file/d/1ldE3Xx-GvRO0iUykeIw3g_xlFY2JPWIJ/view?usp=sharing"
+
 func FileDownload(w http.ResponseWriter, r *http.Request) {
-	filePath := "./public/app-release.apk"
-
-	file, err := os.Open(filePath)
-	if err != nil {
-		http.Error(w, "Failed to open file", http.StatusInternalServerError)
-		return
-	}
-	defer file.Close()
-
-	fileInfo, err := file.Stat()
-	if err != nil {
-		http.Error(w, "Failed to get file info", http.StatusInternalServerError)
-		return
-	}
 
 	ipAddress := r.RemoteAddr
 	userAgent := r.UserAgent()
 
 	fileDownloadRepository.FileDownloadInstance.Entry(models.FileDownload{
-		FileURL:   filePath,
+		FileURL:   googleDriveURL,
 		IP:        ipAddress,
 		UserAgent: userAgent,
 		CreatedAt: time.Now(),
 	})
 
-	w.Header().Set("Content-Disposition", "attachment; filename=app-release.apk")
-	w.Header().Set("Content-Type", "application/octet-stream")
-	w.Header().Set("Content-Length", fmt.Sprintf("%d", fileInfo.Size()))
-
-	_, err = io.Copy(w, file)
-	if err != nil {
-		http.Error(w, "Error streaming file", http.StatusInternalServerError)
-		return
-	}
+	response.Respond(w, statusCode.OK, "Success", map[string]string{
+		"downloadURL": googleDriveURL,
+	})
 }
 
 func GetFileDownloadCount(w http.ResponseWriter, r *http.Request) {

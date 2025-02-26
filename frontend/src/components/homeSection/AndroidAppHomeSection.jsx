@@ -26,7 +26,7 @@ const AndroidAppHomeSection = () => {
         <section className="py-10 ">
             <div className="max-w-screen-xl mx-auto p-4 md:p-6">
 
-                <h2 className="text-3xl font-bold text-center text-primary mt-20 mb-8">
+                <h2 className="text-3xl font-bold text-center text-primary mt-0 lg:mt-20 mb-8">
                     Android App
                 </h2>
 
@@ -46,7 +46,7 @@ const AndroidAppHomeSection = () => {
                     Key Features
                 </h3>
 
-                <ul className="grid grid-cols-4 gap-x-4 text-gray-400 space-y-2">
+                <ul className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-x-4 text-gray-400 space-y-2">
                     {rsAuthenticatorFeatures.map((feature, index) => (
                         <div key={feature.title}
                              className="bg-gray-800 text-white rounded-lg shadow-lg p-6 hover:scale-105 transform transition-all">
