@@ -10,16 +10,25 @@ const ProjectVideo = () => {
 
                 <div
                     className="transition-all duration-500 ease-in-out hover:scale-105    hover:shadow-lg  max-w-7xl border border-primary rounded-xl overflow-hidden mx-auto   ">
-                    <video
-                        poster="/rs-authenticator-thumb.webp"
-                        src="/rs-authenticator-2.mp4"
-                        controls
-                        className="w-full "
-                    />
+
+
+
+                    <iframe width="100%" height="600px" src="https://www.youtube.com/embed/0WMP7-_NKi0?vq=hd1080p"  ></iframe>
+
+
+                    {/*<video*/}
+                    {/*    poster="/rs-authenticator-thumb.webp"*/}
+                    {/*    src="https://drive.google.com/uc?export=download&id=1ZhKG1f7cSAc8x7B1L1w1yLw_J7OUJX7p"*/}
+                    {/*    className="w-full "*/}
+                    {/*    controls>*/}
+                    {/*</video>*/}
+
+
                 </div>
             </div>
         </section>
-    );
+    )
+        ;
 }
 
 export default ProjectVideo

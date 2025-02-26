@@ -26,7 +26,7 @@ const AndroidAppHomeSection = () => {
         <section className="py-10 ">
             <div className="max-w-screen-xl mx-auto p-4 md:p-6">
 
-                <h2 className="text-3xl font-bold text-center text-primary mt-0 lg:mt-20 mb-8">
+                <h2 className="text-3xl font-bold text-center text-primary mt-0 lg:mt-10 mb-8">
                     Android App
                 </h2>
 

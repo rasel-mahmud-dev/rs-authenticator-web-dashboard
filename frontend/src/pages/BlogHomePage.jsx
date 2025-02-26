@@ -120,14 +120,7 @@ const BlogHomePage = () => {
                         </div>
                     </div>
 
-                    <div className="text-center mt-8">
-                        <a
-                            href="#"
-                            className="btn btn-primary btn-lg"
-                        >
-                            Read More Articles
-                        </a>
-                    </div>
+
                 </div>
             </section>
 

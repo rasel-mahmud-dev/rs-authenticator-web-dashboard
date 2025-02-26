@@ -79,7 +79,6 @@ const LoginForm = () => {
                                     <span className="label-text text-gray-300">Password</span>
                                 </label>
                                 <input
-                                    defaultValue="123456"
                                     name="password"
                                     type="password"
                                     placeholder="Enter your password"

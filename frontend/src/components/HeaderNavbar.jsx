@@ -1,6 +1,6 @@
 import React from "react";
 import useAuthStore from "../store/authState.js";
-import {Link, NavLink} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import {FaGithub} from "react-icons/fa";
 
 
