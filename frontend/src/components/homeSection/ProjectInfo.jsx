@@ -29,7 +29,7 @@ const ProjectInfo = () => {
 
                 <div className="block lg:grid grid-cols-12 gap-0 lg:gap-x-20">
                     <div className=" col-span-5 select-none mx-auto ">
-                        <div className="mx-auto max-w-[500px] px-10 lg:px-0">
+                        <div className="mx-auto max-w-[500px] px:0 md:px-10 lg:px-0">
                             <AppPreviewGallery images={appCovers}/></div>
                     </div>
 

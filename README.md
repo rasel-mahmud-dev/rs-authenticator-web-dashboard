@@ -7,9 +7,6 @@
 
 ![rs-authenticator-thumb.webp](frontend/public/rs-authenticator-thumb.webp)
 
-Here's a rearranged version of your content for better flow and clarity:
-
----
 
 **RS Authenticator** is a secure and user-friendly authentication application designed to manage your Multi-Factor Authentication (MFA) codes. It ensures that your accounts remain safe and provides a seamless experience for setting up and managing your 2FA codes.
 
@@ -28,7 +25,7 @@ Built with **Kotlin (Jetpack Compose)**, RS Authenticator supports the **TOTP pr
 ---
 
 
-# About the Project (Web)
+# About the Dashboard Project (Web)
 
 <img src="frontend/public/rs-authenticator.png" width="100" height="100" />
 

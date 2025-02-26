@@ -7,10 +7,8 @@ const ProjectVideo = () => {
                 <h2 className="text-3xl font-bold text-center text-primary mb-8">
                     See It In Action: Video Overview
                 </h2>
-
                 <div
-                    className="transition-all duration-500 ease-in-out hover:scale-105    hover:shadow-lg  max-w-7xl border border-primary rounded-xl overflow-hidden mx-auto   ">
-
+                    className="transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-lg max-w-7xl border border-primary rounded-xl overflow-hidden mx-auto">
                     <video
                         poster="/rs-authenticator-thumb.webp"
                         src="/rs-authenticator-2.mp4"

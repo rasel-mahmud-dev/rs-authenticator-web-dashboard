@@ -6,6 +6,8 @@ import useAuthStore from "../store/authState.js";
 import AuthenticationLogin from "../pages/AuthenticationLogin.jsx";
 import {toast} from "react-toastify";
 
+let loadingId;
+
 const LoginForm = () => {
     const [query] = useSearchParams()
     let email = query.get("email") || "test@gmail.com"
@@ -33,13 +35,16 @@ const LoginForm = () => {
             } else {
                 sessionStorage.setItem("token", data?.data?.token);
             }
+            toast.done(loadingId)
             toast.success("Great! You have successfully logged in!");
             navigate('/account')
 
         },
         onError: (error) => {
+            toast.done(loadingId)
+            toast.error(error?.message);
             console.error("Oops! Authentication failed");
-        }
+        },
     });
 
     function handleLogin(e) {
@@ -47,6 +52,7 @@ const LoginForm = () => {
         const email = e.target.email.value;
         const password = e.target.password.value;
         const rememberMe = e.target.rememberMe.checked;
+        loadingId = toast.loading("Logging in...")
         mutation.mutate({email, password, rememberMe});
     }
 
@@ -54,7 +60,7 @@ const LoginForm = () => {
 
     return (
         <div className="flex items-center justify-center relative vh overflow-hidden">
-            {enabled2Fa ? <AuthenticationLogin userId={enabled2Fa} /> : (
+            {enabled2Fa ? <AuthenticationLogin userId={enabled2Fa}/> : (
                 <div
                     className="card w-96 bg-transparent absolute left-1/2 -translate-x-1/2 top-[10vh] md:bg-gray-800  shadow-none md:shadow-xl">
                     <div className="card-body">

@@ -13,6 +13,8 @@ import {FreeMode, Navigation, Thumbs} from 'swiper/modules';
 const AppPreviewGallery = ({images = []}) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
+    const isMobile = window.innerWidth < 576
+
     return (
         <>
             <Swiper
@@ -28,7 +30,7 @@ const AppPreviewGallery = ({images = []}) => {
             >
                 {images?.map(el => (
                     <SwiperSlide key={el}>
-                        <div className="android-frame w-[300px] mx-auto ">
+                        <div className="android-frame w-[280px] md:w-[300px] mx-auto ">
                             <img alt={el} src={el}/>
                         </div>
                     </SwiperSlide>
@@ -37,7 +39,7 @@ const AppPreviewGallery = ({images = []}) => {
             <Swiper
                 onSwiper={setThumbsSwiper}
                 spaceBetween={5}
-                slidesPerView={10}
+                slidesPerView={isMobile ? 5: 10}
                 freeMode={true}
                 watchSlidesProgress={true}
                 modules={[FreeMode, Navigation, Thumbs]}

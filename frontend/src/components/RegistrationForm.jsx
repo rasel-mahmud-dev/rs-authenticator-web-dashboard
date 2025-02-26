@@ -1,26 +1,27 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import {register} from "../services/authSerivce.js";
-import useAuthStore from "../store/authState.js";
 import {toast} from "react-toastify";
-import { faker } from '@faker-js/faker';
+import {faker} from '@faker-js/faker';
+
+
+let loadingId;
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
-
     const fakeEmail = faker.internet.email().toLowerCase();
     const randomName = faker.internet.username().toLowerCase();
-
-
 
     const mutation = useMutation({
         mutationFn: register,
         onSuccess: (_data, variables) => {
+            toast.done(loadingId)
             toast.success("Great! You have successfully registered!");
             navigate(`/login?email=${variables.email}`);
         },
         onError: (error) => {
+            toast.done(loadingId)
             toast.error("Oops! Registration failed.");
             console.error("Registration failed:", error);
         },
@@ -31,6 +32,7 @@ const RegistrationForm = () => {
         const username = e.target.username.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
+        loadingId = toast.loading("Account creating...")
         mutation.mutate({username, email, password});
     }
 
@@ -38,7 +40,8 @@ const RegistrationForm = () => {
 
     return (
         <div className="vh  mt-10 md:mt-0 overflow-hidden">
-            <div className="relative top-0 md:top-[20vh] w-96 rounded-xl mx-auto md:bg-gray-800  shadow-none md:shadow-xl">
+            <div
+                className="relative top-0 md:top-[20vh] w-96 rounded-xl mx-auto md:bg-gray-800  shadow-none md:shadow-xl">
                 <div className="card-body">
                     <h2 className="text-2xl font-semibold text-center text-white">Create an Account</h2>
                     <p className="text-center text-gray-400 mb-4">Sign up to get started</p>

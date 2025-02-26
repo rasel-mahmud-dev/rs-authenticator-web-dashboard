@@ -80,7 +80,7 @@ const HeaderNavbar = () => {
                     <div className="flex flex-1 items-center justify-end px-2">
 
                         <a target="_blank" className="btn btn-ghost"
-                           href="https://github.com/rasel-mahmud-dev/rs-authenticator-app">
+                           href="https://github.com/rasel-mahmud-dev/rs-authenticator-web-dashboard">
                             <FaGithub className="text-2xl"/>
                         </a>
 
@@ -98,7 +98,7 @@ const HeaderNavbar = () => {
                                             </div>
                                         </div>
 
-                                        <span>{user?.username}</span>
+                                        <span className="hidden md:block">{user?.username}</span>
                                     </div>
 
                                     <ul
