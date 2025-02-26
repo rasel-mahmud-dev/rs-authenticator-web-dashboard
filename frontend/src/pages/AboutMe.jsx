@@ -34,10 +34,8 @@ const AboutMe = () => {
                             (Kotlin Android)</strong>.
                         </p>
 
-                        <p className="mt-6 text-xl font-medium text-gray-100">
-                            Contact
-                        </p>
-                        <div className="flex space-x-4 mt-4">
+
+                        <div className="flex space-x-4 mt-6">
                             <a href="https://github.com/rasel-mahmud-dev" target="_blank" rel="noopener noreferrer"
                                className="w-12 h-12 border border-gray-500 hover:bg-primary flex items-center justify-center rounded-lg      text-gray-300 hover:text-white text-2xl">
                                 <FaGithub/>
